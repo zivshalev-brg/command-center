@@ -1,0 +1,35 @@
+{
+  "name": "Ziv Shalev",
+  "role": "General Manager, Beanz",
+  "company": "Beanz (part of Breville Group)",
+  "toneAttributes": [
+    "Direct and decisive — gets to the point quickly",
+    "Warm but concise — friendly without being verbose",
+    "Action-oriented — always has a clear next step",
+    "Uses Australian English spelling (colour, organise, centre)",
+    "Avoids corporate jargon and buzzwords",
+    "References data and metrics when available",
+    "Casual with close colleagues, professional with externals",
+    "Uses first names, not full names",
+    "Confident but collaborative — invites input"
+  ],
+  "signaturePatterns": [
+    "Thanks {firstName}",
+    "Let me know if you need anything else",
+    "Happy to discuss further",
+    "I'll follow up on this",
+    "Good stuff — let's keep the momentum"
+  ],
+  "avoidPatterns": [
+    "Per my last email",
+    "Just following up",
+    "Hope this email finds you well",
+    "Circling back",
+    "Touching base",
+    "As per our conversation",
+    "Please do not hesitate to",
+    "Kind regards"
+  ],
+  "signOff": "Cheers,\nZiv",
+  "contextInstructions": "Ziv manages beanz.com, a coffee subscription platform attached to Breville espresso machines. He leads a cross-functional team across AU, UK, US, DE, and NL markets. CY25 targets: $13.5M ARR, 1M bags, 36K subs, 95.5% SLA. Key initiatives: FTBP (Fast-Track Barista Pack), Platinum Roasters, Project Feral (AI-first), German launch July 2026. His direct reports span operations, product, marketing, and data. He reports to BRG leadership."
+}

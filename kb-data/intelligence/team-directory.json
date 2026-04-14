@@ -1,0 +1,177 @@
+{
+  "generated": "2026-02-24",
+  "source": "email_intelligence",
+  "team": [
+    {
+      "name": "Ziv Shalev",
+      "email": "Ziv.Shalev@breville.com.au",
+      "role": "General Manager, Beanz",
+      "location": "AU",
+      "scope": "Global strategy, P&L ownership, brand narrative",
+      "reports_to": "Jim Clayton / Cliff Torng",
+      "tier": "leadership"
+    },
+    {
+      "name": "Cliff Torng",
+      "email": "Cliff.Torng@breville.com.au",
+      "role": "Executive Sponsor",
+      "location": "AU",
+      "scope": "Strategic guidance, category story, brand moat",
+      "tier": "executive"
+    },
+    {
+      "name": "Phil McKnight",
+      "email": "Phil.McKnight@breville.com.au",
+      "role": "President, Global Specialty Coffee",
+      "location": "US/Seattle",
+      "scope": "Specialty Coffee BU, WOC, trade events",
+      "tier": "executive"
+    },
+    {
+      "name": "Ally Barajas",
+      "email": "Ally.Barajas@brevilleusa.com",
+      "role": "VP Marketing, Breville USA",
+      "location": "US",
+      "scope": "US marketing calendar, WOC activation, Platinum content strategy",
+      "tier": "leadership"
+    },
+    {
+      "name": "Sophie Thevenin",
+      "email": "Sophie.Thevenin@breville.com",
+      "role": "Beanz Product & Operations Lead",
+      "location": "AU",
+      "scope": "Portal, finished goods Shopify integration, multi-brand scaling, summit planning",
+      "tier": "core"
+    },
+    {
+      "name": "Travis Beckett",
+      "email": "Travis.Beckett@breville.com",
+      "role": "Beanz Operations Lead",
+      "location": "US/Seattle",
+      "scope": "Weekly meeting notes, ops coordination, MICE event planning",
+      "tier": "core"
+    },
+    {
+      "name": "Hugh McDonnell",
+      "email": "Hugh.McDonnell@breville.com",
+      "role": "Beanz Manager APAC",
+      "location": "AU/Sydney",
+      "scope": "APAC market, Platinum Roasters APAC, MaraX3 launch",
+      "tier": "core"
+    },
+    {
+      "name": "Sarah Dooley",
+      "email": "Sarah.Dooley@breville.com",
+      "role": "Beanz US Brand & Marketing",
+      "location": "US",
+      "scope": "US brand narrative, WOC activation, Platinum Roaster content",
+      "tier": "core"
+    },
+    {
+      "name": "Justin Le Good",
+      "email": "Justin.Legood@breville.com",
+      "role": "AI/Tech Lead — Project Feral",
+      "location": "AU",
+      "scope": "Project Feral architecture, data pipeline, AI experimentation, agentic tools",
+      "tier": "core"
+    },
+    {
+      "name": "Jennifer Quach",
+      "email": "Jennifer.Quach@breville.com",
+      "role": "Product / Analytics",
+      "location": "AU",
+      "scope": "Retention criteria definition, segmentation, NL retention metrics",
+      "tier": "core"
+    },
+    {
+      "name": "Michael Bell",
+      "email": "Michael.Bell@sageappliances.com",
+      "role": "Beanz EU Lead",
+      "location": "EU",
+      "scope": "Netherlands launch, Blommers pilot, Amsterdam Coffee Festival, DHL logistics",
+      "tier": "core"
+    },
+    {
+      "name": "Camille Degors",
+      "email": "Camille.Degors@sageappliances.com",
+      "role": "Beanz Co-Ordinator Germany",
+      "location": "DE/Krefeld",
+      "scope": "Germany operations, DPD logistics, NL cross-border, MaraX3 content",
+      "tier": "regional"
+    },
+    {
+      "name": "Raymon So",
+      "email": "Raymon.So@breville.com.au",
+      "role": "Beanz AU Operations",
+      "location": "AU",
+      "scope": "AU market operations, summit presentations",
+      "tier": "core"
+    },
+    {
+      "name": "Jae Han",
+      "email": "Jae.Han@breville.com",
+      "role": "Beanz Team Member",
+      "location": "TBC",
+      "scope": "Weekly meeting participant",
+      "tier": "core"
+    },
+    {
+      "name": "Daniel Granahan",
+      "email": "Daniel.Granahan@breville.com",
+      "role": "Beanz Team Member",
+      "location": "TBC",
+      "scope": "Weekly meeting participant",
+      "tier": "core"
+    },
+    {
+      "name": "Usman Zia",
+      "email": "Usman.Zia@breville.com",
+      "role": "GTM Finance Manager, Global",
+      "location": "AU/Alexandria",
+      "scope": "Beanz P&L in Power BI, D365 reconciliation, profitability analysis",
+      "tier": "finance"
+    },
+    {
+      "name": "Craig Robinson",
+      "email": "Craig.Robinson@breville.com.au",
+      "role": "Finance",
+      "location": "AU",
+      "scope": "Beanz P&L co-owner with Usman",
+      "tier": "finance"
+    },
+    {
+      "name": "Sarah Robinson",
+      "email": "Sarah.Robinson@breville.com.au",
+      "role": "Software Projects Lead",
+      "location": "AU",
+      "scope": "Monthly software project updates, tech coordination",
+      "tier": "tech"
+    },
+    {
+      "name": "Nadia Schwartz",
+      "email": "Nadia.Schwartz@breville.com",
+      "role": "Project Management / Confluence",
+      "location": "TBC",
+      "scope": "Execution planning, Confluence integration",
+      "tier": "support"
+    },
+    {
+      "name": "Noel Burchill",
+      "email": "Noel.Burchill@breville.com.au",
+      "role": "Management",
+      "location": "AU",
+      "scope": "Oversight, CC'd on key communications",
+      "tier": "leadership"
+    }
+  ],
+  "key_external": [
+    { "name": "Margherita Postogna", "email": "margherita.postogna@lelit.com", "org": "Lelit", "role": "MaraX coordination" },
+    { "name": "Roel Gijsel", "email": "roel.gijsel@sageappliances.com", "org": "Sage EU", "role": "NL language requirements" }
+  ],
+  "org_insights": {
+    "reporting_structure": "Beanz sits outside Phil McKnight's Specialty Coffee BU, which causes organizational tension ('jarring concept' per Phil)",
+    "brand_challenge": "Regions interpret Beanz support as selective FTBP moments, not year-round brand narrative",
+    "budget_note": "Beanz has no separate budget line — relies on Breville regional budgets for activations",
+    "three_legged_stool": "Beanz is 'arguably the first leg' of the moat Cliff is building — machines, beans service, and premium experience"
+  }
+}

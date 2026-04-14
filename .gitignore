@@ -1,0 +1,32 @@
+# Secrets
+.env
+.ms-tokens.json
+
+# Database
+beanz-os.db
+beanz-os.db-wal
+beanz-os.db-shm
+
+# Node
+node_modules/
+
+# Live data (regenerated at runtime)
+kb-data/intelligence/comms-live.json
+kb-data/intelligence/email-live.json
+kb-data/intelligence/calendar-live.json
+kb-data/intelligence/pbi-live.json
+news-store.json
+tech-news-store.json
+news-transcripts/
+
+# Playwright logs
+.playwright-mcp/
+
+# Screenshots
+*.png
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+nul

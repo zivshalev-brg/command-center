@@ -1,0 +1,71 @@
+{
+  "generated": "2026-02-24",
+  "source": "email_intelligence",
+  "last_weekly_meeting": "2026-02-12",
+  "projects": {
+    "project_feral": {
+      "status": "active",
+      "lead": "Justin Le Good",
+      "latest": "Justin gave incredible walkthrough of architecture. Shift from manual to automation in testing, measuring, and learning. Building data pipeline analyzing years of marketing email content. Addressing PII concerns for business safety.",
+      "workstreams_active": ["cancellation_flow", "exit_surveys", "coffee_collections", "onboarding", "email_strategy"],
+      "ai_focus": "Agentic tools to automate test-measure-learn cycle; customer behavior analysis; personalized communication strategies"
+    },
+    "netherlands_launch": {
+      "status": "in_progress",
+      "lead": "Michael Bell",
+      "target": "July 2026",
+      "latest": "Priority: early onboarding with Blommers roastery as pilot. First end-to-end test during summit week (domestic product ordering, onboarding, fulfillment). NL only — not Belgium or Luxembourg. Language requirements being defined.",
+      "blockers": ["DE delivery deterioration (+16%)", "DHL account management issues", "Translation challenges"],
+      "events": "Amsterdam Coffee Festival activation with Blommers providing coffee, interactive Beanz quiz, Precision Brewer demos"
+    },
+    "finished_goods_shopify": {
+      "status": "testing",
+      "lead": "Sophie Thevenin",
+      "latest": "Integration testing with Kiss the Hippo (UK) as first connector over next ~2 weeks. Staged rollout: Coffee Bros (US), St Ali (AU), Fjord (DE). Target: 20 partners by July.",
+      "challenge": "Manual processes causing issues, will be exacerbated by Shopify integration. Automation improvements planned for July."
+    },
+    "platinum_roasters": {
+      "status": "active",
+      "leads": ["Sarah Dooley", "Ally Barajas", "Hugh McDonnell"],
+      "latest": "MaraX3 launch content being coordinated with Lelit. 6 US roasters signed. Content calendar Q1-Q4 defined. Ally pushing for more disciplined content strategy with clear KPIs.",
+      "content_calendar": {
+        "q1": "Brew Guides, Reels, Ask the Roaster, Seasonal Assets",
+        "q2": "Barista Workflow, Single Origin vs Blends, Ask the Barista",
+        "q3": "How is Decaf Made, Roastery Tour, How Did We Name This?",
+        "q4": "Day in the Life, Evergreen B-roll, Summer recipes"
+      },
+      "gap": "Need more defined content strategy — which channels, collaborative vs standalone, paid vs organic, exact formats/specs"
+    },
+    "woc_us": {
+      "status": "planning",
+      "leads": ["Ziv Shalev", "Ally Barajas", "Phil McKnight"],
+      "latest": "Booth space negotiation ongoing. 5 objectives defined. Budget unclear — Beanz has no separate budget line, relies on Breville regional budgets.",
+      "objectives": "Brand visibility at specialty coffee trade show, Platinum Roaster showcasing, FTBP awareness"
+    },
+    "beanz_summit": {
+      "status": "upcoming",
+      "lead": "Sophie Thevenin",
+      "location": "Melbourne",
+      "focus": "5-year targets, homework involving AI capabilities, professional and recreational activities",
+      "action_items": ["Sophie to send agenda with homework", "Team to craft customer questionnaire using Claude", "Test <3 quizzes during MICE"]
+    },
+    "power_bi_pl": {
+      "status": "in_progress",
+      "lead": "Usman Zia",
+      "latest": "Building Beanz P&L Finance report in Power BI aligned with D365. Reconciling CommerceTools data with D365 revenue/COGS/freight. Mapping work between D365 data lake and CommerceTools ongoing.",
+      "key_data": {
+        "systems": ["D365", "CommerceTools", "Data Lake", "Bean Score"],
+        "challenge": "Timing difference in revenue recognition between CommerceTools and D365",
+        "programs_tracked": ["Fast Track", "Customer Care", "Subscription", "Non-subscription", "Powered by Beanz", "Fusion"],
+        "cost_centers": ["CC5021", "CC7150"],
+        "target_audience": "Executive team — profitability understanding"
+      }
+    }
+  },
+  "upcoming_events": {
+    "beanz_summit": { "location": "Melbourne", "focus": "5-year targets" },
+    "mice": { "note": "Customer questionnaire testing, MICE activation" },
+    "amsterdam_coffee_festival": { "note": "Pre-launch for NL, Beanz quiz + Precision Brewer demos" },
+    "woc_us": { "note": "World of Coffee US — booth with Breville/Lelit/Baratza" }
+  }
+}

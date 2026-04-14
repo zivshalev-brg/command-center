@@ -1,0 +1,581 @@
+[2026-02-24T05:12:50.524Z] === News Refresh Started ===
+[2026-02-24T05:12:50.527Z] Sources: rss, reddit, youtube
+[2026-02-24T05:12:51.057Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-24T05:12:51.058Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-24T05:12:51.166Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-24T05:12:53.874Z] Fetched 96 articles from sources
+[2026-02-24T05:12:53.875Z] New articles: 10
+[2026-02-24T05:12:53.876Z] Pruned 14 articles older than 14 days
+[2026-02-24T05:12:53.877Z] Total in store: 93
+[2026-02-24T05:12:53.878Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-24T05:12:53.880Z] === News Refresh Complete ===
+
+[2026-02-24T05:14:25.449Z] === News Refresh Started ===
+[2026-02-24T05:14:25.450Z] Sources: rss, reddit, youtube
+[2026-02-24T05:14:25.718Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-24T05:14:26.547Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-24T05:14:26.577Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-24T05:14:26.578Z]   YouTube fetch failed [jameshoffmann]: HTTP 500
+[2026-02-24T05:14:28.355Z] Fetched 81 articles from sources
+[2026-02-24T05:14:28.356Z] New articles: 0
+[2026-02-24T05:14:28.356Z] Total in store: 93
+[2026-02-24T05:14:28.357Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-24T05:14:28.357Z] === News Refresh Complete ===
+
+[2026-02-24T19:00:02.438Z] === News Refresh Started ===
+[2026-02-24T19:00:02.439Z] Sources: rss, reddit, youtube
+[2026-02-24T19:00:03.038Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-24T19:00:03.572Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-24T19:00:03.586Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-24T19:00:05.549Z] Fetched 96 articles from sources
+[2026-02-24T19:00:05.550Z] New articles: 13
+[2026-02-24T19:00:05.550Z] Pruned 15 articles older than 14 days
+[2026-02-24T19:00:05.550Z] Total in store: 113
+[2026-02-24T19:00:05.550Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-24T19:00:05.550Z] === News Refresh Complete ===
+
+[2026-02-25T19:00:03.972Z] === News Refresh Started ===
+[2026-02-25T19:00:03.973Z] Sources: rss, reddit, youtube
+[2026-02-25T19:00:04.976Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-25T19:00:05.395Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-25T19:00:05.646Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-25T19:00:08.529Z] Fetched 96 articles from sources
+[2026-02-25T19:00:08.529Z] New articles: 25
+[2026-02-25T19:00:08.530Z] Pruned 17 articles older than 14 days
+[2026-02-25T19:00:08.530Z] Total in store: 147
+[2026-02-25T19:00:08.530Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-25T19:00:08.531Z] === News Refresh Complete ===
+
+[2026-02-26T19:00:03.310Z] === News Refresh Started ===
+[2026-02-26T19:00:03.311Z] Sources: rss, reddit, youtube
+[2026-02-26T19:00:04.679Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-26T19:00:04.902Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-26T19:00:04.913Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-26T19:00:07.239Z] Fetched 96 articles from sources
+[2026-02-26T19:00:07.239Z] New articles: 40
+[2026-02-26T19:00:07.239Z] Pruned 17 articles older than 14 days
+[2026-02-26T19:00:07.240Z] Total in store: 170
+[2026-02-26T19:00:07.240Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-26T19:00:07.240Z] === News Refresh Complete ===
+
+[2026-02-27T20:41:10.552Z] === News Refresh Started ===
+[2026-02-27T20:41:10.554Z] Sources: rss, reddit, youtube
+[2026-02-27T20:41:11.860Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-27T20:41:11.875Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-27T20:41:12.222Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-27T20:41:14.506Z] Fetched 96 articles from sources
+[2026-02-27T20:41:14.507Z] New articles: 49
+[2026-02-27T20:41:14.507Z] Pruned 17 articles older than 14 days
+[2026-02-27T20:41:14.507Z] Total in store: 202
+[2026-02-27T20:41:14.507Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-27T20:41:14.508Z] === News Refresh Complete ===
+
+[2026-02-28T20:25:36.649Z] === News Refresh Started ===
+[2026-02-28T20:25:36.651Z] Sources: rss, reddit, youtube
+[2026-02-28T20:25:38.002Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-02-28T20:25:38.341Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-02-28T20:25:38.496Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-02-28T20:25:41.195Z] Fetched 96 articles from sources
+[2026-02-28T20:25:41.196Z] New articles: 31
+[2026-02-28T20:25:41.197Z] Pruned 14 articles older than 14 days
+[2026-02-28T20:25:41.198Z] Total in store: 219
+[2026-02-28T20:25:41.198Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-02-28T20:25:41.199Z] === News Refresh Complete ===
+
+[2026-03-01T20:26:17.465Z] === News Refresh Started ===
+[2026-03-01T20:26:17.468Z] Sources: rss, reddit, youtube
+[2026-03-01T20:26:18.678Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-01T20:26:18.682Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-01T20:26:18.900Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-01T20:26:21.279Z] Fetched 96 articles from sources
+[2026-03-01T20:26:21.281Z] New articles: 34
+[2026-03-01T20:26:21.281Z] Pruned 14 articles older than 14 days
+[2026-03-01T20:26:21.282Z] Total in store: 239
+[2026-03-01T20:26:21.282Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-01T20:26:21.283Z] === News Refresh Complete ===
+
+[2026-03-02T19:00:01.854Z] === News Refresh Started ===
+[2026-03-02T19:00:01.857Z] Sources: rss, reddit, youtube
+[2026-03-02T19:00:03.150Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-02T19:00:03.501Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-02T19:00:03.766Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-02T19:00:06.122Z] Fetched 95 articles from sources
+[2026-03-02T19:00:06.122Z] New articles: 42
+[2026-03-02T19:00:06.122Z] Pruned 17 articles older than 14 days
+[2026-03-02T19:00:06.122Z] Total in store: 264
+[2026-03-02T19:00:06.123Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-02T19:00:06.123Z] === News Refresh Complete ===
+
+[2026-03-03T20:38:42.432Z] === News Refresh Started ===
+[2026-03-03T20:38:42.433Z] Sources: rss, reddit, youtube
+[2026-03-03T20:38:43.727Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-03T20:38:43.735Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-03T20:38:43.764Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-03T20:38:46.800Z] Fetched 95 articles from sources
+[2026-03-03T20:38:46.801Z] New articles: 47
+[2026-03-03T20:38:46.801Z] Pruned 18 articles older than 14 days
+[2026-03-03T20:38:46.801Z] Total in store: 293
+[2026-03-03T20:38:46.802Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-03T20:38:46.802Z] === News Refresh Complete ===
+
+[2026-03-04T19:56:51.100Z] === News Refresh Started ===
+[2026-03-04T19:56:51.102Z] Sources: rss, reddit, youtube
+[2026-03-04T19:56:53.580Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-04T19:56:54.029Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-04T19:56:54.345Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-04T19:56:56.186Z] Fetched 95 articles from sources
+[2026-03-04T19:56:56.346Z] New articles: 19
+[2026-03-04T19:56:56.347Z] Pruned 25 articles older than 14 days
+[2026-03-04T19:56:56.356Z] Total in store: 322
+[2026-03-04T19:56:56.360Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-04T19:56:56.363Z] === News Refresh Complete ===
+
+[2026-03-05T20:33:40.338Z] === News Refresh Started ===
+[2026-03-05T20:33:40.343Z] Sources: rss, reddit, youtube
+[2026-03-05T20:33:43.689Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-05T20:33:43.719Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-05T20:33:44.105Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-05T20:33:47.733Z] Fetched 95 articles from sources
+[2026-03-05T20:33:47.736Z] New articles: 40
+[2026-03-05T20:33:47.737Z] Pruned 23 articles older than 14 days
+[2026-03-05T20:33:47.738Z] Total in store: 339
+[2026-03-05T20:33:47.754Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-05T20:33:47.771Z] === News Refresh Complete ===
+
+[2026-03-06T21:49:18.970Z] === News Refresh Started ===
+[2026-03-06T21:49:18.975Z] Sources: rss, reddit, youtube
+[2026-03-06T21:49:20.444Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-06T21:49:21.047Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-06T21:49:21.179Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-06T21:49:22.966Z] Fetched 95 articles from sources
+[2026-03-06T21:49:22.968Z] New articles: 41
+[2026-03-06T21:49:22.969Z] Pruned 26 articles older than 14 days
+[2026-03-06T21:49:22.970Z] Total in store: 354
+[2026-03-06T21:49:22.970Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-06T21:49:22.979Z] === News Refresh Complete ===
+
+[2026-03-07T21:49:22.908Z] === News Refresh Started ===
+[2026-03-07T21:49:22.933Z] Sources: rss, reddit, youtube
+[2026-03-07T21:49:24.376Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-07T21:49:24.859Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-07T21:49:24.865Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-07T21:49:26.835Z] Fetched 95 articles from sources
+[2026-03-07T21:49:26.835Z] New articles: 39
+[2026-03-07T21:49:26.836Z] Pruned 19 articles older than 14 days
+[2026-03-07T21:49:26.836Z] Total in store: 374
+[2026-03-07T21:49:26.849Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-07T21:49:26.853Z] === News Refresh Complete ===
+
+[2026-03-08T19:15:02.246Z] === News Refresh Started ===
+[2026-03-08T19:15:02.248Z] Sources: rss, reddit, youtube
+[2026-03-08T19:15:03.062Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-08T19:15:03.411Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-08T19:15:03.412Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-08T19:15:05.635Z] Fetched 95 articles from sources
+[2026-03-08T19:15:05.636Z] New articles: 35
+[2026-03-08T19:15:05.636Z] Pruned 20 articles older than 14 days
+[2026-03-08T19:15:05.637Z] Total in store: 389
+[2026-03-08T19:15:05.638Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-08T19:15:05.639Z] === News Refresh Complete ===
+
+[2026-03-09T20:00:01.101Z] === News Refresh Started ===
+[2026-03-09T20:00:01.103Z] Sources: rss, reddit, youtube
+[2026-03-09T20:00:02.327Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-09T20:00:02.695Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-09T20:00:02.951Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-09T20:00:11.032Z] Fetched 95 articles from sources
+[2026-03-09T20:00:11.043Z] New articles: 47
+[2026-03-09T20:00:11.043Z] Pruned 31 articles older than 14 days
+[2026-03-09T20:00:11.060Z] Total in store: 405
+[2026-03-09T20:00:11.075Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-09T20:00:11.093Z] === News Refresh Complete ===
+
+[2026-03-10T19:00:01.919Z] === News Refresh Started ===
+[2026-03-10T19:00:01.920Z] Sources: rss, reddit, youtube
+[2026-03-10T19:00:02.700Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-10T19:00:02.714Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-10T19:00:03.292Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-10T19:00:09.088Z] Fetched 96 articles from sources
+[2026-03-10T19:00:09.088Z] New articles: 48
+[2026-03-10T19:00:09.088Z] Pruned 59 articles older than 14 days
+[2026-03-10T19:00:09.088Z] Total in store: 394
+[2026-03-10T19:00:09.088Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-10T19:00:09.089Z] === News Refresh Complete ===
+
+[2026-03-11T20:01:15.726Z] === News Refresh Started ===
+[2026-03-11T20:01:15.728Z] Sources: rss, reddit, youtube
+[2026-03-11T20:01:16.768Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-11T20:01:17.420Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-11T20:01:17.437Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-11T20:01:20.500Z] Fetched 96 articles from sources
+[2026-03-11T20:01:20.500Z] New articles: 46
+[2026-03-11T20:01:20.500Z] Pruned 49 articles older than 14 days
+[2026-03-11T20:01:20.500Z] Total in store: 391
+[2026-03-11T20:01:20.500Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-11T20:01:20.501Z] === News Refresh Complete ===
+
+[2026-03-12T19:00:02.254Z] === News Refresh Started ===
+[2026-03-12T19:00:02.255Z] Sources: rss, reddit, youtube
+[2026-03-12T19:00:03.299Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-12T19:00:03.596Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-12T19:00:03.910Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-12T19:00:05.955Z] Fetched 96 articles from sources
+[2026-03-12T19:00:05.955Z] New articles: 45
+[2026-03-12T19:00:05.955Z] Pruned 42 articles older than 14 days
+[2026-03-12T19:00:05.956Z] Total in store: 394
+[2026-03-12T19:00:05.956Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-12T19:00:05.956Z] === News Refresh Complete ===
+
+[2026-03-13T19:00:02.503Z] === News Refresh Started ===
+[2026-03-13T19:00:02.505Z] Sources: rss, reddit, youtube
+[2026-03-13T19:00:03.678Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-13T19:00:03.703Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-13T19:00:03.999Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-13T19:00:06.613Z] Fetched 96 articles from sources
+[2026-03-13T19:00:06.613Z] New articles: 42
+[2026-03-13T19:00:06.613Z] Pruned 46 articles older than 14 days
+[2026-03-13T19:00:06.614Z] Total in store: 390
+[2026-03-13T19:00:06.614Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-13T19:00:06.614Z] === News Refresh Complete ===
+
+[2026-03-15T10:38:56.977Z] === News Refresh Started ===
+[2026-03-15T10:38:56.980Z] Sources: rss, reddit, youtube
+[2026-03-15T10:38:58.180Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-15T10:38:58.181Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-15T10:38:58.634Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-15T10:39:00.751Z] Fetched 96 articles from sources
+[2026-03-15T10:39:00.752Z] New articles: 41
+[2026-03-15T10:39:00.753Z] Pruned 38 articles older than 14 days
+[2026-03-15T10:39:00.755Z] Total in store: 393
+[2026-03-15T10:39:00.761Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-15T10:39:00.762Z] === News Refresh Complete ===
+
+[2026-03-15T20:34:28.485Z] === News Refresh Started ===
+[2026-03-15T20:34:28.486Z] Sources: rss, reddit, youtube
+[2026-03-15T20:34:28.600Z]   RSS fetch failed [sprudge]: getaddrinfo ENOTFOUND www.sprudge.com
+[2026-03-15T20:34:28.601Z]   RSS fetch failed [dailycoffeenews]: getaddrinfo ENOTFOUND dailycoffeenews.com
+[2026-03-15T20:34:28.602Z]   RSS fetch failed [perfectdaily]: getaddrinfo ENOTFOUND perfectdailygrind.com
+[2026-03-15T20:34:28.604Z]   RSS fetch failed [worldcoffeeportal]: getaddrinfo ENOTFOUND www.worldcoffeeportal.com
+[2026-03-15T20:34:28.610Z]   RSS fetch failed [baristamagazine]: getaddrinfo ENOTFOUND www.baristamagazine.com
+[2026-03-15T20:34:28.612Z]   Reddit fetch failed [coffee]: getaddrinfo ENOTFOUND www.reddit.com
+[2026-03-15T20:34:28.613Z]   Reddit fetch failed [espresso]: getaddrinfo ENOTFOUND www.reddit.com
+[2026-03-15T20:34:28.617Z]   Reddit fetch failed [roasting]: getaddrinfo ENOTFOUND www.reddit.com
+[2026-03-15T20:34:28.626Z]   YouTube fetch failed [jameshoffmann]: getaddrinfo ENOTFOUND www.youtube.com
+[2026-03-15T20:34:28.628Z]   YouTube fetch failed [lancehedrick]: getaddrinfo ENOTFOUND www.youtube.com
+[2026-03-15T20:34:28.629Z]   YouTube fetch failed [sprometheus]: getaddrinfo ENOTFOUND www.youtube.com
+[2026-03-15T20:34:28.635Z] Fetched 0 articles from sources
+[2026-03-15T20:34:28.635Z] New articles: 0
+[2026-03-15T20:34:28.636Z] Pruned 18 articles older than 14 days
+[2026-03-15T20:34:28.636Z] Total in store: 375
+[2026-03-15T20:34:28.644Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-15T20:34:28.647Z] === News Refresh Complete ===
+
+[2026-03-16T19:00:02.171Z] === News Refresh Started ===
+[2026-03-16T19:00:02.172Z] Sources: rss, reddit, youtube
+[2026-03-16T19:00:03.724Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-16T19:00:03.733Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-16T19:00:05.815Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-16T19:00:05.819Z] Fetched 96 articles from sources
+[2026-03-16T19:00:05.819Z] New articles: 18
+[2026-03-16T19:00:05.820Z] Pruned 45 articles older than 14 days
+[2026-03-16T19:00:05.820Z] Total in store: 390
+[2026-03-16T19:00:05.820Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-16T19:00:05.821Z] === News Refresh Complete ===
+
+[2026-03-17T19:00:01.993Z] === News Refresh Started ===
+[2026-03-17T19:00:01.995Z] Sources: rss, reddit, youtube
+[2026-03-17T19:00:03.447Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-17T19:00:03.708Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-17T19:00:03.713Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-17T19:00:05.793Z] Fetched 96 articles from sources
+[2026-03-17T19:00:05.793Z] New articles: 46
+[2026-03-17T19:00:05.793Z] Pruned 47 articles older than 14 days
+[2026-03-17T19:00:05.793Z] Total in store: 389
+[2026-03-17T19:00:05.794Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-17T19:00:05.794Z] === News Refresh Complete ===
+
+[2026-03-18T19:00:02.539Z] === News Refresh Started ===
+[2026-03-18T19:00:02.541Z] Sources: rss, reddit, youtube
+[2026-03-18T19:00:03.495Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-18T19:00:03.937Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-18T19:00:04.099Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-18T19:00:05.977Z] Fetched 95 articles from sources
+[2026-03-18T19:00:05.977Z] New articles: 19
+[2026-03-18T19:00:05.978Z] Pruned 51 articles older than 14 days
+[2026-03-18T19:00:05.978Z] Total in store: 385
+[2026-03-18T19:00:05.978Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-18T19:00:05.978Z] === News Refresh Complete ===
+
+[2026-03-19T19:00:02.591Z] === News Refresh Started ===
+[2026-03-19T19:00:02.593Z] Sources: rss, reddit, youtube
+[2026-03-19T19:00:03.854Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-19T19:00:04.181Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-19T19:00:04.481Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-19T19:00:06.338Z] Fetched 95 articles from sources
+[2026-03-19T19:00:06.339Z] New articles: 42
+[2026-03-19T19:00:06.339Z] Pruned 41 articles older than 14 days
+[2026-03-19T19:00:06.339Z] Total in store: 386
+[2026-03-19T19:00:06.339Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-19T19:00:06.339Z] === News Refresh Complete ===
+
+[2026-03-22T21:37:30.054Z] === News Refresh Started ===
+[2026-03-22T21:37:30.071Z] Sources: rss, reddit, youtube
+[2026-03-22T21:37:30.756Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-22T21:37:31.180Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-22T21:37:31.386Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-22T21:37:33.382Z] Fetched 95 articles from sources
+[2026-03-22T21:37:33.384Z] New articles: 54
+[2026-03-22T21:37:33.385Z] Pruned 91 articles older than 14 days
+[2026-03-22T21:37:33.387Z] Total in store: 351
+[2026-03-22T21:37:33.388Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-22T21:37:33.388Z] === News Refresh Complete ===
+
+[2026-03-23T21:53:14.602Z] === News Refresh Started ===
+[2026-03-23T21:53:14.603Z] Sources: rss, reddit, youtube
+[2026-03-23T21:53:15.607Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-23T21:53:15.795Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-23T21:53:15.796Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-23T21:53:17.976Z] Fetched 95 articles from sources
+[2026-03-23T21:53:17.976Z] New articles: 45
+[2026-03-23T21:53:17.977Z] Pruned 49 articles older than 14 days
+[2026-03-23T21:53:17.977Z] Total in store: 347
+[2026-03-23T21:53:17.977Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-23T21:53:17.977Z] === News Refresh Complete ===
+
+[2026-03-24T21:58:03.419Z] === News Refresh Started ===
+[2026-03-24T21:58:03.424Z] Sources: rss, reddit, youtube
+[2026-03-24T21:58:04.487Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-24T21:58:04.489Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-24T21:58:05.140Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-24T21:58:07.329Z] Fetched 95 articles from sources
+[2026-03-24T21:58:07.330Z] New articles: 45
+[2026-03-24T21:58:07.330Z] Pruned 48 articles older than 14 days
+[2026-03-24T21:58:07.331Z] Total in store: 344
+[2026-03-24T21:58:07.332Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-24T21:58:07.332Z] === News Refresh Complete ===
+
+[2026-03-26T21:12:55.672Z] === News Refresh Started ===
+[2026-03-26T21:12:55.676Z] Sources: rss, reddit, youtube
+[2026-03-26T21:12:55.820Z]   RSS fetch failed [sprudge]: getaddrinfo ENOTFOUND www.sprudge.com
+[2026-03-26T21:12:55.828Z]   RSS fetch failed [dailycoffeenews]: getaddrinfo ENOTFOUND dailycoffeenews.com
+[2026-03-26T21:12:55.837Z]   RSS fetch failed [worldcoffeeportal]: getaddrinfo ENOTFOUND www.worldcoffeeportal.com
+[2026-03-26T21:12:55.844Z]   RSS fetch failed [perfectdaily]: getaddrinfo ENOTFOUND perfectdailygrind.com
+[2026-03-26T21:12:55.852Z]   RSS fetch failed [baristamagazine]: getaddrinfo ENOTFOUND www.baristamagazine.com
+[2026-03-26T21:12:55.860Z]   Reddit fetch failed [coffee]: getaddrinfo ENOTFOUND www.reddit.com
+[2026-03-26T21:12:55.868Z]   Reddit fetch failed [espresso]: getaddrinfo ENOTFOUND www.reddit.com
+[2026-03-26T21:12:55.871Z]   YouTube fetch failed [jameshoffmann]: getaddrinfo ENOTFOUND www.youtube.com
+[2026-03-26T21:12:55.878Z]   Reddit fetch failed [roasting]: getaddrinfo ENOTFOUND www.reddit.com
+[2026-03-26T21:12:55.887Z]   YouTube fetch failed [lancehedrick]: getaddrinfo ENOTFOUND www.youtube.com
+[2026-03-26T21:12:55.891Z]   YouTube fetch failed [sprometheus]: getaddrinfo ENOTFOUND www.youtube.com
+[2026-03-26T21:12:55.903Z] Fetched 0 articles from sources
+[2026-03-26T21:12:55.906Z] New articles: 0
+[2026-03-26T21:12:55.910Z] Pruned 63 articles older than 14 days
+[2026-03-26T21:12:55.911Z] Total in store: 281
+[2026-03-26T21:12:55.913Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-26T21:12:55.915Z] === News Refresh Complete ===
+
+[2026-03-27T19:00:01.822Z] === News Refresh Started ===
+[2026-03-27T19:00:01.823Z] Sources: rss, reddit, youtube
+[2026-03-27T19:00:02.913Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-27T19:00:03.337Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-27T19:00:03.523Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-27T19:00:05.259Z] Fetched 95 articles from sources
+[2026-03-27T19:00:05.259Z] New articles: 69
+[2026-03-27T19:00:05.260Z] Pruned 39 articles older than 14 days
+[2026-03-27T19:00:05.260Z] Total in store: 311
+[2026-03-27T19:00:05.260Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-27T19:00:05.261Z] === News Refresh Complete ===
+
+[2026-03-28T19:00:01.964Z] === News Refresh Started ===
+[2026-03-28T19:00:01.966Z] Sources: rss, reddit, youtube
+[2026-03-28T19:00:03.139Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-28T19:00:03.288Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-28T19:00:03.744Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-28T19:00:05.602Z] Fetched 95 articles from sources
+[2026-03-28T19:00:05.602Z] New articles: 36
+[2026-03-28T19:00:05.602Z] Pruned 26 articles older than 14 days
+[2026-03-28T19:00:05.603Z] Total in store: 321
+[2026-03-28T19:00:05.603Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-28T19:00:05.603Z] === News Refresh Complete ===
+
+[2026-03-29T20:53:55.030Z] === News Refresh Started ===
+[2026-03-29T20:53:55.032Z] Sources: rss, reddit, youtube
+[2026-03-29T20:53:56.229Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-29T20:53:56.238Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-29T20:53:57.262Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-29T20:53:58.628Z] Fetched 95 articles from sources
+[2026-03-29T20:53:58.629Z] New articles: 32
+[2026-03-29T20:53:58.629Z] Pruned 39 articles older than 14 days
+[2026-03-29T20:53:58.629Z] Total in store: 314
+[2026-03-29T20:53:58.630Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-29T20:53:58.631Z] === News Refresh Complete ===
+
+[2026-03-30T19:00:01.510Z] === News Refresh Started ===
+[2026-03-30T19:00:01.511Z] Sources: rss, reddit, youtube
+[2026-03-30T19:00:02.751Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-30T19:00:03.238Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-30T19:00:03.771Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-30T19:00:06.033Z] Fetched 95 articles from sources
+[2026-03-30T19:00:06.033Z] New articles: 16
+[2026-03-30T19:00:06.033Z] Pruned 44 articles older than 14 days
+[2026-03-30T19:00:06.033Z] Total in store: 347
+[2026-03-30T19:00:06.034Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-30T19:00:06.034Z] === News Refresh Complete ===
+
+[2026-03-31T19:00:01.951Z] === News Refresh Started ===
+[2026-03-31T19:00:01.952Z] Sources: rss, reddit, youtube
+[2026-03-31T19:00:03.005Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-03-31T19:00:03.358Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-03-31T19:00:04.036Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-03-31T19:00:05.988Z] Fetched 95 articles from sources
+[2026-03-31T19:00:05.989Z] New articles: 25
+[2026-03-31T19:00:05.989Z] Pruned 47 articles older than 14 days
+[2026-03-31T19:00:05.989Z] Total in store: 353
+[2026-03-31T19:00:05.990Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-03-31T19:00:05.990Z] === News Refresh Complete ===
+
+[2026-04-01T19:00:01.958Z] === News Refresh Started ===
+[2026-04-01T19:00:01.959Z] Sources: rss, reddit, youtube
+[2026-04-01T19:00:03.038Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-01T19:00:03.059Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-01T19:00:03.401Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-01T19:00:05.587Z] Fetched 95 articles from sources
+[2026-04-01T19:00:05.587Z] New articles: 33
+[2026-04-01T19:00:05.587Z] Pruned 36 articles older than 14 days
+[2026-04-01T19:00:05.588Z] Total in store: 464
+[2026-04-01T19:00:05.588Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-01T19:00:05.588Z] === News Refresh Complete ===
+
+[2026-04-02T19:00:02.021Z] === News Refresh Started ===
+[2026-04-02T19:00:02.023Z] Sources: rss, reddit, youtube
+[2026-04-02T19:00:03.255Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-02T19:00:03.660Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-02T19:00:03.960Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-02T19:00:06.250Z] Fetched 95 articles from sources
+[2026-04-02T19:00:06.251Z] New articles: 34
+[2026-04-02T19:00:06.251Z] Pruned 3 articles older than 14 days
+[2026-04-02T19:00:06.251Z] Total in store: 497
+[2026-04-02T19:00:06.252Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-02T19:00:06.252Z] === News Refresh Complete ===
+
+[2026-04-03T19:00:01.814Z] === News Refresh Started ===
+[2026-04-03T19:00:01.816Z] Sources: rss, reddit, youtube
+[2026-04-03T19:00:03.395Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-03T19:00:03.557Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-03T19:00:03.573Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-03T19:00:06.649Z] Fetched 95 articles from sources
+[2026-04-03T19:00:06.649Z] New articles: 34
+[2026-04-03T19:00:06.650Z] Total in store: 500
+[2026-04-03T19:00:06.650Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-03T19:00:06.650Z] === News Refresh Complete ===
+
+[2026-04-04T19:00:01.268Z] === News Refresh Started ===
+[2026-04-04T19:00:01.269Z] Sources: rss, reddit, youtube
+[2026-04-04T19:00:02.471Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-04T19:00:02.504Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-04T19:00:03.498Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-04T19:00:05.065Z] Fetched 95 articles from sources
+[2026-04-04T19:00:05.065Z] New articles: 35
+[2026-04-04T19:00:05.065Z] Total in store: 500
+[2026-04-04T19:00:05.066Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-04T19:00:05.066Z] === News Refresh Complete ===
+
+[2026-04-05T19:00:01.293Z] === News Refresh Started ===
+[2026-04-05T19:00:01.294Z] Sources: rss, reddit, youtube
+[2026-04-05T19:00:02.402Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-05T19:00:02.414Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-05T19:00:02.570Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-05T19:00:05.696Z] Fetched 95 articles from sources
+[2026-04-05T19:00:05.697Z] New articles: 35
+[2026-04-05T19:00:05.697Z] Total in store: 500
+[2026-04-05T19:00:05.697Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-05T19:00:05.697Z] === News Refresh Complete ===
+
+[2026-04-06T19:00:01.510Z] === News Refresh Started ===
+[2026-04-06T19:00:01.514Z] Sources: rss, reddit, youtube
+[2026-04-06T19:00:03.230Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-06T19:00:03.414Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-06T19:00:03.422Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-06T19:00:05.575Z] Fetched 95 articles from sources
+[2026-04-06T19:00:05.576Z] New articles: 41
+[2026-04-06T19:00:05.576Z] Total in store: 500
+[2026-04-06T19:00:05.576Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-06T19:00:05.576Z] === News Refresh Complete ===
+
+[2026-04-07T19:00:01.319Z] === News Refresh Started ===
+[2026-04-07T19:00:01.321Z] Sources: rss, reddit, youtube
+[2026-04-07T19:00:02.551Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-07T19:00:02.958Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-07T19:00:03.155Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-07T19:00:05.209Z] Fetched 95 articles from sources
+[2026-04-07T19:00:05.209Z] New articles: 43
+[2026-04-07T19:00:05.210Z] Total in store: 500
+[2026-04-07T19:00:05.210Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-07T19:00:05.210Z] === News Refresh Complete ===
+
+[2026-04-08T19:00:02.065Z] === News Refresh Started ===
+[2026-04-08T19:00:02.067Z] Sources: rss, reddit, youtube
+[2026-04-08T19:00:03.158Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-08T19:00:03.624Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-08T19:00:03.752Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-08T19:00:05.826Z] Fetched 95 articles from sources
+[2026-04-08T19:00:05.826Z] New articles: 42
+[2026-04-08T19:00:05.827Z] Total in store: 500
+[2026-04-08T19:00:05.827Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-08T19:00:05.827Z] === News Refresh Complete ===
+
+[2026-04-10T01:28:17.780Z] === News Refresh Started ===
+[2026-04-10T01:28:17.819Z] Sources: rss, reddit, youtube
+[2026-04-10T01:28:18.956Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-10T01:28:19.007Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-10T01:28:19.025Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-10T01:28:22.424Z] Fetched 95 articles from sources
+[2026-04-10T01:28:22.425Z] New articles: 49
+[2026-04-10T01:28:22.425Z] Total in store: 500
+[2026-04-10T01:28:22.426Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-10T01:28:22.426Z] === News Refresh Complete ===
+
+[2026-04-10T19:00:02.515Z] === News Refresh Started ===
+[2026-04-10T19:00:02.516Z] Sources: rss, reddit, youtube
+[2026-04-10T19:00:03.303Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-10T19:00:03.367Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-10T19:00:03.720Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-10T19:00:05.187Z] Fetched 95 articles from sources
+[2026-04-10T19:00:05.187Z] New articles: 40
+[2026-04-10T19:00:05.188Z] Total in store: 500
+[2026-04-10T19:00:05.188Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-10T19:00:05.188Z] === News Refresh Complete ===
+
+[2026-04-11T19:00:02.077Z] === News Refresh Started ===
+[2026-04-11T19:00:02.079Z] Sources: rss, reddit, youtube
+[2026-04-11T19:00:02.810Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-11T19:00:02.911Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-11T19:00:02.998Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-11T19:00:05.275Z] Fetched 95 articles from sources
+[2026-04-11T19:00:05.276Z] New articles: 40
+[2026-04-11T19:00:05.276Z] Total in store: 500
+[2026-04-11T19:00:05.276Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-11T19:00:05.276Z] === News Refresh Complete ===
+
+[2026-04-13T18:29:17.511Z] === News Refresh Started ===
+[2026-04-13T18:29:17.513Z] Sources: rss, reddit, youtube
+[2026-04-13T18:29:17.936Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-13T18:29:17.947Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-13T18:29:18.005Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-13T18:29:20.686Z] Fetched 95 articles from sources
+[2026-04-13T18:29:20.686Z] New articles: 25
+[2026-04-13T18:29:20.687Z] Total in store: 500
+[2026-04-13T18:29:20.687Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-13T18:29:20.688Z] === News Refresh Complete ===
+
+[2026-04-13T19:00:02.925Z] === News Refresh Started ===
+[2026-04-13T19:00:02.926Z] Sources: rss, reddit, youtube
+[2026-04-13T19:00:03.245Z]   YouTube fetch failed [lancehedrick]: HTTP 404
+[2026-04-13T19:00:03.254Z]   YouTube fetch failed [sprometheus]: HTTP 404
+[2026-04-13T19:00:03.552Z]   RSS fetch failed [worldcoffeeportal]: Invalid URL
+[2026-04-13T19:00:05.301Z] Fetched 95 articles from sources
+[2026-04-13T19:00:05.302Z] New articles: 25
+[2026-04-13T19:00:05.302Z] Total in store: 500
+[2026-04-13T19:00:05.302Z] Sources: RSS=ok Reddit=ok YT=ok
+[2026-04-13T19:00:05.303Z] === News Refresh Complete ===
+

@@ -1,0 +1,93 @@
+{
+  "generated": "2026-02-24",
+  "source": "email_intelligence",
+  "power_bi": {
+    "project": "Beanz P&L Finance Report",
+    "owner": "Usman Zia (GTM Finance Manager)",
+    "co_owner": "Craig Robinson",
+    "status": "mapping_in_progress",
+    "objective": "Understand profitability of Beanz business and its various sales programs",
+    "target_audience": "Executive team",
+    "data_sources": {
+      "d365": "Revenue, COGS, Freight — source of financial truth",
+      "commercetools": "Real-time order data, subscription management",
+      "data_lake": "Historical data extraction and analysis",
+      "bean_score": "Program classification, order-to-program mapping"
+    },
+    "reconciliation_challenges": [
+      "Timing difference in revenue recognition between CommerceTools and D365",
+      "Invoice generation timing creates discrepancies",
+      "Manual allocation file from Ellen Lou for month-end adjustments",
+      "Rebates handled manually by commercial managers",
+      "COGS values in CommerceTools are static, need updating to current pricing"
+    ],
+    "report_structure": {
+      "revenue": {
+        "gross_sales": "By program (FTBP, Subscription, CS, Non-Sub, PBB, Fusion)",
+        "net_revenue": "After discounts, rebates, adjustments",
+        "volume_kg": "By program and region"
+      },
+      "costs": {
+        "cogs": "Coffee costs, packaging, reconciled with D365",
+        "freight": "Delivery costs by market",
+        "technology": "Platform development (CC5021, CC7150), hosting",
+        "platform_costs": "Shipstation, Ship-engine, functional requirements only"
+      },
+      "profitability": {
+        "contribution_margin": "Revenue - COGS - Freight",
+        "operating_margin": "After technology and platform costs",
+        "by_program": "Profitability per sales program",
+        "by_market": "Regional P&L view"
+      }
+    },
+    "metrics_for_dashboard": [
+      { "name": "Revenue by Program", "type": "bar_chart", "frequency": "monthly" },
+      { "name": "Contribution Margin %", "type": "gauge", "frequency": "monthly" },
+      { "name": "Cost per Acquisition by Channel", "type": "comparison", "frequency": "monthly" },
+      { "name": "FTBP Unit Economics", "type": "table", "frequency": "monthly" },
+      { "name": "Market P&L Comparison", "type": "heatmap", "frequency": "monthly" },
+      { "name": "Program Profitability Trend", "type": "line_chart", "frequency": "monthly" },
+      { "name": "Free Bag Cost Impact", "type": "waterfall", "frequency": "quarterly" },
+      { "name": "Technology Cost Ratio", "type": "gauge", "frequency": "quarterly" }
+    ]
+  },
+  "meaningful_business_metrics": [
+    {
+      "category": "Unit Economics",
+      "metrics": [
+        { "name": "Customer Acquisition Cost (CAC)", "formula": "Total FTBP costs / New paying subscribers", "importance": "critical" },
+        { "name": "LTV:CAC Ratio", "formula": "$353 LTV / CAC", "target": ">3:1", "importance": "critical" },
+        { "name": "Payback Period", "formula": "CAC / Monthly revenue per subscriber", "importance": "high" },
+        { "name": "Revenue per Bag", "formula": "Total revenue / Total bags shipped", "importance": "medium" }
+      ]
+    },
+    {
+      "category": "Retention Health",
+      "metrics": [
+        { "name": "Net Revenue Retention", "formula": "Revenue from existing customers this period / Revenue from same customers last period", "target": ">100%", "importance": "critical" },
+        { "name": "Gross Churn Rate", "formula": "Cancellations / Starting subscribers", "current": "42.4% annually", "importance": "critical" },
+        { "name": "Net Churn Rate", "formula": "(Cancellations - Reactivations) / Starting subscribers", "importance": "critical" },
+        { "name": "Subscriber Half-Life", "formula": "Median days before cancellation", "importance": "high" },
+        { "name": "90-Day Retention", "formula": "% still active after 90 days by cohort", "importance": "high" }
+      ]
+    },
+    {
+      "category": "Growth Efficiency",
+      "metrics": [
+        { "name": "Burn Multiple", "formula": "Net burn / Net new ARR", "importance": "high" },
+        { "name": "FTBP Funnel Efficiency", "formula": "Signups → Trial → Paid → Retained (each step)", "importance": "critical" },
+        { "name": "Organic vs Paid Mix", "formula": "% of new subs from organic vs FTBP", "target": "Reduce FTBP dependence", "importance": "high" },
+        { "name": "Cross-Sell Rate", "formula": "% of subscribers buying additional products", "importance": "medium" }
+      ]
+    },
+    {
+      "category": "Operational Health",
+      "metrics": [
+        { "name": "Delivery SLA by Market", "formula": "% orders within promised window", "current": "95.5%", "importance": "high" },
+        { "name": "Support Ticket Rate", "formula": "Tickets / Active subscribers", "importance": "medium" },
+        { "name": "Platform Uptime", "formula": "CommerceTools availability", "importance": "medium" },
+        { "name": "Roaster Partner NPS", "formula": "Net Promoter Score from partner survey", "importance": "medium" }
+      ]
+    }
+  ]
+}

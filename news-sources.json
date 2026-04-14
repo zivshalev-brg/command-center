@@ -1,0 +1,163 @@
+{
+  "rss": {
+    "dailycoffeenews": {
+      "url": "https://dailycoffeenews.com/feed/",
+      "name": "Daily Coffee News"
+    },
+    "sprudge": {
+      "url": "https://sprudge.com/feed",
+      "name": "Sprudge"
+    },
+    "perfectdailygrind": {
+      "url": "https://perfectdailygrind.com/feed/",
+      "name": "Perfect Daily Grind"
+    },
+    "worldcoffeeportal": {
+      "url": "https://www.worldcoffeeportal.com/Latest/News?format=feed&type=rss",
+      "name": "World Coffee Portal"
+    },
+    "baristamagazine": {
+      "url": "https://www.baristamagazine.com/feed/",
+      "name": "Barista Magazine"
+    }
+  },
+  "reddit": {
+    "coffee": {
+      "subreddit": "coffee",
+      "name": "r/coffee"
+    },
+    "espresso": {
+      "subreddit": "espresso",
+      "name": "r/espresso"
+    },
+    "roasting": {
+      "subreddit": "roasting",
+      "name": "r/roasting"
+    },
+    "coffeegear": {
+      "subreddit": "CoffeeGear",
+      "name": "r/CoffeeGear"
+    },
+    "breville": {
+      "subreddit": "breville",
+      "name": "r/breville"
+    },
+    "brevillecoffee": {
+      "subreddit": "BrevilleCoffee",
+      "name": "r/BrevilleCoffee"
+    },
+    "brevillesagecoffee": {
+      "subreddit": "BrevilleSageCoffee",
+      "name": "r/BrevilleSageCoffee"
+    },
+    "delonghi": {
+      "subreddit": "DeLonghi",
+      "name": "r/DeLonghi"
+    },
+    "pourover": {
+      "subreddit": "pourover",
+      "name": "r/pourover"
+    },
+    "lelit": {
+      "subreddit": "Lelit",
+      "name": "r/Lelit"
+    }
+  },
+  "youtube": {
+    "jameshoffmann": {
+      "channelId": "UCMb0O2CdPBNi-QqPk5T3gsQ",
+      "name": "James Hoffmann"
+    },
+    "lancehedrick": {
+      "channelId": "UCvNpZQzurSNZQ8e2QNGNXsA",
+      "name": "Lance Hedrick"
+    },
+    "sprometheus": {
+      "channelId": "UCiolFxnJSOPMmV1mh9EYyIQ",
+      "name": "Sprometheus"
+    },
+    "europeancoffeetrip": {
+      "channelId": "UCnk1TwNoDQDdN_jzkA_lG-g",
+      "name": "European Coffee Trip"
+    },
+    "noahstern": {
+      "channelId": "UCwoqimCoSjmG5zPPcxtQ7sQ",
+      "name": "Noah Stern"
+    },
+    "ethanchlebowski": {
+      "channelId": "UCICdNqyJqyHB3_uDVtmFhPA",
+      "name": "Ethan Chlebowski"
+    },
+    "wholelattelove": {
+      "channelId": "UCJwRmBtnYh_7Xs9oXUrLhZg",
+      "name": "Whole Latte Love"
+    },
+    "artisticoffeeroasters": {
+      "channelId": "UCvVUdJYnfU8pM7Nx94m_DAA",
+      "name": "Artisti Coffee Roasters"
+    },
+    "morganeckroth": {
+      "channelId": "UCEkuogE57xac9EPZ3EZwWIg",
+      "name": "Morgan Eckroth"
+    },
+    "seattlecoffeegear": {
+      "channelId": "UC9VhfQi-D-7morDdwjVcJPA",
+      "name": "Seattle Coffee Gear"
+    },
+    "tomscoffeecorner": {
+      "channelId": "UC4Nd2cbrL124cZsHMnfBTwg",
+      "name": "Tom's Coffee Corner"
+    },
+    "americastestkitchen": {
+      "channelId": "UCh8m0PvZk3CUiQhakN_JTOw",
+      "name": "America's Test Kitchen"
+    },
+    "coffeecoachrydejeavons": {
+      "channelId": "UCZpBhcaWNMo47gHNz47C-8g",
+      "name": "Coffee Coach | Ryde Jeavons"
+    },
+    "moregeorge": {
+      "channelId": "UCf5-aQ4rFpQd6MbsN66KmvA",
+      "name": "More George"
+    },
+    "lifestylelab": {
+      "channelId": "UCTKyVg2ofrtEUWnIoswYCXQ",
+      "name": "Lifestyle Lab"
+    },
+    "kylerowsell": {
+      "channelId": "UCdqba3Z7tk7U81sn8akQGzg",
+      "name": "Kyle Rowsell"
+    },
+    "coffeekev": {
+      "channelId": "UCJ8SVN2eg7v82-1qr2eNO6A",
+      "name": "Coffee Kev"
+    },
+    "spencerscottpugh": {
+      "channelId": "UC6drX8BfVf4T8vJMc-c0E0g",
+      "name": "Spencer Scott Pugh"
+    },
+    "goldenbrowncoffee": {
+      "channelId": "UC5CMDiV4Mciy5fDb5Y_8u-Q",
+      "name": "Golden Brown Coffee"
+    }
+  },
+  "competitors": {
+    "tradedrink": {
+      "url": "https://tradedrink.com",
+      "name": "Trade Drink",
+      "type": "competitor"
+    },
+    "ninja": {
+      "url": "https://www.ninjakitchen.com",
+      "name": "Ninja",
+      "type": "competitor"
+    },
+    "delonghi": {
+      "url": "https://www.delonghi.com",
+      "name": "De'Longhi",
+      "type": "competitor"
+    }
+  },
+  "podcasts": {},
+  "settings": {}
+}

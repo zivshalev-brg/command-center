@@ -1,0 +1,48 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("support")
+    - file.ext == "md"
+
+formulas:
+  case_load: 'if(kpi_cases_per_1000_active_subs > 50, "High", if(kpi_cases_per_1000_active_subs > 20, "Moderate", "Low"))'
+  days_since_refresh: '(now() - file.mtime).days'
+
+properties:
+  kpi_total_cases_30d:
+    displayName: "Cases 30d"
+  kpi_total_cases_90d:
+    displayName: "Cases 90d"
+  kpi_top_complaint_1:
+    displayName: "Top Complaint"
+  kpi_top_complaint_1_pct:
+    displayName: "Top Complaint %"
+  kpi_cases_per_1000_active_subs:
+    displayName: "Rate per 1K Subs"
+  kpi_avg_resolution_days:
+    displayName: "Avg Resolution Days"
+  formula.case_load:
+    displayName: "Case Load"
+  data-period:
+    displayName: "Data Period"
+  formula.days_since_refresh:
+    displayName: "Days Since Refresh"
+
+views:
+  - type: table
+    name: "Support Dashboard"
+    order:
+      - file.name
+      - kpi_total_cases_30d
+      - kpi_total_cases_90d
+      - kpi_top_complaint_1
+      - kpi_top_complaint_1_pct
+      - kpi_cases_per_1000_active_subs
+      - kpi_avg_resolution_days
+      - formula.case_load
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_total_cases_30d: Sum
+      kpi_total_cases_90d: Sum
+      kpi_avg_resolution_days: Average

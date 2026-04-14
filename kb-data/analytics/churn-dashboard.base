@@ -1,0 +1,49 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("churn")
+    - file.ext == "md"
+    - not:
+        - 'file.name == "kpi-churn-sioo"'
+
+formulas:
+  velocity_icon: 'if(kpi_churn_velocity_trend == "improving", "^", if(kpi_churn_velocity_trend == "worsening", "v", "-"))'
+  days_since_refresh: '(now() - file.mtime).days'
+
+properties:
+  kpi_market:
+    displayName: "Market"
+  kpi_total_churned:
+    displayName: "Total Churned"
+  kpi_churn_reason_1:
+    displayName: "Top Reason"
+  kpi_churn_reason_1_pct:
+    displayName: "Top Reason %"
+  kpi_churned_last_90d:
+    displayName: "Churned 90d"
+  formula.velocity_icon:
+    displayName: "Velocity Trend"
+  kpi_avg_days_to_cancel:
+    displayName: "Avg Days to Cancel"
+  data-period:
+    displayName: "Data Period"
+  formula.days_since_refresh:
+    displayName: "Days Since Refresh"
+
+views:
+  - type: table
+    name: "Churn Dashboard"
+    order:
+      - kpi_market
+      - kpi_total_churned
+      - kpi_churn_reason_1
+      - kpi_churn_reason_1_pct
+      - kpi_churned_last_90d
+      - formula.velocity_icon
+      - kpi_avg_days_to_cancel
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_total_churned: Sum
+      kpi_churned_last_90d: Sum
+      kpi_churn_reason_1_pct: Average

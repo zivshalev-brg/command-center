@@ -1,0 +1,3081 @@
+{
+  "version": 1,
+  "created": "2026-02-24T00:00:00.000Z",
+  "feedback": [
+    {
+      "id": "fb-1771878449103",
+      "type": "insight",
+      "target": "COR-2",
+      "value": "up",
+      "timestamp": "2026-02-23T20:27:29.103Z",
+      "context": {
+        "module": "strategy"
+      }
+    },
+    {
+      "id": "fb-1771882140967",
+      "type": "metric",
+      "target": "churn",
+      "value": "down",
+      "timestamp": "2026-02-23T21:29:00.967Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771882143870",
+      "type": "metric",
+      "target": "churn",
+      "value": "up",
+      "timestamp": "2026-02-23T21:29:03.870Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771898226593",
+      "type": "metric",
+      "target": "ltv",
+      "value": "down",
+      "timestamp": "2026-02-24T01:57:06.593Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771898227807",
+      "type": "metric",
+      "target": "ltv",
+      "value": "up",
+      "timestamp": "2026-02-24T01:57:07.808Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771898228685",
+      "type": "metric",
+      "target": "ltv",
+      "value": "up",
+      "timestamp": "2026-02-24T01:57:08.685Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771898228849",
+      "type": "metric",
+      "target": "ltv",
+      "value": "up",
+      "timestamp": "2026-02-24T01:57:08.849Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771898228969",
+      "type": "metric",
+      "target": "ltv",
+      "value": "up",
+      "timestamp": "2026-02-24T01:57:08.969Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771898229810",
+      "type": "metric",
+      "target": "churn",
+      "value": "up",
+      "timestamp": "2026-02-24T01:57:09.810Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771906336199",
+      "type": "news",
+      "target": "reddit-1rd3o5y",
+      "value": "pin",
+      "timestamp": "2026-02-24T04:12:16.199Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771906352406",
+      "type": "news",
+      "target": "reddit-1rd3o5y",
+      "value": "pin",
+      "timestamp": "2026-02-24T04:12:32.406Z",
+      "context": {}
+    },
+    {
+      "id": "fb-1771906395305",
+      "type": "news",
+      "target": "reddit-test123",
+      "value": "dismiss",
+      "timestamp": "2026-02-24T04:13:15.305Z",
+      "context": {}
+    }
+  ],
+  "interactions": [
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:28:47.888Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T21:28:48.779Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T21:28:55.675Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T21:28:56.331Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T21:28:57.232Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-23T21:45:37.356Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:45:39.808Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T21:45:40.317Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:45:40.766Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T21:45:41.157Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T21:45:41.486Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T21:45:41.824Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:45:42.485Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T21:46:02.249Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:46:04.191Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T21:46:04.513Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T21:46:05.023Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "feral",
+      "timestamp": "2026-02-23T21:46:06.096Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "mice",
+      "timestamp": "2026-02-23T21:46:08.204Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "woc",
+      "timestamp": "2026-02-23T21:46:08.923Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "marax3",
+      "timestamp": "2026-02-23T21:46:09.538Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "brand-summit",
+      "timestamp": "2026-02-23T21:46:10.138Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "machine-integration",
+      "timestamp": "2026-02-23T21:46:10.694Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "power-bi-pl",
+      "timestamp": "2026-02-23T21:46:11.210Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "mice",
+      "timestamp": "2026-02-23T21:46:11.736Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "woc",
+      "timestamp": "2026-02-23T21:51:59.165Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:51:59.923Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T21:52:00.380Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T21:52:22.537Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T21:52:22.897Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T21:52:23.527Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T21:52:24.060Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T21:52:24.434Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T21:52:24.816Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T21:52:30.479Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:03:29.210Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-23T22:06:14.517Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:06:31.192Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:15:58.842Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:16:01.122Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:28:18.159Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "mice",
+      "timestamp": "2026-02-23T22:28:31.285Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "feral",
+      "timestamp": "2026-02-23T22:28:31.674Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T22:28:35.891Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:28:36.376Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:28:37.043Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:29:04.166Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T22:30:48.372Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T22:30:49.240Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T22:30:50.217Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:30:51.348Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:30:52.241Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:33:04.448Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:38:13.922Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:38:20.162Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T22:38:20.529Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T22:38:24.526Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T22:38:25.081Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T22:38:25.644Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T22:38:26.124Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-23T22:38:26.768Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:38:27.293Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:38:27.652Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:38:29.357Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:39:18.423Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:39:19.917Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:39:37.198Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-23T22:40:38.148Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T22:40:39.729Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:40:40.584Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T22:40:43.014Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-23T22:41:16.211Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:41:18.371Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:41:18.844Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:41:20.058Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:50:35.874Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T22:50:36.788Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-23T22:50:37.162Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T22:50:37.501Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T22:50:37.822Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-23T22:50:38.185Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-23T22:50:38.994Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-23T22:50:39.233Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-23T22:50:39.428Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:50:39.834Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:50:45.661Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-23T22:51:27.626Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T22:52:07.265Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-23T23:42:46.836Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T01:31:42.175Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T01:31:46.005Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T01:53:33.654Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T01:55:47.013Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T01:56:45.869Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T01:56:47.474Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T01:57:12.825Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T01:57:13.358Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T02:14:48.502Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T02:49:35.552Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T02:49:51.483Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T02:49:52.095Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T02:49:53.296Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T02:50:38.089Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T02:52:36.640Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T02:52:53.260Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T02:55:35.664Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T02:56:13.577Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T02:57:54.632Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T02:58:03.195Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "feral",
+      "timestamp": "2026-02-24T02:58:08.227Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T02:58:20.596Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "feral",
+      "timestamp": "2026-02-24T02:58:22.382Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "mice",
+      "timestamp": "2026-02-24T02:58:23.191Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T02:58:31.134Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T02:58:31.997Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T02:58:32.350Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T02:58:37.546Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T02:58:39.774Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T02:59:09.665Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T03:09:24.449Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T03:09:24.891Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T03:09:25.296Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T03:09:25.617Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T03:09:25.977Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T03:09:26.263Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T03:09:26.631Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T03:09:27.268Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T03:34:44.464Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T03:35:04.315Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T03:35:05.702Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T03:35:06.731Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T03:35:07.420Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T03:35:07.802Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T03:35:09.490Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T03:35:10.030Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:05:57.847Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:06:21.093Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:06:51.089Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "daily",
+      "target": "daily",
+      "timestamp": "2026-02-24T04:06:59.509Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:07:00.426Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "daily",
+      "target": "daily",
+      "timestamp": "2026-02-24T04:07:08.931Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:07:33.714Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:07:47.836Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:08:33.629Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:10:51.365Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd3o5y",
+      "timestamp": "2026-02-24T04:11:26.575Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:11:50.399Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:11:55.470Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:12:07.872Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:12:37.325Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:12:41.205Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:13:05.313Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:13:39.568Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:21:29.510Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:23:27.879Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:23:29.874Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:23:36.099Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T04:23:36.475Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T04:23:36.849Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:29:50.418Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:29:51.201Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T04:29:51.626Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T04:29:52.089Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T04:29:53.098Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:29:58.620Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:30:11.274Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd3o5y",
+      "timestamp": "2026-02-24T04:30:31.113Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T04:32:34.133Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T04:32:34.664Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T04:32:35.542Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:32:35.902Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:32:39.382Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:39:48.017Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:50:52.045Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T04:50:58.841Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T04:51:11.276Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T04:51:11.620Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:51:11.987Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T04:51:12.603Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T04:52:25.859Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T04:56:24.277Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T04:56:25.483Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T04:56:26.152Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T04:56:29.610Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T04:56:30.412Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T04:56:30.998Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T04:56:31.784Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T04:56:32.137Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T04:56:32.521Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:00:56.883Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T05:00:57.759Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:01:01.118Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:01:06.108Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T05:01:06.993Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:11:14.426Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:11:21.374Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T05:11:22.791Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T05:11:23.436Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T05:11:23.976Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:11:24.560Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T05:11:25.528Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:12:45.654Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:12:49.389Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T05:19:06.657Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T05:19:15.567Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:19:25.930Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:19:34.870Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T05:20:36.300Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T05:20:45.667Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T05:20:54.537Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T05:21:05.099Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:22:13.278Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:24:31.664Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T05:25:00.679Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T05:25:47.754Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-sprudge-escape-from-pumpkin-spice-zombies-in-thi",
+      "timestamp": "2026-02-24T05:26:04.946Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-sprudge-escape-from-pumpkin-spice-zombies-in-thi",
+      "timestamp": "2026-02-24T05:26:05.762Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-sprudge-escape-from-pumpkin-spice-zombies-in-thi",
+      "timestamp": "2026-02-24T05:26:06.685Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-coffee-project-ny-brings-a-little-slice-",
+      "timestamp": "2026-02-24T05:26:07.225Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-jameshoffmann-the-mokabot-brews-better-coffee-than-me",
+      "timestamp": "2026-02-24T05:26:16.708Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T05:27:46.066Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T05:27:55.389Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T05:27:56.354Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T05:27:58.176Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T05:28:00.555Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T05:28:16.703Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T05:28:25.943Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T10:51:05.059Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T10:51:14.021Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T10:51:15.386Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T10:51:16.142Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T10:51:17.156Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T10:51:18.176Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T10:51:18.746Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T10:51:19.579Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T10:51:47.743Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T10:51:48.328Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T10:53:25.638Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T10:53:26.282Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T10:53:26.929Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T10:53:27.400Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T10:53:27.738Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-24T10:53:28.091Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-24T10:53:28.429Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T10:53:28.697Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T10:53:28.967Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T10:53:29.209Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T10:53:29.604Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T10:53:30.152Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T10:53:49.505Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T10:53:50.112Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T10:53:50.863Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T10:55:07.345Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T11:02:50.951Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T11:03:09.454Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T11:06:06.709Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T11:54:34.263Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T11:54:38.582Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T11:58:51.437Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdal2n",
+      "timestamp": "2026-02-24T11:59:11.260Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdal2n",
+      "timestamp": "2026-02-24T11:59:13.830Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdcfen",
+      "timestamp": "2026-02-24T11:59:17.596Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-perfectdailygrind-more-coffee-roasters-are-opening-every-y",
+      "timestamp": "2026-02-24T11:59:22.263Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd4rke",
+      "timestamp": "2026-02-24T11:59:24.093Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd3o5y",
+      "timestamp": "2026-02-24T11:59:25.801Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd3jdh",
+      "timestamp": "2026-02-24T11:59:27.077Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd21bw",
+      "timestamp": "2026-02-24T11:59:29.807Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd0z02",
+      "timestamp": "2026-02-24T11:59:31.652Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-coffee-project-ny-brings-a-little-slice-",
+      "timestamp": "2026-02-24T11:59:35.029Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rcswsc",
+      "timestamp": "2026-02-24T11:59:37.892Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rcq1c3",
+      "timestamp": "2026-02-24T11:59:41.330Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-jameshoffmann-the-mokabot-brews-better-coffee-than-me",
+      "timestamp": "2026-02-24T11:59:44.838Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-caffeto-specialty-coffee-crafts-a-colomb",
+      "timestamp": "2026-02-24T11:59:46.721Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rcg7wr",
+      "timestamp": "2026-02-24T11:59:49.233Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdcfen",
+      "timestamp": "2026-02-24T12:00:45.387Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdal2n",
+      "timestamp": "2026-02-24T12:00:49.152Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-perfectdailygrind-more-coffee-roasters-are-opening-every-y",
+      "timestamp": "2026-02-24T12:00:51.231Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-24T12:00:58.586Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-probat-rolls-out-gt-series-roller-mill-g",
+      "timestamp": "2026-02-24T12:01:12.365Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-sprudge-partners-coffee-opens-bedford-a-heritage",
+      "timestamp": "2026-02-24T12:01:20.334Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-backed-by-craveworthy-gregorys-coffee-la",
+      "timestamp": "2026-02-24T12:01:23.369Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-report-climate-change-adding-weeks-of-82",
+      "timestamp": "2026-02-24T12:01:26.106Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-concept-coffee-brought-to-life-in-sacram",
+      "timestamp": "2026-02-24T12:01:28.762Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rd3jdh",
+      "timestamp": "2026-02-24T12:03:22.858Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T12:06:11.451Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T12:06:11.952Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T12:06:12.304Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T12:06:12.695Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T12:06:12.951Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T12:06:13.280Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T12:06:13.798Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T21:01:33.376Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-24T21:01:34.042Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T21:01:34.889Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T21:08:28.421Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T21:57:38.697Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-24T23:46:56.229Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-24T23:46:57.743Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-24T23:46:59.017Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-24T23:47:00.257Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:16:53.699Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:16:54.090Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T00:16:54.705Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:35:18.722Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:35:20.720Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:35:56.249Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:35:59.044Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:36:12.016Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:36:33.077Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-jameshoffmann-the-mokabot-brews-better-coffee-than-me",
+      "timestamp": "2026-02-25T00:36:55.448Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:37:21.433Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:38:26.663Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:38:32.290Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:38:37.368Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T00:38:51.696Z",
+      "duration": 0
+    },
+    {
+      "type": "project_view",
+      "module": "projects",
+      "target": "feral",
+      "timestamp": "2026-02-25T00:39:05.655Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:39:26.349Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T00:39:32.763Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T00:39:50.496Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:40:12.958Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:41:44.627Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T00:42:36.702Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T00:43:17.552Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:43:39.760Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:44:24.754Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:44:29.689Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:44:30.547Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:44:31.181Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:44:43.999Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T00:44:44.479Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T00:44:45.237Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T00:44:45.891Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T00:44:46.451Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:44:46.835Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:45:54.528Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T00:45:56.145Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:46:08.981Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-jameshoffmann-the-mokabot-brews-better-coffee-than-me",
+      "timestamp": "2026-02-25T00:46:23.487Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-james-marcotte-a-beloved-figure-in-calif",
+      "timestamp": "2026-02-25T00:47:38.370Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:47:43.593Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:47:59.340Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-james-marcotte-a-beloved-figure-in-calif",
+      "timestamp": "2026-02-25T00:48:10.429Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:50:25.162Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T00:51:40.236Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T00:51:41.828Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T00:51:44.654Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T00:51:45.143Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T00:51:45.839Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:51:46.395Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T00:51:47.121Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:51:50.025Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T00:52:08.250Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T00:54:38.029Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T00:54:38.652Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T00:54:39.079Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rcr2i6",
+      "timestamp": "2026-02-25T00:54:45.621Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:00:30.238Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rcr2i6",
+      "timestamp": "2026-02-25T01:01:59.259Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rcr2i6",
+      "timestamp": "2026-02-25T01:01:59.767Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T01:02:05.512Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T01:02:06.137Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:02:08.053Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T01:02:09.548Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T01:02:10.028Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T01:03:25.004Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T01:09:00.791Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:09:03.662Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:19:40.473Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:29:44.952Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:47:32.937Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T01:55:00.246Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T01:55:02.736Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T01:55:03.283Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T01:55:03.628Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T01:55:06.471Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T01:55:07.041Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T01:55:07.356Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T01:55:09.066Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:55:09.456Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T01:55:10.116Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:55:10.581Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:55:13.094Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T01:55:13.386Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T01:55:59.672Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T02:06:43.918Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-sprudge-champion-barista-lem-butler-leads-10k-fo",
+      "timestamp": "2026-02-25T02:06:52.228Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T02:27:06.256Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T02:36:36.441Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T02:37:28.167Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T02:37:55.146Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T02:37:57.675Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T02:39:05.258Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T02:39:16.958Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T02:39:21.977Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T02:39:50.406Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T02:40:01.167Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdw2r4",
+      "timestamp": "2026-02-25T02:40:05.630Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdvwkz",
+      "timestamp": "2026-02-25T02:40:06.409Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "reddit-1rdrauq",
+      "timestamp": "2026-02-25T02:40:07.962Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-dailycoffeenews-james-marcotte-a-beloved-figure-in-calif",
+      "timestamp": "2026-02-25T02:40:11.608Z",
+      "duration": 0
+    },
+    {
+      "type": "news_view",
+      "module": "news",
+      "target": "news-jameshoffmann-the-coffee-siphon-aka-vacuum-pot",
+      "timestamp": "2026-02-25T02:40:21.016Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T02:55:45.440Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T03:03:12.549Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T03:28:33.368Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T05:43:10.415Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "news",
+      "target": "news",
+      "timestamp": "2026-02-25T05:43:43.602Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "strategy",
+      "target": "strategy",
+      "timestamp": "2026-02-25T05:44:00.127Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "metrics",
+      "target": "metrics",
+      "timestamp": "2026-02-25T05:44:00.673Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "people",
+      "target": "people",
+      "timestamp": "2026-02-25T05:44:01.910Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "projects",
+      "target": "projects",
+      "timestamp": "2026-02-25T05:44:02.321Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "calendar",
+      "target": "calendar",
+      "timestamp": "2026-02-25T05:44:02.757Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T05:44:03.635Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "summary",
+      "target": "summary",
+      "timestamp": "2026-02-25T05:44:04.460Z",
+      "duration": 0
+    },
+    {
+      "type": "module_view",
+      "module": "comms",
+      "target": "comms",
+      "timestamp": "2026-02-25T05:51:42.940Z",
+      "duration": 0
+    }
+  ],
+  "insightWeights": {
+    "COR-1": 1.5,
+    "COR-2": 1.2,
+    "COR-3": 1,
+    "COR-4": 1,
+    "COR-5": 1.3,
+    "COR-6": 1,
+    "COR-7": 1.2,
+    "COR-8": 1.3
+  },
+  "dismissedInsights": [
+    "reddit-test123"
+  ],
+  "pinnedInsights": [
+    "COR-1",
+    "reddit-1rd3o5y"
+  ],
+  "personNotes": {},
+  "projectNotes": {},
+  "metricAlerts": [
+    {
+      "metricId": "churn",
+      "threshold": 45,
+      "direction": "above",
+      "active": true,
+      "created": "2026-02-24T00:00:00.000Z"
+    },
+    {
+      "metricId": "delivery_sla",
+      "threshold": 94,
+      "direction": "below",
+      "active": true,
+      "created": "2026-02-24T00:00:00.000Z"
+    }
+  ],
+  "preferences": {
+    "defaultModule": "summary",
+    "cadence": "weekly",
+    "topMetrics": [
+      "revenue",
+      "churn",
+      "ltv",
+      "ftbp_conversion",
+      "delivery_sla"
+    ],
+    "focusPeople": [
+      "justin-le-good",
+      "sophie-thevenin",
+      "michael-bell"
+    ],
+    "focusProjects": [
+      "feral",
+      "nl-launch",
+      "platinum-roasters"
+    ]
+  },
+  "learnings": [
+    {
+      "pattern": "Cancellation acceleration is primary strategic concern — appears in COR-1, P1, and Project Feral scope",
+      "confidence": 0.95,
+      "source": "strategy_analysis",
+      "timestamp": "2026-02-24T00:00:00.000Z"
+    },
+    {
+      "pattern": "Oracle Series owners are 21x more valuable — under-targeted premium segment",
+      "confidence": 0.9,
+      "source": "revenue_correlation",
+      "timestamp": "2026-02-24T00:00:00.000Z"
+    },
+    {
+      "pattern": "FTBP single-channel dependency at 41% revenue — diversification through PBB critical",
+      "confidence": 0.85,
+      "source": "risk_analysis",
+      "timestamp": "2026-02-24T00:00:00.000Z"
+    }
+  ],
+  "lastUpdated": "2026-02-25T05:51:42.940Z"
+}

@@ -1,0 +1,205 @@
+{
+  "rss": {
+    "techcrunch": {
+      "url": "https://techcrunch.com/feed/",
+      "name": "TechCrunch"
+    },
+    "theverge": {
+      "url": "https://www.theverge.com/rss/index.xml",
+      "name": "The Verge"
+    },
+    "arstechnica": {
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "name": "Ars Technica"
+    },
+    "hackernews": {
+      "url": "https://hnrss.org/frontpage?count=20",
+      "name": "Hacker News"
+    },
+    "mittech": {
+      "url": "https://www.technologyreview.com/feed/",
+      "name": "MIT Technology Review"
+    },
+    "ainews": {
+      "url": "https://www.artificialintelligence-news.com/feed/",
+      "name": "AI News"
+    },
+    "wired_ai": {
+      "url": "https://www.wired.com/feed/tag/ai/latest/rss",
+      "name": "Wired AI"
+    }
+  },
+  "reddit": {
+    "artificial": {
+      "subreddit": "artificial",
+      "name": "r/artificial"
+    },
+    "machinelearning": {
+      "subreddit": "MachineLearning",
+      "name": "r/MachineLearning"
+    },
+    "localllama": {
+      "subreddit": "LocalLLaMA",
+      "name": "r/LocalLLaMA"
+    },
+    "technology": {
+      "subreddit": "technology",
+      "name": "r/technology"
+    },
+    "singularity": {
+      "subreddit": "singularity",
+      "name": "r/singularity"
+    },
+    "claudeai": {
+      "subreddit": "ClaudeAI",
+      "name": "r/ClaudeAI"
+    },
+    "chatgpt": {
+      "subreddit": "ChatGPT",
+      "name": "r/ChatGPT"
+    }
+  },
+  "youtube": {
+    "twominutepapers": {
+      "channelId": "UCbfYPyITQ-7l4upoX8nvctg",
+      "name": "Two Minute Papers"
+    },
+    "yannickilcher": {
+      "channelId": "UCZHmQk67mSJgfCCTn7xBfew",
+      "name": "Yannic Kilcher"
+    },
+    "aiexplained": {
+      "channelId": "UCNJ1Ymd5yFuUPtn21xtRbbw",
+      "name": "AI Explained"
+    },
+    "fireship": {
+      "channelId": "UCsBjURrPoezykLs9EqgamOA",
+      "name": "Fireship"
+    },
+    "bycloud": {
+      "channelId": "UCgfe2ooZD3VJPB6aJAnuQng",
+      "name": "bycloud"
+    },
+    "jackroberts": {
+      "channelId": "UCxVxcTULO9cFU6SB9qVaisQ",
+      "name": "Jack Roberts"
+    },
+    "chaseai": {
+      "channelId": "UCoy6cTJ7Tg0dqS-DI-_REsA",
+      "name": "Chase AI"
+    },
+    "timverdouw": {
+      "channelId": "UC1CUuE0DMkL_4OyFausPbpg",
+      "name": "Tim Verdouw"
+    },
+    "ainewsstrategydailynatebjones": {
+      "channelId": "UC0C-17n9iuUQPylguM1d-lQ",
+      "name": "AI News & Strategy Daily | Nate B Jones"
+    },
+    "wecodenocode": {
+      "channelId": "UCUrBaWiq8kIqpwmtGBG8v0A",
+      "name": "WeCodeNoCode"
+    },
+    "lennyspodcast": {
+      "channelId": "UC6t1O76G0jYXOAoYCm153dA",
+      "name": "Lenny's Podcast"
+    },
+    "chamathpalihapitiya": {
+      "channelId": "UCVRZ75ihzAZFihD1dS8qvwg",
+      "name": "Chamath Palihapitiya"
+    },
+    "lukefinance": {
+      "channelId": "UCCQ1uKUUYUXDnjYTAJUppQA",
+      "name": "Luke Finance"
+    },
+    "anthropic": {
+      "channelId": "UCrDwWp7EBBv4NwvScIpBDOA",
+      "name": "Anthropic"
+    },
+    "businessautomated": {
+      "channelId": "UCTjrux4GhabFrnOHfdY4eSA",
+      "name": "Business Automated!"
+    },
+    "growwithalex": {
+      "channelId": "UCVlckfXzc7OAp-bHsf76-TA",
+      "name": "Grow with Alex"
+    },
+    "futurminds": {
+      "channelId": "UCzsmpPhpoweC6itJd_oAt3w",
+      "name": "FuturMinds"
+    },
+    "aidotengineer": {
+      "channelId": "UCLKPca3kwwd-B59HNr-_lvA",
+      "name": "aiDotEngineer"
+    },
+    "ibmtechnology": {
+      "channelId": "UC8cc4pVKVHG7A9fbNsRNrLQ",
+      "name": "IBMTechnology"
+    },
+    "davidondrej": {
+      "channelId": "UCPGrgwfbkjTIgPoOh2q1BAg",
+      "name": "DavidOndrej"
+    },
+    "betterstack": {
+      "channelId": "UCkVfrGwV-iG9bSsgCbrNPxQ",
+      "name": "betterstack"
+    },
+    "nateherk": {
+      "channelId": "UC2ojq-nuP8ceeHqiroeKhBA",
+      "name": "nateherk"
+    },
+    "nicksaraev": {
+      "channelId": "UCbo-KbSjJDG6JWQ_MTZ_rNA",
+      "name": "nicksaraev"
+    },
+    "mastraai": {
+      "channelId": "UCTYjNDUYsrt7DrwU11fdyhQ",
+      "name": "mastra-ai"
+    },
+    "analystacademy": {
+      "channelId": "UCr7EYWaQzs2nsZUN_9_ydSQ",
+      "name": "AnalystAcademy"
+    },
+    "alihsalem1": {
+      "channelId": "UCHMjsLKv6MkrmHnx4HrGndQ",
+      "name": "Ali.H.Salem1"
+    },
+    "andrewdunnbiz": {
+      "channelId": "UCqdm-0hVz-IOAxqR2tmJQEg",
+      "name": "AndrewDunnbiz"
+    },
+    "aigptworkshop": {
+      "channelId": "UC2b2wgxm0vFjQfJJ0iRcFRw",
+      "name": "AI-GPTWorkshop"
+    }
+  },
+  "competitors": {
+    "openai": {
+      "url": "https://openai.com",
+      "name": "OpenAI",
+      "type": "ai_company"
+    },
+    "google_deepmind": {
+      "url": "https://deepmind.google",
+      "name": "Google DeepMind",
+      "type": "ai_company"
+    },
+    "meta_ai": {
+      "url": "https://ai.meta.com",
+      "name": "Meta AI",
+      "type": "ai_company"
+    },
+    "mistral": {
+      "url": "https://mistral.ai",
+      "name": "Mistral AI",
+      "type": "ai_company"
+    }
+  },
+  "podcasts": {
+    "latentspace": {
+      "channelId": "UCvi5jNRoRVm436TVAXet1kQ",
+      "name": "Latent Space"
+    }
+  },
+  "settings": {}
+}

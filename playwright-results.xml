@@ -1,0 +1,88 @@
+<testsuites id="" name="" tests="42" failures="0" skipped="0" errors="0" time="40.294487000000004">
+<testsuite name="intel-tab.spec.js" timestamp="2026-03-04T10:55:42.936Z" hostname="chromium" tests="42" failures="0" skipped="0" time="38.548" errors="0">
+<testcase name="Intel Tab — Navigation › clicking Intel tab activates it and shows Intel Sections sidebar" classname="intel-tab.spec.js" time="2.234">
+</testcase>
+<testcase name="Intel Tab — Navigation › keyboard shortcut 9 activates Intel tab" classname="intel-tab.spec.js" time="1.207">
+</testcase>
+<testcase name="Intel Tab — Navigation › sidebar shows all 5 sections: Briefings, Correlations, Market, Roasters, Anomalies" classname="intel-tab.spec.js" time="1.211">
+</testcase>
+<testcase name="Intel Tab — Navigation › Quick Stats shows &quot;28 roasters monitored&quot; after data loads" classname="intel-tab.spec.js" time="1.211">
+</testcase>
+<testcase name="Intel Tab — Briefings View › Briefings is the default section shown on tab activation" classname="intel-tab.spec.js" time="1.194">
+</testcase>
+<testcase name="Intel Tab — Briefings View › Generate Daily and Generate Weekly buttons are visible" classname="intel-tab.spec.js" time="1.273">
+</testcase>
+<testcase name="Intel Tab — Briefings View › empty state message appears when no briefings exist" classname="intel-tab.spec.js" time="1.226">
+</testcase>
+<testcase name="Intel Tab — Briefings View › empty state sub-message instructs user to generate a briefing" classname="intel-tab.spec.js" time="1.25">
+</testcase>
+<testcase name="Intel Tab — Correlations View › &quot;Cross-Signal Correlations&quot; heading is visible" classname="intel-tab.spec.js" time="1.241">
+</testcase>
+<testcase name="Intel Tab — Correlations View › &quot;Refresh&quot; button is present" classname="intel-tab.spec.js" time="1.226">
+</testcase>
+<testcase name="Intel Tab — Correlations View › empty state shows when no correlations exist" classname="intel-tab.spec.js" time="1.247">
+</testcase>
+<testcase name="Intel Tab — Market View › &quot;Market Intelligence&quot; heading is visible" classname="intel-tab.spec.js" time="1.24">
+</testcase>
+<testcase name="Intel Tab — Market View › &quot;Product Catalogue&quot; summary card is present" classname="intel-tab.spec.js" time="1.24">
+</testcase>
+<testcase name="Intel Tab — Market View › &quot;Outlier Alerts&quot; summary card is present" classname="intel-tab.spec.js" time="1.26">
+</testcase>
+<testcase name="Intel Tab — Market View › &quot;Google Trends&quot; summary card is present" classname="intel-tab.spec.js" time="1.246">
+</testcase>
+<testcase name="Intel Tab — Market View › &quot;View Products&quot; button is present" classname="intel-tab.spec.js" time="1.227">
+</testcase>
+<testcase name="Intel Tab — Market View › exactly 3 summary cards are shown in Market view" classname="intel-tab.spec.js" time="1.227">
+</testcase>
+<testcase name="Intel Tab — Roasters View › &quot;28 active&quot; roasters count label is shown" classname="intel-tab.spec.js" time="1.252">
+</testcase>
+<testcase name="Intel Tab — Roasters View › all 6 scrape buttons are visible: Homepages, Catalogues, Social, Trends, EDMs, Log" classname="intel-tab.spec.js" time="1.261">
+</testcase>
+<testcase name="Intel Tab — Roasters View › scrape status bar shows HP, Cat, Social, Trends, EDM schedule fields" classname="intel-tab.spec.js" time="1.243">
+</testcase>
+<testcase name="Intel Tab — Roasters View › roaster table has all required column headers" classname="intel-tab.spec.js" time="1.314">
+</testcase>
+<testcase name="Intel Tab — Roasters View › roaster table has 28 data rows" classname="intel-tab.spec.js" time="1.276">
+</testcase>
+<testcase name="Intel Tab — Roasters View › each roaster row has an HP button and an AI button" classname="intel-tab.spec.js" time="1.243">
+</testcase>
+<testcase name="Intel Tab — Roasters View › first roaster row shows a known roaster name" classname="intel-tab.spec.js" time="1.26">
+</testcase>
+<testcase name="Intel Tab — Roasters View › scrape status bar shows &quot;idle&quot; or &quot;running&quot; state indicator" classname="intel-tab.spec.js" time="1.244">
+</testcase>
+<testcase name="Intel Tab — Anomalies View › &quot;KPI Anomalies&quot; heading is visible" classname="intel-tab.spec.js" time="1.235">
+</testcase>
+<testcase name="Intel Tab — Anomalies View › empty state shows when no anomalies are detected" classname="intel-tab.spec.js" time="1.245">
+</testcase>
+<testcase name="Intel Tab — Anomalies View › empty state sub-message is informative" classname="intel-tab.spec.js" time="1.226">
+</testcase>
+<testcase name="Intel Tab — Sidebar Navigation Flow › can navigate through all 5 sections sequentially" classname="intel-tab.spec.js" time="1.396">
+</testcase>
+<testcase name="Intel Tab — Sidebar Navigation Flow › active sidebar item is highlighted when switching sections" classname="intel-tab.spec.js" time="1.302">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/roasters returns 200 with roasters array of count 28" classname="intel-tab.spec.js" time="0.021">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/roasters — each roaster has required fields" classname="intel-tab.spec.js" time="0.051">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/correlations returns 200 with correlations array" classname="intel-tab.spec.js" time="0.002">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/trends returns 200" classname="intel-tab.spec.js" time="0.001">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/overview returns 200 with roasters, products, briefings, anomalies keys" classname="intel-tab.spec.js" time="0.002">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/overview — roasters count is 28" classname="intel-tab.spec.js" time="0.001">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/briefings?limit=5 returns 200 with briefings array" classname="intel-tab.spec.js" time="0.003">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/products?aggregate=true returns 200" classname="intel-tab.spec.js" time="0.002">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/internal/anomalies returns 200 with anomalies array" classname="intel-tab.spec.js" time="0.002">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/scrape/cibe-status returns 200 with schedule timestamps" classname="intel-tab.spec.js" time="0.003">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/scrape/cibe-status — schedule has all 5 frequency fields" classname="intel-tab.spec.js" time="0.002">
+</testcase>
+<testcase name="CIBE API Endpoints › GET /api/cibe/scrape/cibe-status — nextHomepage is a valid ISO date string" classname="intel-tab.spec.js" time="0.001">
+</testcase>
+</testsuite>
+</testsuites>

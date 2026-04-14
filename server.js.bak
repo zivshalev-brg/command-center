@@ -1,0 +1,1310 @@
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const https = require('https');
+
+const PORT = 3737;
+const DIR = __dirname;
+
+// Slack configuration — set SLACK_BOT_TOKEN in environment or .env file
+let SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || '';
+try {
+  const envPath = path.join(__dirname, '.env');
+  if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, 'utf8').split('\n').forEach(line => {
+      const m = line.match(/^SLACK_BOT_TOKEN\s*=\s*(.+)/);
+      if (m) SLACK_BOT_TOKEN = m[1].trim().replace(/^['"]|['"]$/g, '');
+    });
+  }
+} catch {}
+
+const SLACK_TEAM_ID = 'T061FA5PB';
+const SLACK_CHANNELS = [
+  { id: 'C090HAX2V4H', name: '#beanz-load-balancing' },
+  { id: 'C046MM8NHHB', name: '#beanz-bof' },
+  { id: 'C05L5AA1ABW', name: '#beanz-on-breville' }
+];
+const COMMS_LIVE_PATH = path.join(__dirname, 'kb-data', 'intelligence', 'comms-live.json');
+
+// Path to beanz-digest output
+const DIGEST_OUTPUT = path.join(
+  process.env.USERPROFILE || process.env.HOME,
+  'beanz-digest', 'output'
+);
+
+// Path to KB data
+const KB_DIR = path.join(DIR, 'kb-data');
+
+// Path to intelligence data (email-scraped context)
+const INTEL_DIR = path.join(KB_DIR, 'intelligence');
+
+// Path to learning store (persists feedback, interactions, weights)
+const LEARNING_STORE = path.join(DIR, 'learning-store.json');
+
+// Path to news store (cached articles from external sources)
+const NEWS_STORE = path.join(DIR, 'news-store.json');
+
+const MIME = {
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'application/javascript',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon'
+};
+
+// ─── Helpers ──────────────────────────────────────────────────
+function jsonReply(res, status, data) {
+  res.writeHead(status, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  });
+  res.end(JSON.stringify(data));
+}
+
+/** Return the most-recent folder name inside a cadence dir (e.g. "2026-02-23" or "2026-W09") */
+function latestFolder(cadenceDir) {
+  try {
+    const entries = fs.readdirSync(cadenceDir, { withFileTypes: true })
+      .filter(d => d.isDirectory())
+      .map(d => d.name)
+      .sort()
+      .reverse();
+    return entries[0] || null;
+  } catch { return null; }
+}
+
+/** Read and parse a JSON file, return null on error */
+function readJSON(filePath) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch { return null; }
+}
+
+/** Slugify a name for use as ID */
+function slugify(name) {
+  return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+/** List available extraction dates for a cadence */
+function listExtractions(cadence) {
+  const dir = path.join(DIGEST_OUTPUT, cadence);
+  try {
+    return fs.readdirSync(dir, { withFileTypes: true })
+      .filter(d => d.isDirectory())
+      .map(d => d.name)
+      .sort()
+      .reverse();
+  } catch { return []; }
+}
+
+// ─── Slack Web API Helpers ────────────────────────────────────
+function slackAPI(method, params) {
+  return new Promise((resolve, reject) => {
+    if (!SLACK_BOT_TOKEN) return reject(new Error('No SLACK_BOT_TOKEN configured'));
+    const qs = new URLSearchParams(params).toString();
+    const isPost = ['chat.postMessage', 'reactions.add', 'reactions.remove', 'files.uploadV2'].includes(method);
+    const options = {
+      hostname: 'slack.com',
+      path: `/api/${method}${!isPost && qs ? '?' + qs : ''}`,
+      method: isPost ? 'POST' : 'GET',
+      headers: {
+        'Authorization': `Bearer ${SLACK_BOT_TOKEN}`,
+        'Content-Type': isPost ? 'application/json; charset=utf-8' : 'application/x-www-form-urlencoded'
+      }
+    };
+    const req = https.request(options, res => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try { resolve(JSON.parse(data)); }
+        catch { reject(new Error('Invalid JSON from Slack')); }
+      });
+    });
+    req.on('error', reject);
+    if (isPost) req.write(JSON.stringify(params));
+    req.end();
+  });
+}
+
+// Cache Slack user info to avoid repeated lookups
+let _slackUsers = {};
+let _slackUsersLoaded = false;
+
+async function loadSlackUsers() {
+  if (_slackUsersLoaded) return _slackUsers;
+  try {
+    const resp = await slackAPI('users.list', { limit: '200' });
+    if (resp.ok && resp.members) {
+      resp.members.forEach(u => {
+        if (!u.is_bot && !u.deleted) {
+          _slackUsers[u.id] = {
+            name: u.real_name || u.name,
+            displayName: u.profile?.display_name || u.real_name || u.name,
+            avatar: u.profile?.image_48 || '',
+            email: u.profile?.email || ''
+          };
+        }
+      });
+      _slackUsersLoaded = true;
+    }
+  } catch (e) { console.error('Failed to load Slack users:', e.message); }
+  return _slackUsers;
+}
+
+function slackUserName(userId) {
+  return _slackUsers[userId]?.displayName || _slackUsers[userId]?.name || userId;
+}
+
+/** Fetch recent messages from a Slack channel/DM */
+async function fetchSlackMessages(channelId, limit) {
+  limit = limit || 20;
+  try {
+    const resp = await slackAPI('conversations.history', {
+      channel: channelId,
+      limit: String(limit)
+    });
+    if (!resp.ok) {
+      console.error(`Slack conversations.history error for ${channelId}:`, resp.error);
+      return [];
+    }
+    return (resp.messages || []).map(m => ({
+      sender: slackUserName(m.user),
+      userId: m.user,
+      text: (m.text || '').replace(/<@(\w+)>/g, (_, uid) => '@' + slackUserName(uid)),
+      time: new Date(parseFloat(m.ts) * 1000).toISOString(),
+      via: 'slack',
+      slackTs: m.ts,
+      threadTs: m.thread_ts,
+      attachments: (m.files || []).map(f => ({ name: f.name, size: f.size ? Math.round(f.size/1024) + 'KB' : '' }))
+    }));
+  } catch (e) {
+    console.error(`Failed to fetch Slack channel ${channelId}:`, e.message);
+    return [];
+  }
+}
+
+/** Fetch list of channels the bot/user is in */
+async function fetchSlackChannels() {
+  try {
+    const resp = await slackAPI('conversations.list', {
+      types: 'public_channel,private_channel,mpim',
+      exclude_archived: 'true',
+      limit: '100'
+    });
+    if (!resp.ok) { console.error('Slack conversations.list error:', resp.error); return []; }
+    return (resp.channels || []).map(c => ({
+      id: c.id,
+      name: c.name_normalized || c.name || c.id,
+      isPrivate: c.is_private || false,
+      isMpim: c.is_mpim || false,
+      memberCount: c.num_members || 0
+    }));
+  } catch (e) {
+    console.error('Failed to list Slack channels:', e.message);
+    return [];
+  }
+}
+
+/** Build comms threads from Slack channel messages */
+async function buildSlackThreads() {
+  await loadSlackUsers();
+  const threads = {};
+  const channels = await fetchSlackChannels();
+
+  // Also include the known channels
+  const knownIds = new Set(SLACK_CHANNELS.map(c => c.id));
+  const allChannels = [...channels];
+  SLACK_CHANNELS.forEach(kc => {
+    if (!channels.find(c => c.id === kc.id)) {
+      allChannels.push({ id: kc.id, name: kc.name.replace('#', ''), isPrivate: false });
+    }
+  });
+
+  for (const ch of allChannels) {
+    const msgs = await fetchSlackMessages(ch.id, 15);
+    if (!msgs.length) continue;
+
+    // Group messages by thread (thread_ts) or treat as individual
+    const threadGroups = {};
+    msgs.forEach(m => {
+      const key = m.threadTs || m.time;
+      if (!threadGroups[key]) threadGroups[key] = [];
+      threadGroups[key].push(m);
+    });
+
+    // Create a thread per conversation cluster (max 5 per channel)
+    let count = 0;
+    for (const [key, groupMsgs] of Object.entries(threadGroups)) {
+      if (count >= 5) break;
+      const firstMsg = groupMsgs[groupMsgs.length - 1]; // oldest
+      const lastMsg = groupMsgs[0]; // newest
+      const people = [...new Set(groupMsgs.map(m => m.sender))];
+      const threadId = `slack-${ch.id}-${key.replace(/\./g, '-')}`;
+
+      // Format messages for display
+      const formattedMsgs = groupMsgs.reverse().map(m => ({
+        sender: m.sender,
+        text: m.text.slice(0, 500),
+        time: new Date(m.time).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) +
+              ', ' + new Date(m.time).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true }),
+        via: 'slack',
+        slackTs: m.slackTs,
+        attachments: m.attachments && m.attachments.length ? m.attachments : undefined
+      }));
+
+      const lastActivity = new Date(lastMsg.time).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' });
+      const preview = lastMsg.text.slice(0, 120) + (lastMsg.text.length > 120 ? '...' : '');
+
+      threads[threadId] = {
+        subject: `#${ch.name} — ${firstMsg.text.slice(0, 60)}${firstMsg.text.length > 60 ? '...' : ''}`,
+        priority: inferSlackPriority(ch, groupMsgs),
+        sources: ['slack'],
+        people: people,
+        lastSender: lastMsg.sender,
+        lastActivity: lastActivity,
+        preview: preview,
+        threadCount: groupMsgs.length,
+        unread: false,
+        messages: formattedMsgs,
+        slackChannel: ch.id,
+        slackChannelName: '#' + ch.name,
+        slackThreadTs: key.includes('.') ? key : null
+      };
+      count++;
+    }
+  }
+
+  return threads;
+}
+
+/** Infer priority for a Slack thread based on channel, content, and activity */
+function inferSlackPriority(channel, msgs) {
+  const importantChannels = ['beanz-bof', 'beanz-load-balancing', 'beanz-incidents', 'beanz-exec', 'beanz-critical'];
+  if (importantChannels.some(c => channel.name && channel.name.toLowerCase().includes(c.replace('#', '')))) return 'action';
+  const urgentWords = /\b(urgent|critical|blocker|asap|p0|p1|incident|outage|down|escalat|breaking|emergency|sev[- ]?[01])\b/i;
+  const allText = msgs.map(m => m.text || '').join(' ');
+  if (urgentWords.test(allText)) return 'action';
+  if (msgs.length > 8) return 'action';
+  if (msgs.length > 4) return 'fyi';
+  return 'fyi';
+}
+
+/** Refresh comms-live.json with fresh Slack data */
+async function refreshCommsLive() {
+  const threads = await buildSlackThreads();
+  const data = { threads, refreshedAt: new Date().toISOString() };
+  fs.mkdirSync(path.dirname(COMMS_LIVE_PATH), { recursive: true });
+  fs.writeFileSync(COMMS_LIVE_PATH, JSON.stringify(data, null, 2));
+  return data;
+}
+
+// ─── Learning Store ───────────────────────────────────────────
+function loadLearningStore() {
+  const defaults = {
+    version: 1,
+    created: new Date().toISOString(),
+    feedback: [],           // {id, type, target, value, timestamp, context}
+    interactions: [],       // {type, module, target, timestamp, duration}
+    insightWeights: {},     // correlation/insight ID → weight (higher = more relevant)
+    dismissedInsights: [],  // IDs user dismissed
+    pinnedInsights: [],     // IDs user pinned
+    personNotes: {},        // personId → [{note, timestamp}]
+    projectNotes: {},       // projectId → [{note, timestamp}]
+    metricAlerts: [],       // {metricId, threshold, direction, active}
+    preferences: {
+      defaultModule: 'summary',
+      cadence: 'weekly',
+      topMetrics: ['revenue','churn','ltv','ftbp_conversion','delivery_sla'],
+      focusPeople: [],
+      focusProjects: []
+    },
+    learnings: []           // {pattern, confidence, source, timestamp}
+  };
+  try {
+    const raw = fs.readFileSync(LEARNING_STORE, 'utf-8');
+    const store = JSON.parse(raw);
+    // Merge with defaults for forward-compatibility
+    return { ...defaults, ...store, preferences: { ...defaults.preferences, ...(store.preferences || {}) } };
+  } catch {
+    return defaults;
+  }
+}
+
+function saveLearningStore(store) {
+  store.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(LEARNING_STORE, JSON.stringify(store, null, 2), 'utf-8');
+}
+
+/** Compute adaptive insight weights based on feedback history */
+function computeInsightWeights(store) {
+  const weights = { ...store.insightWeights };
+  // Boost pinned, decay dismissed
+  store.pinnedInsights.forEach(id => { weights[id] = (weights[id] || 1) + 0.5; });
+  store.dismissedInsights.forEach(id => { weights[id] = Math.max(0, (weights[id] || 1) - 0.3); });
+  // Feedback adjustments: thumbs up = +0.2, thumbs down = -0.2
+  store.feedback.forEach(f => {
+    if (f.type === 'insight') {
+      weights[f.target] = (weights[f.target] || 1) + (f.value === 'up' ? 0.2 : -0.2);
+    }
+  });
+  return weights;
+}
+
+/** Derive auto-learnings from interaction patterns */
+function derivePatterns(store) {
+  const patterns = [];
+  // Module frequency
+  const modCounts = {};
+  store.interactions.forEach(i => { modCounts[i.module] = (modCounts[i.module] || 0) + 1; });
+  const topMod = Object.entries(modCounts).sort((a,b) => b[1] - a[1])[0];
+  if (topMod && topMod[1] > 5) {
+    patterns.push({ pattern: `Most visited module: ${topMod[0]}`, confidence: Math.min(topMod[1] / 20, 1), source: 'interaction_frequency' });
+  }
+  // Person attention
+  const personViews = {};
+  store.interactions.filter(i => i.type === 'person_view').forEach(i => { personViews[i.target] = (personViews[i.target] || 0) + 1; });
+  Object.entries(personViews).filter(([,c]) => c > 3).forEach(([pid, count]) => {
+    patterns.push({ pattern: `Frequently viewed person: ${pid}`, confidence: Math.min(count / 10, 1), source: 'person_attention' });
+  });
+  return patterns;
+}
+
+// ─── News Digest Engine ──────────────────────────────────────
+
+const NEWS_SOURCES = {
+  rss: {
+    dailycoffeenews: { url: 'https://dailycoffeenews.com/feed/', name: 'Daily Coffee News' },
+    sprudge: { url: 'https://sprudge.com/feed', name: 'Sprudge' },
+    perfectdailygrind: { url: 'https://perfectdailygrind.com/feed/', name: 'Perfect Daily Grind' },
+    worldcoffeeportal: { url: 'https://www.worldcoffeeportal.com/Latest/News?format=feed&type=rss', name: 'World Coffee Portal' },
+    baristamagazine: { url: 'https://www.baristamagazine.com/feed/', name: 'Barista Magazine' }
+  },
+  reddit: {
+    coffee: { subreddit: 'coffee', name: 'r/coffee' },
+    espresso: { subreddit: 'espresso', name: 'r/espresso' },
+    roasting: { subreddit: 'roasting', name: 'r/roasting' }
+  },
+  youtube: {
+    jameshoffmann: { channelId: 'UCMb0O2CdPBNi-QqPk5T3gsQ', name: 'James Hoffmann' },
+    lancehedrick: { channelId: 'UCb_98HwoGTJTHeb4EQYLRFQ', name: 'Lance Hedrick' },
+    sprometheus: { channelId: 'UCMKfRLBKx5ms88NjkMXJBfA', name: 'Sprometheus' }
+  },
+  competitors: {
+    tradedrink: { url: 'https://tradedrink.com', name: 'Trade Drink', type: 'competitor' },
+    ninja: { url: 'https://www.ninjakitchen.com', name: 'Ninja', type: 'competitor' },
+    delonghi: { url: 'https://www.delonghi.com', name: "De'Longhi", type: 'competitor' }
+  }
+};
+
+function loadNewsStore() {
+  const defaults = {
+    version: 1, lastRefreshed: null,
+    articles: [], competitorAlerts: [], stats: {},
+    sourceStatus: {}
+  };
+  try {
+    const raw = fs.readFileSync(NEWS_STORE, 'utf-8');
+    return { ...defaults, ...JSON.parse(raw) };
+  } catch { return defaults; }
+}
+
+function saveNewsStore(store) {
+  store.lastRefreshed = new Date().toISOString();
+  fs.writeFileSync(NEWS_STORE, JSON.stringify(store, null, 2), 'utf-8');
+}
+
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+}
+
+/** Minimal regex-based RSS/Atom XML parser — zero dependencies */
+function parseRSSXml(xml, sourceKey, sourceName) {
+  const articles = [];
+  // Match <item> (RSS 2.0) or <entry> (Atom)
+  const items = xml.match(/<item[\s>][\s\S]*?<\/item>/gi) ||
+                xml.match(/<entry[\s>][\s\S]*?<\/entry>/gi) || [];
+  items.slice(0, 20).forEach(item => {
+    const getTag = (tag) => {
+      const m = item.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
+      return m ? m[1].replace(/<!\[CDATA\[|\]\]>/g, '').trim() : '';
+    };
+    const title = getTag('title');
+    // Atom uses <link href="..."/>, RSS uses <link>url</link>
+    let link = getTag('link');
+    if (!link) {
+      const hrefMatch = item.match(/<link[^>]+href\s*=\s*"([^"]+)"/i);
+      if (hrefMatch) link = hrefMatch[1];
+    }
+    const desc = getTag('description') || getTag('summary') || getTag('content');
+    const pubDate = getTag('pubDate') || getTag('published') || getTag('updated') || getTag('dc:date');
+    const author = getTag('author') || getTag('dc:creator');
+    const cleanDesc = desc.replace(/<[^>]+>/g, '').replace(/&[a-z]+;/gi, ' ').trim().slice(0, 300);
+    if (!title) return;
+
+    const id = 'news-' + sourceKey + '-' + slugify(title).slice(0, 40);
+    articles.push({
+      id, title, url: link.trim(), source: sourceKey, sourceName: sourceName || sourceKey,
+      category: 'industry', author: author.replace(/<[^>]+>/g, '').trim(),
+      publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
+      fetchedAt: new Date().toISOString(), summary: cleanDesc,
+      tags: [], relevanceScore: 0.5, engagement: {}
+    });
+  });
+  return articles;
+}
+
+/** Fetch a single URL over HTTPS — returns Promise<string> */
+function httpGet(urlStr, headers) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(urlStr);
+    const mod = url.protocol === 'https:' ? https : http;
+    const options = {
+      hostname: url.hostname, port: url.port || (url.protocol === 'https:' ? 443 : 80),
+      path: url.pathname + url.search, method: 'GET',
+      headers: { 'User-Agent': 'BeanzOS/1.0 NewsAggregator', ...headers },
+      rejectUnauthorized: false // Corporate proxy SSL
+    };
+    const req = mod.request(options, res => {
+      // Follow redirects (301/302/307)
+      if ([301, 302, 307].includes(res.statusCode) && res.headers.location) {
+        return httpGet(res.headers.location, headers).then(resolve).catch(reject);
+      }
+      if (res.statusCode === 304) return resolve('');
+      if (res.statusCode >= 400) return reject(new Error(`HTTP ${res.statusCode}`));
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.end();
+  });
+}
+
+/** Fetch all RSS feeds in parallel */
+async function fetchAllRSSFeeds() {
+  const results = [];
+  const entries = Object.entries(NEWS_SOURCES.rss);
+  const settled = await Promise.allSettled(entries.map(async ([key, src]) => {
+    try {
+      const xml = await httpGet(src.url);
+      if (!xml) return [];
+      return parseRSSXml(xml, key, src.name);
+    } catch (e) {
+      console.error(`RSS fetch failed [${key}]:`, e.message);
+      return [];
+    }
+  }));
+  settled.forEach(r => { if (r.status === 'fulfilled') results.push(...r.value); });
+  return results;
+}
+
+/** Fetch Reddit posts (public JSON API, no auth needed) */
+async function fetchRedditPosts(subreddit, name) {
+  try {
+    const data = await httpGet(`https://www.reddit.com/r/${subreddit}/hot.json?limit=15`, {
+      'User-Agent': 'BeanzOS:v1.0 (by /u/beanzbot)'
+    });
+    if (!data) return [];
+    const json = JSON.parse(data);
+    return (json.data?.children || []).filter(c => c.data && !c.data.stickied).map(c => {
+      const p = c.data;
+      return {
+        id: 'reddit-' + p.id,
+        title: p.title, url: 'https://reddit.com' + p.permalink,
+        source: 'r/' + subreddit, sourceName: name || 'r/' + subreddit,
+        category: 'reddit', author: p.author,
+        publishedAt: new Date(p.created_utc * 1000).toISOString(),
+        fetchedAt: new Date().toISOString(),
+        summary: (p.selftext || '').replace(/\n/g, ' ').slice(0, 300),
+        tags: [subreddit], relevanceScore: 0.5,
+        engagement: { redditScore: p.score, redditComments: p.num_comments }
+      };
+    });
+  } catch (e) {
+    console.error(`Reddit fetch failed [${subreddit}]:`, e.message);
+    return [];
+  }
+}
+
+/** Fetch all Reddit subreddits in parallel */
+async function fetchAllRedditPosts() {
+  const results = [];
+  const entries = Object.entries(NEWS_SOURCES.reddit);
+  const settled = await Promise.allSettled(entries.map(([key, src]) =>
+    fetchRedditPosts(src.subreddit, src.name)
+  ));
+  settled.forEach(r => { if (r.status === 'fulfilled') results.push(...r.value); });
+  return results;
+}
+
+/** Fetch YouTube channel feeds via free RSS (no API key) */
+async function fetchAllYouTubeFeeds() {
+  const results = [];
+  const entries = Object.entries(NEWS_SOURCES.youtube);
+  const settled = await Promise.allSettled(entries.map(async ([key, src]) => {
+    try {
+      const xml = await httpGet(`https://www.youtube.com/feeds/videos.xml?channel_id=${src.channelId}`);
+      if (!xml) return [];
+      const articles = parseRSSXml(xml, key, src.name);
+      // Override category to youtube and extract video IDs
+      return articles.map(a => {
+        const vidMatch = a.url.match(/watch\?v=([^&]+)/) || a.url.match(/videos\/([^?]+)/);
+        return { ...a, category: 'youtube', tags: ['youtube', key],
+          url: vidMatch ? `https://www.youtube.com/watch?v=${vidMatch[1]}` : a.url };
+      });
+    } catch (e) {
+      console.error(`YouTube fetch failed [${key}]:`, e.message);
+      return [];
+    }
+  }));
+  settled.forEach(r => { if (r.status === 'fulfilled') results.push(...r.value); });
+  return results;
+}
+
+/** Score article relevance to Beanz business */
+function scoreRelevance(article) {
+  let score = 0.3; // base
+  const text = (article.title + ' ' + article.summary).toLowerCase();
+  const keywords = {
+    high: ['subscription', 'coffee subscription', 'breville', 'beanz', 'trade drink', 'tradedrink',
+           'delonghi', "de'longhi", 'ninja', 'nespresso', 'coffee machine', 'espresso machine'],
+    medium: ['specialty coffee', 'roasting', 'barista', 'home coffee', 'grinder', 'portafilter',
+             'latte', 'espresso', 'coffee beans', 'single origin', 'coffee roaster'],
+    low: ['cafe', 'coffee shop', 'brewing', 'pour over', 'aeropress', 'cold brew']
+  };
+  keywords.high.forEach(k => { if (text.includes(k)) score += 0.3; });
+  keywords.medium.forEach(k => { if (text.includes(k)) score += 0.1; });
+  keywords.low.forEach(k => { if (text.includes(k)) score += 0.05; });
+  // Competitor mentions get extra boost
+  if (/trade\s?drink|ninja|delonghi|de.longhi|nespresso/i.test(text)) score += 0.2;
+  return Math.min(score, 1.0);
+}
+
+/** Compute stats summary from articles array */
+function computeNewsStats(articles) {
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const byCategory = { industry: 0, reddit: 0, youtube: 0, competitors: 0 };
+  const sourceCounts = {};
+  articles.forEach(a => {
+    byCategory[a.category] = (byCategory[a.category] || 0) + 1;
+    sourceCounts[a.source] = (sourceCounts[a.source] || 0) + 1;
+  });
+  const lastWeekCount = articles.filter(a => new Date(a.publishedAt).getTime() > weekAgo).length;
+  const topSources = Object.entries(sourceCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([source, count]) => ({ source, count }));
+  return { totalArticles: articles.length, byCategory, lastWeekCount, topSources };
+}
+
+/** Master refresh: fetch all sources, merge, score, prune, save */
+async function refreshNewsData() {
+  const store = loadNewsStore();
+  const existingIds = new Set(store.articles.map(a => a.id));
+  let newCount = 0;
+
+  // Fetch all sources in parallel
+  const [rssArticles, redditPosts, ytVideos] = await Promise.allSettled([
+    fetchAllRSSFeeds(),
+    fetchAllRedditPosts(),
+    fetchAllYouTubeFeeds()
+  ]);
+
+  const allNew = [
+    ...(rssArticles.status === 'fulfilled' ? rssArticles.value : []),
+    ...(redditPosts.status === 'fulfilled' ? redditPosts.value : []),
+    ...(ytVideos.status === 'fulfilled' ? ytVideos.value : [])
+  ];
+
+  // Track source statuses
+  store.sourceStatus = {
+    rss: rssArticles.status === 'fulfilled' ? 'ok' : 'error',
+    reddit: redditPosts.status === 'fulfilled' ? 'ok' : 'error',
+    youtube: ytVideos.status === 'fulfilled' ? 'ok' : 'error',
+    lastAttempt: new Date().toISOString()
+  };
+
+  allNew.forEach(article => {
+    if (!existingIds.has(article.id)) {
+      article.relevanceScore = scoreRelevance(article);
+      store.articles.push(article);
+      existingIds.add(article.id);
+      newCount++;
+    }
+  });
+
+  // Sort by date, keep last 500
+  store.articles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  if (store.articles.length > 500) store.articles = store.articles.slice(0, 500);
+
+  store.stats = computeNewsStats(store.articles);
+  saveNewsStore(store);
+  console.log(`News refresh complete: ${newCount} new articles, ${store.articles.length} total`);
+  return { newCount, refreshedAt: store.lastRefreshed };
+}
+
+// ─── API Router ───────────────────────────────────────────────
+async function handleAPI(req, res) {
+  const url = new URL(req.url, `http://localhost:${PORT}`);
+  const parts = url.pathname.replace('/api/', '').split('/').filter(Boolean);
+
+  // GET /api/digest?cadence=weekly        → latest extraction for cadence
+  // GET /api/digest?cadence=weekly&date=2026-W09  → specific date
+  // GET /api/digest/dates?cadence=weekly  → list available dates
+  // GET /api/digest/all                   → latest for all cadences
+
+  if (parts[0] === 'digest') {
+    const cadence = url.searchParams.get('cadence') || 'weekly';
+
+    // /api/digest/dates — list available extraction dates
+    if (parts[1] === 'dates') {
+      return jsonReply(res, 200, {
+        cadence,
+        dates: listExtractions(cadence)
+      });
+    }
+
+    // /api/digest/all — latest data for every cadence
+    if (parts[1] === 'all') {
+      const result = {};
+      for (const cad of ['daily', 'weekly', 'monthly']) {
+        const cadDir = path.join(DIGEST_OUTPUT, cad);
+        const folder = latestFolder(cadDir);
+        if (folder) {
+          const folderPath = path.join(cadDir, folder);
+          result[cad] = {
+            date: folder,
+            summary: readJSON(path.join(folderPath, 'summary.json')),
+            kpi_metrics: readJSON(path.join(folderPath, 'kpi_metrics.json')),
+            performance: readJSON(path.join(folderPath, 'performance.json'))
+          };
+        } else {
+          result[cad] = null;
+        }
+      }
+      return jsonReply(res, 200, result);
+    }
+
+    // /api/digest?cadence=weekly&date=2026-W09 — specific or latest
+    const dateParam = url.searchParams.get('date');
+    const cadDir = path.join(DIGEST_OUTPUT, cadence);
+    const folder = dateParam || latestFolder(cadDir);
+
+    if (!folder) {
+      return jsonReply(res, 404, { error: `No ${cadence} extractions found` });
+    }
+
+    const folderPath = path.join(cadDir, folder);
+    if (!fs.existsSync(folderPath)) {
+      return jsonReply(res, 404, { error: `No data for ${cadence}/${folder}` });
+    }
+
+    // Read all JSON files in the folder
+    const data = { cadence, date: folder };
+    try {
+      const files = fs.readdirSync(folderPath).filter(f => f.endsWith('.json'));
+      for (const file of files) {
+        const key = file.replace('.json', '');
+        data[key] = readJSON(path.join(folderPath, file));
+      }
+    } catch (e) {
+      data.error = e.message;
+    }
+
+    return jsonReply(res, 200, data);
+  }
+
+  // GET /api/strategy — pre-computed strategic context from KB
+  if (parts[0] === 'strategy') {
+    const strategy = buildStrategyPayload();
+    return jsonReply(res, 200, strategy);
+  }
+
+  // ─── Intelligence API (email-scraped context) ─────────────────
+  // GET /api/intelligence — aggregated intelligence from all scraped sources
+  if (parts[0] === 'intelligence') {
+    const teamDir = readJSON(path.join(INTEL_DIR, 'team-directory.json'));
+    const projects = readJSON(path.join(INTEL_DIR, 'project-updates.json'));
+    const powerbi = readJSON(path.join(INTEL_DIR, 'powerbi-context.json'));
+    return jsonReply(res, 200, {
+      generated: new Date().toISOString(),
+      team: teamDir,
+      projects: projects,
+      powerbi: powerbi,
+      sources: ['outlook_email', 'teams_chat', 'kb_data']
+    });
+  }
+
+  // ─── People API (enriched team directory) ──────────────────────
+  // GET /api/people — full team directory with email intelligence
+  if (parts[0] === 'people') {
+    const teamDir = readJSON(path.join(INTEL_DIR, 'team-directory.json'));
+    const store = loadLearningStore();
+    const enriched = {
+      team: (teamDir?.team || []).map(person => ({
+        ...person,
+        notes: store.personNotes[slugify(person.name)] || [],
+        viewCount: store.interactions.filter(i => i.type === 'person_view' && i.target === slugify(person.name)).length
+      })),
+      external: teamDir?.key_external || [],
+      orgInsights: teamDir?.org_insights || {}
+    };
+    return jsonReply(res, 200, enriched);
+  }
+
+  // ─── Power BI Context API ──────────────────────────────────────
+  // GET /api/powerbi — P&L report context and meaningful metrics
+  if (parts[0] === 'powerbi') {
+    const powerbi = readJSON(path.join(INTEL_DIR, 'powerbi-context.json'));
+    return jsonReply(res, 200, powerbi || { error: 'No Power BI context available' });
+  }
+
+  // ─── Project Intelligence API ─────────────────────────────────
+  // GET /api/projects/intelligence — email-scraped project updates
+  if (parts[0] === 'projects' && parts[1] === 'intelligence') {
+    const projects = readJSON(path.join(INTEL_DIR, 'project-updates.json'));
+    return jsonReply(res, 200, projects || { error: 'No project intelligence available' });
+  }
+
+  // ─── Feedback API (self-learning) ──────────────────────────────
+  // POST /api/feedback — record user feedback for adaptive learning
+  // GET  /api/feedback — get current learning state
+  if (parts[0] === 'feedback') {
+    if (req.method === 'GET') {
+      const store = loadLearningStore();
+      const weights = computeInsightWeights(store);
+      const patterns = derivePatterns(store);
+      return jsonReply(res, 200, {
+        weights,
+        patterns,
+        pinnedInsights: store.pinnedInsights,
+        dismissedInsights: store.dismissedInsights,
+        preferences: store.preferences,
+        totalFeedback: store.feedback.length,
+        totalInteractions: store.interactions.length,
+        learnings: store.learnings.slice(-20)
+      });
+    }
+    if (req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const store = loadLearningStore();
+
+          if (data.action === 'feedback') {
+            store.feedback.push({
+              id: 'fb-' + Date.now(),
+              type: data.type,       // 'insight', 'metric', 'recommendation'
+              target: data.target,   // correlation ID, metric name, etc.
+              value: data.value,     // 'up', 'down', 'dismiss', 'pin'
+              timestamp: new Date().toISOString(),
+              context: data.context || {}
+            });
+            // Handle pin/dismiss
+            if (data.value === 'pin' && !store.pinnedInsights.includes(data.target)) {
+              store.pinnedInsights.push(data.target);
+              store.dismissedInsights = store.dismissedInsights.filter(id => id !== data.target);
+            }
+            if (data.value === 'dismiss' && !store.dismissedInsights.includes(data.target)) {
+              store.dismissedInsights.push(data.target);
+              store.pinnedInsights = store.pinnedInsights.filter(id => id !== data.target);
+            }
+          }
+
+          if (data.action === 'interaction') {
+            store.interactions.push({
+              type: data.type,       // 'module_view', 'person_view', 'project_view', 'metric_view'
+              module: data.module,
+              target: data.target,
+              timestamp: new Date().toISOString(),
+              duration: data.duration || 0
+            });
+            // Keep only last 1000 interactions
+            if (store.interactions.length > 1000) store.interactions = store.interactions.slice(-1000);
+          }
+
+          if (data.action === 'note') {
+            const noteStore = data.type === 'person' ? 'personNotes' : 'projectNotes';
+            if (!store[noteStore][data.target]) store[noteStore][data.target] = [];
+            store[noteStore][data.target].push({ note: data.note, timestamp: new Date().toISOString() });
+          }
+
+          if (data.action === 'preference') {
+            Object.assign(store.preferences, data.preferences);
+          }
+
+          if (data.action === 'alert') {
+            store.metricAlerts.push({
+              metricId: data.metricId,
+              threshold: data.threshold,
+              direction: data.direction,  // 'above', 'below'
+              active: true,
+              created: new Date().toISOString()
+            });
+          }
+
+          saveLearningStore(store);
+          const weights = computeInsightWeights(store);
+          jsonReply(res, 200, { ok: true, weights, totalFeedback: store.feedback.length });
+        } catch (e) {
+          jsonReply(res, 400, { error: e.message });
+        }
+      });
+      return;
+    }
+  }
+
+  // ─── Metrics Engine API ────────────────────────────────────────
+  // GET /api/metrics — meaningful business metrics with computed values
+  if (parts[0] === 'metrics') {
+    const powerbi = readJSON(path.join(INTEL_DIR, 'powerbi-context.json'));
+    const strategy = buildStrategyPayload();
+    const store = loadLearningStore();
+
+    // Compute real metric values from strategy data
+    const computed = {
+      generated: new Date().toISOString(),
+      topMetrics: store.preferences.topMetrics,
+      metrics: {
+        revenue: {
+          name: 'Revenue (CY25)', value: strategy.performance.revenue.cy25, format: 'currency',
+          yoy: strategy.performance.revenue.yoy, trend: 'up', status: 'healthy'
+        },
+        churn: {
+          name: 'Annual Churn Rate', value: 42.4, format: 'pct',
+          target: 35, trend: 'up', status: 'critical',
+          detail: `${strategy.performance.subscribers.cancelled.toLocaleString()} cancelled / ${strategy.performance.subscribers.total.toLocaleString()} total`
+        },
+        ltv: {
+          name: 'Avg LTV', value: strategy.performance.avgLTV.value, format: 'currency',
+          yoy: strategy.performance.avgLTV.yoy, trend: 'flat', status: 'warning',
+          detail: 'Flat despite 61% revenue growth — volume-driven, not depth'
+        },
+        ftbp_conversion: {
+          name: 'FTBP v2 Conversion', value: 16.5, format: 'pct',
+          baseline: 11.4, target: 20, trend: 'up', status: 'positive',
+          detail: `v2: ${strategy.ftbp.v2.paidCustomers.toLocaleString()} paid from ${strategy.ftbp.v2.signups.toLocaleString()} signups`
+        },
+        delivery_sla: {
+          name: 'Delivery SLA', value: strategy.performance.sla.value, format: 'pct',
+          target: 97, yoy: strategy.performance.sla.yoy, trend: 'down', status: 'warning'
+        },
+        net_subscriber_growth: {
+          name: 'Net Subscriber Growth', value: strategy.performance.subscribers.new - strategy.performance.subscribers.cancelled, format: 'number',
+          trend: 'down', status: 'warning',
+          detail: `+${strategy.performance.subscribers.new.toLocaleString()} new, -${strategy.performance.subscribers.cancelled.toLocaleString()} cancelled`
+        },
+        ftbp_revenue_share: {
+          name: 'FTBP Revenue Share', value: strategy.revenueMix.cy25.ftbp, format: 'pct',
+          trend: 'up', status: 'warning',
+          detail: 'Single-channel risk: 3% → 41% in one year'
+        },
+        bags_shipped: {
+          name: 'Bags Shipped (CY25)', value: strategy.performance.bags.cy25, format: 'number',
+          yoy: strategy.performance.bags.yoy, trend: 'up', status: 'healthy'
+        }
+      },
+      businessMetrics: powerbi?.meaningful_business_metrics || [],
+      alerts: store.metricAlerts.filter(a => a.active)
+    };
+
+    return jsonReply(res, 200, computed);
+  }
+
+  // ─── Correlations API (weighted by feedback) ───────────────────
+  // GET /api/correlations — correlations sorted by adaptive weight
+  if (parts[0] === 'correlations') {
+    const strategy = buildStrategyPayload();
+    const store = loadLearningStore();
+    const weights = computeInsightWeights(store);
+    const corrs = strategy.correlations.map(c => ({
+      ...c,
+      weight: weights[c.id] || 1,
+      pinned: store.pinnedInsights.includes(c.id),
+      dismissed: store.dismissedInsights.includes(c.id)
+    }));
+    // Sort: pinned first, then by weight * severity
+    const sevScore = { critical: 4, warning: 3, opportunity: 2, positive: 1 };
+    corrs.sort((a, b) => {
+      if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+      if (a.dismissed !== b.dismissed) return a.dismissed ? 1 : -1;
+      return (b.weight * (sevScore[b.severity] || 1)) - (a.weight * (sevScore[a.severity] || 1));
+    });
+    return jsonReply(res, 200, { correlations: corrs, weights });
+  }
+
+  // ─── News Digest API ──────────────────────────────────────────
+  if (parts[0] === 'news') {
+
+    // GET /api/news/refresh — trigger on-demand fetch
+    if (parts[1] === 'refresh') {
+      try {
+        const result = await refreshNewsData();
+        return jsonReply(res, 200, { ok: true, newArticles: result.newCount, refreshedAt: result.refreshedAt });
+      } catch (e) {
+        return jsonReply(res, 500, { error: 'News refresh failed: ' + e.message });
+      }
+    }
+
+    // GET /api/news/sources — list configured sources and status
+    if (parts[1] === 'sources') {
+      const newsStore = loadNewsStore();
+      return jsonReply(res, 200, { sources: NEWS_SOURCES, status: newsStore.sourceStatus });
+    }
+
+    // GET /api/news — serve cached news data with learning-store feedback applied
+    if (!parts[1]) {
+      const newsStore = loadNewsStore();
+      const store = loadLearningStore();
+      // Apply feedback from learning store
+      const enriched = newsStore.articles.map(a => {
+        const pinned = store.pinnedInsights.includes(a.id);
+        const dismissed = store.dismissedInsights.includes(a.id);
+        // Apply learned weight adjustments
+        const weight = store.insightWeights[a.id] || 0;
+        return { ...a, pinned, dismissed, learnedWeight: weight,
+          relevanceScore: Math.max(0, Math.min(1, (a.relevanceScore || 0.5) + weight * 0.1)) };
+      });
+      // Filter out dismissed
+      const filtered = enriched.filter(a => !a.dismissed);
+      return jsonReply(res, 200, {
+        articles: filtered,
+        competitorAlerts: newsStore.competitorAlerts || [],
+        stats: newsStore.stats || {},
+        lastRefreshed: newsStore.lastRefreshed,
+        sourceStatus: newsStore.sourceStatus || {}
+      });
+    }
+  }
+
+  // ─── Comms & Slack API ───────────────────────────────────────
+  if (parts[0] === 'comms') {
+
+    // GET /api/comms/refresh — fetch live Slack data and save to comms-live.json
+    if (parts[1] === 'refresh') {
+      if (!SLACK_BOT_TOKEN) {
+        return jsonReply(res, 400, { error: 'No SLACK_BOT_TOKEN configured. Add it to .env' });
+      }
+      try {
+        const data = await refreshCommsLive();
+        const count = Object.keys(data.threads).length;
+        return jsonReply(res, 200, { ok: true, threadCount: count, refreshedAt: data.refreshedAt });
+      } catch (e) {
+        return jsonReply(res, 500, { error: 'Slack refresh failed: ' + e.message });
+      }
+    }
+
+    // GET /api/comms/channels — list Slack channels the bot is in
+    if (parts[1] === 'channels') {
+      if (!SLACK_BOT_TOKEN) return jsonReply(res, 400, { error: 'No SLACK_BOT_TOKEN' });
+      try {
+        const channels = await fetchSlackChannels();
+        return jsonReply(res, 200, { ok: true, channels });
+      } catch (e) {
+        return jsonReply(res, 500, { error: e.message });
+      }
+    }
+
+    // GET /api/comms — serve cached comms-live.json
+    if (!parts[1]) {
+      if (fs.existsSync(COMMS_LIVE_PATH)) {
+        try {
+          const data = JSON.parse(fs.readFileSync(COMMS_LIVE_PATH, 'utf8'));
+          return jsonReply(res, 200, data);
+        } catch (e) {
+          return jsonReply(res, 500, { error: 'Failed to parse comms-live.json' });
+        }
+      }
+      return jsonReply(res, 200, { threads: {} });
+    }
+  }
+
+  // POST /api/slack/send — send a message to a Slack channel or DM
+  if (parts[0] === 'slack' && parts[1] === 'send') {
+    if (req.method !== 'POST') return jsonReply(res, 405, { error: 'POST required' });
+    if (!SLACK_BOT_TOKEN) return jsonReply(res, 400, { error: 'No SLACK_BOT_TOKEN' });
+
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        const { channel, text, thread_ts } = JSON.parse(body);
+        if (!channel || !text) return jsonReply(res, 400, { error: 'channel and text required' });
+        const params = { channel, text };
+        if (thread_ts) params.thread_ts = thread_ts;
+        const resp = await slackAPI('chat.postMessage', params);
+        if (resp.ok) {
+          return jsonReply(res, 200, { ok: true, ts: resp.ts, channel: resp.channel });
+        } else {
+          return jsonReply(res, 400, { error: resp.error || 'Slack send failed' });
+        }
+      } catch (e) {
+        return jsonReply(res, 500, { error: 'Send failed: ' + e.message });
+      }
+    });
+    return; // async body read
+  }
+
+  // POST /api/slack/react — add/remove emoji reaction
+  if (parts[0] === 'slack' && parts[1] === 'react') {
+    if (req.method !== 'POST') return jsonReply(res, 405, { error: 'POST required' });
+    if (!SLACK_BOT_TOKEN) return jsonReply(res, 400, { error: 'No SLACK_BOT_TOKEN' });
+
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        const { channel, timestamp, name, remove } = JSON.parse(body);
+        if (!channel || !timestamp || !name) return jsonReply(res, 400, { error: 'channel, timestamp, and name required' });
+        const method = remove ? 'reactions.remove' : 'reactions.add';
+        const resp = await slackAPI(method, { channel, timestamp, name });
+        if (resp.ok) {
+          return jsonReply(res, 200, { ok: true });
+        } else {
+          return jsonReply(res, 400, { error: resp.error || 'Reaction failed' });
+        }
+      } catch (e) {
+        return jsonReply(res, 500, { error: 'Reaction failed: ' + e.message });
+      }
+    });
+    return;
+  }
+
+  // POST /api/slack/upload — upload a file to a channel
+  if (parts[0] === 'slack' && parts[1] === 'upload') {
+    if (req.method !== 'POST') return jsonReply(res, 405, { error: 'POST required' });
+    if (!SLACK_BOT_TOKEN) return jsonReply(res, 400, { error: 'No SLACK_BOT_TOKEN' });
+
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        const { channel, content, filename, title, thread_ts } = JSON.parse(body);
+        if (!channel || !content) return jsonReply(res, 400, { error: 'channel and content required' });
+        // Use files.uploadV2 (snippet upload for text content)
+        const params = {
+          channel_id: channel,
+          content: content,
+          filename: filename || 'file.txt',
+          title: title || filename || 'Shared file'
+        };
+        if (thread_ts) params.thread_ts = thread_ts;
+        const resp = await slackAPI('files.uploadV2', params);
+        if (resp.ok) {
+          return jsonReply(res, 200, { ok: true, file: resp.file });
+        } else {
+          return jsonReply(res, 400, { error: resp.error || 'Upload failed' });
+        }
+      } catch (e) {
+        return jsonReply(res, 500, { error: 'Upload failed: ' + e.message });
+      }
+    });
+    return;
+  }
+
+  // Unknown API route
+  jsonReply(res, 404, { error: 'Unknown API endpoint' });
+}
+
+// ─── Strategy Engine ─────────────────────────────────────────
+/** Read a markdown file, return its contents or empty string */
+function readMD(relPath) {
+  try { return fs.readFileSync(path.join(KB_DIR, relPath), 'utf-8'); } catch { return ''; }
+}
+
+function buildStrategyPayload() {
+  return {
+    generated: new Date().toISOString(),
+    performance: {
+      revenue: { cy23: 4429180, cy24: 8383318, cy25: 13504185, currency: 'AUD', yoy: 0.61 },
+      bags: { cy25: 1007775, yoy: 0.63 },
+      subscribers: { total: 36036, new: 19544, cancelled: 15297, activeYE: 21685, yoyTotal: 0.52, yoyNew: 0.42, yoyCancelled: 0.75, yoyActive: 0.39 },
+      avgLTV: { value: 353, currency: 'AUD', yoy: -0.01 },
+      avgKG: { value: 5.8, yoy: 0.05 },
+      sla: { value: 95.5, yoy: -0.5 }
+    },
+    revenueMix: {
+      cy24: { ftbp: 3, beanz: 36, fusion: 45, other: 16 },
+      cy25: { ftbp: 41, beanz: 33, fusion: 19, other: 7 }
+    },
+    subscriptionMix: { beanz: 38, ftbpV1: 32, ftbpV2: 17, fusion: 14 },
+    machineRevenue: {
+      oracle: { sellout: 1, customers: 5, revenue: 21 },
+      barista: { sellout: 70, customers: 68, revenue: 64 },
+      bambino: { sellout: 20, customers: 12, revenue: 11 },
+      drip: { sellout: 4, customers: 2, revenue: 2 }
+    },
+    delivery: {
+      au: { days: 5.83, yoy: 10 }, uk: { days: 3.97, yoy: 8 },
+      us: { days: 5.72, yoy: -2 }, de: { days: 5.17, yoy: 16 }
+    },
+    ftbp: {
+      v1: { signups: 50000, convRate: 11.4, paidCustomers: 3947, revenue: 320500 },
+      v2: { signups: 46000, convRate: 16.5, paidCustomers: 7621, revenue: 537300 },
+      totalSignups: 193000, revenueShare: 41, avgLTV: 353
+    },
+    priorities: [
+      { id: 'P1', name: 'Beanz Retention & LTV', kpis: ['Churn rate','LTV','Subscription duration'], segments: ['SEG-1.4.x','SEG-1.6.x'], status: 'active', project: 'Project Feral' },
+      { id: 'P2', name: 'FTBP Conversion', kpis: ['Trial→Paid rate','FTBP revenue share'], segments: ['SEG-1.2.x','SEG-1.8.x'], status: 'active', baseline: 'v2: 16.5%, v1: 11.4%' },
+      { id: 'P3', name: 'Scale Platinum Roasters', kpis: ['Partner revenue','Machine sales'], segments: ['SEG-2.x'], status: 'active', baseline: '18 partners, $2M paid' },
+      { id: 'P4', name: 'Expand PBB', kpis: ['Partner integrations','PBB volume'], segments: [], status: 'planned', baseline: '96% volume growth CY25' },
+      { id: 'P5', name: 'Invest in AI Horizontally', kpis: ['Personalization coverage','Forecast accuracy'], segments: [], status: 'active', project: 'Project Feral' }
+    ],
+    correlations: [
+      { id: 'COR-1', title: 'Cancellation Acceleration vs Growth', severity: 'critical',
+        finding: 'Cancellations grew +75% YoY while new subscriptions grew +42% — net growth is decelerating. If this trend continues, churn will outpace acquisition by FY28.',
+        dataPoints: ['15,297 cancellations (+75%)', '19,544 new subs (+42%)', 'Net add: 4,247 (shrinking)'],
+        recommendation: 'Priority 1 (Retention) must deliver measurable churn reduction in H1 FY27. Project Feral cancellation flow experiments are critical path.',
+        priority: 'P1', segments: ['SEG-1.6.x','SEG-1.7.x'] },
+      { id: 'COR-2', title: 'Oracle Series Revenue Over-Index', severity: 'opportunity',
+        finding: 'Oracle Series owners represent just 1% of machine sell-outs but generate 21% of FTBP revenue. These are 21x more valuable per customer than average.',
+        dataPoints: ['1% sell-out → 5% customers → 21% revenue', '$353 avg LTV (flat)', 'Premium segment under-targeted'],
+        recommendation: 'Create a premium tier experience targeting Oracle/COH-3.1 owners: exclusive roasters, priority allocation, premium onboarding questionnaire (Project Feral W3).',
+        priority: 'P1', segments: ['SEG-1.5.2','SEG-1.4.2'] },
+      { id: 'COR-3', title: 'FTBP v2 Conversion Leap', severity: 'positive',
+        finding: 'FTBP v2 achieved +93% more paid customers with 7% fewer sign-ups. Conversion quality improved dramatically (11.4% → 16.5%).',
+        dataPoints: ['16.5% paid conversion (+5.1 pts)', '7,621 paid customers (+93%)', '$537K revenue (+68%)'],
+        recommendation: 'Double down on v2 learnings. Target 20% conversion rate in FY27 through 1kg affordability lever and optimised redemption journey.',
+        priority: 'P2', segments: ['SEG-1.2.x'] },
+      { id: 'COR-4', title: 'Large Bag Adoption Accelerating', severity: 'positive',
+        finding: 'FTBP cohort over-indexes on 1kg bags (23% vs 20% avg). December hit 30% — a clear trend toward value-conscious purchasing.',
+        dataPoints: ['20% of volume = 1kg bags', 'FTBP: 23% large bag mix', 'Dec 2025: 30% peak'],
+        recommendation: 'Make 1kg the default for FTBP v2 conversion offers. 15-20% savings positioning drives both conversion and retention.',
+        priority: 'P2', segments: ['SEG-1.2.x','SEG-1.3.x'] },
+      { id: 'COR-5', title: 'DE Delivery Deterioration', severity: 'warning',
+        finding: 'Germany delivery times worsened +16% YoY (5.17 days), worst of all markets. NL will cross-border from DE initially, inheriting this problem.',
+        dataPoints: ['DE: 5.17 days (+16%)', 'NL launch July 2026 (cross-border from DE)', 'UK best at 3.97 days'],
+        recommendation: 'Resolve DE delivery before NL launch. NL COH-1.5 first impression depends on DE logistics performance.',
+        priority: 'P1', segments: ['COH-1.4','COH-1.5'] },
+      { id: 'COR-6', title: 'Platinum Roaster Flywheel Working', severity: 'positive',
+        finding: '18 Platinum partners generated $2M in coffee revenue AND $1M in incremental machine sales in FY26H1. The flywheel (volume → investment → machine sales) is proven.',
+        dataPoints: ['$2M paid to roasters', '$1M machine sales', '18 roasters signed', 'DOMA brew classes sold out'],
+        recommendation: 'Scale to 25+ roasters in FY27. Prioritize UK/DE roasters (data gap: only US/AU presented). Tie to NL launch for fresh market presence.',
+        priority: 'P3', segments: ['SEG-2.x'] },
+      { id: 'COR-7', title: 'FTBP Dominance Creates Single-Channel Risk', severity: 'warning',
+        finding: 'FTBP went from 3% to 41% of revenue in one year. Combined with 48% of active subs, a Breville channel disruption would be catastrophic.',
+        dataPoints: ['41% revenue from FTBP', '48% of active subs are FTBP', '3% → 41% in one year'],
+        recommendation: 'Accelerate PBB (P4) as diversification. Target 10%+ revenue from non-Breville channels by end of FY27.',
+        priority: 'P4', segments: ['COH-4.3'] },
+      { id: 'COR-8', title: 'LTV Flat While Revenue Grows', severity: 'warning',
+        finding: 'Average LTV per subscriber is flat at $353 (-1% YoY) despite 61% revenue growth. Growth is coming from volume, not deeper monetisation per customer.',
+        dataPoints: ['$353 LTV (-1%)', 'Revenue +61%', 'Subs +52%', 'KG/sub +5%'],
+        recommendation: 'Cross-sell and upsell features (F-08.x, F-03.x) needed to lift per-customer value. Coffee collections (Feral W3.2) and premium tier targeting (COR-2) are the levers.',
+        priority: 'P1', segments: ['SEG-1.4.x','SEG-1.5.x'] }
+    ],
+    lifecycle: {
+      stages: [
+        { id: 'SEG-1.1', name: 'New Customer', colour: '#6e7389' },
+        { id: 'SEG-1.2', name: 'Trialist', colour: '#6c8cff' },
+        { id: 'SEG-1.3', name: 'New Subscriber', colour: '#66d9e8' },
+        { id: 'SEG-1.4', name: 'Active Subscriber', colour: '#69db7c' },
+        { id: 'SEG-1.5', name: 'Loyalist', colour: '#69db7c' },
+        { id: 'SEG-1.6', name: 'At Risk', colour: '#ffb347' },
+        { id: 'SEG-1.7', name: 'Inactive', colour: '#ff6b6b' },
+        { id: 'SEG-1.8', name: 'Trial Not Converted', colour: '#ff6b6b' }
+      ],
+      transitions: [
+        { from: 'SEG-1.1', to: 'SEG-1.2', label: 'FTBP activation', type: 'positive' },
+        { from: 'SEG-1.2', to: 'SEG-1.3', label: 'Beanz Conversion (16.5% v2)', type: 'positive', metric: '16.5%' },
+        { from: 'SEG-1.2', to: 'SEG-1.8', label: 'Trial expired', type: 'negative' },
+        { from: 'SEG-1.3', to: 'SEG-1.4', label: '90d + 3 orders', type: 'positive' },
+        { from: 'SEG-1.4', to: 'SEG-1.5', label: '6+ months consistent', type: 'positive' },
+        { from: 'SEG-1.4', to: 'SEG-1.6', label: 'Pause/payment fail', type: 'warning', metric: '15,297 cancellations' },
+        { from: 'SEG-1.5', to: 'SEG-1.6', label: 'Disruption', type: 'warning' },
+        { from: 'SEG-1.6', to: 'SEG-1.7', label: '90d no activity', type: 'negative' },
+        { from: 'SEG-1.6', to: 'SEG-1.4', label: 'Reactivates', type: 'positive' }
+      ]
+    },
+    projectFeral: {
+      status: 'active', weeks: 26, currentPhase: 'Foundation',
+      workstreams: [
+        { name: 'Knowledge Base', status: 'active', lead: 'Product' },
+        { name: 'Intelligence Platform', status: 'in-progress', lead: 'Platform' },
+        { name: 'AI-First Dev', status: 'active', lead: 'AI Dev Lead' },
+        { name: 'Cancellation Flow (3 variants)', status: 'planned', lead: 'Product' },
+        { name: 'Coffee Collections (5 concepts)', status: 'planned', lead: 'Product' },
+        { name: 'Onboarding Questionnaires (3 versions)', status: 'planned', lead: 'Product' },
+        { name: 'Email Strategy by Cohort', status: 'planned', lead: 'CRM' }
+      ],
+      phases: [
+        { name: 'Foundation', weeks: '1-3', status: 'active' },
+        { name: 'Technical Enablement', weeks: '3-5', status: 'upcoming' },
+        { name: 'Experiment Development', weeks: '5-12', status: 'upcoming' },
+        { name: 'Scale', weeks: '13-18', status: 'upcoming' },
+        { name: 'Optimise', weeks: '19-26', status: 'upcoming' }
+      ]
+    },
+    markets: [
+      { code: 'AU', name: 'Australia', status: 'active', launch: '~2021', maturity: 'highest', deliveryDays: 5.83, yoy: 10 },
+      { code: 'UK', name: 'United Kingdom', status: 'active', deliveryDays: 3.97, yoy: 8 },
+      { code: 'US', name: 'United States', status: 'active', deliveryDays: 5.72, yoy: -2 },
+      { code: 'DE', name: 'Germany', status: 'active', deliveryDays: 5.17, yoy: 16 },
+      { code: 'NL', name: 'Netherlands', status: 'launching', launch: 'July 2026', note: 'Cross-border from DE' }
+    ],
+    dataGaps: [
+      'CY25 contribution margin / EBITDA not available',
+      'Root cause of +75% cancellation increase not confirmed',
+      'UK and DE platinum roasters not identified',
+      'FY27 specific revenue and profitability targets not set',
+      'FTBP v2 specific changes driving conversion improvement unknown',
+      'FTBP churn rate vs organic subscriptions not measured',
+      'NL 1kg bag pricing not confirmed for launch',
+      'Margin impact of 1kg vs small bags not quantified'
+    ]
+  };
+}
+
+// ─── Server ───────────────────────────────────────────────────
+const server = http.createServer((req, res) => {
+  // CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
+    return res.end();
+  }
+
+  // API routes
+  if (req.url.startsWith('/api/')) {
+    return handleAPI(req, res).catch(err => {
+      console.error('API error:', err);
+      if (!res.headersSent) jsonReply(res, 500, { error: 'Internal server error' });
+    });
+  }
+
+  // Static file serving
+  let filePath = path.join(DIR, req.url === '/' ? 'index.html' : req.url);
+  const ext = path.extname(filePath);
+  const contentType = MIME[ext] || 'text/plain';
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      res.writeHead(404);
+      res.end('Not found');
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(data);
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Command Center running at http://localhost:${PORT}`);
+  console.log(`Digest data from: ${DIGEST_OUTPUT}`);
+
+  // Background news refresh every 30 minutes
+  setInterval(() => {
+    refreshNewsData().then(r => {
+      if (r.newCount > 0) console.log(`[News] Background refresh: ${r.newCount} new articles`);
+    }).catch(e => console.error('[News] Background refresh failed:', e.message));
+  }, 30 * 60 * 1000);
+});

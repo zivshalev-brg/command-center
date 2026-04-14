@@ -1,0 +1,48 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("segments")
+    - file.ext == "md"
+
+formulas:
+  funnel_health: 'if(kpi_active_funnel_pct > 15, "Healthy", if(kpi_active_funnel_pct > 8, "Watch", "Critical"))'
+  days_since_refresh: '(now() - file.mtime).days'
+
+properties:
+  kpi_total_customers:
+    displayName: "Total Customers"
+  kpi_seg_1_1_trialist:
+    displayName: "Trialists"
+  kpi_seg_1_3_engaged:
+    displayName: "Engaged"
+  kpi_seg_1_8_churned:
+    displayName: "Churned"
+  kpi_active_funnel_pct:
+    displayName: "Active Funnel %"
+  formula.funnel_health:
+    displayName: "Funnel Health"
+  kpi_no_market_count:
+    displayName: "Unattributed"
+  data-period:
+    displayName: "Data Period"
+  formula.days_since_refresh:
+    displayName: "Days Since Refresh"
+
+views:
+  - type: table
+    name: "Segment Health Dashboard"
+    order:
+      - kpi_total_customers
+      - kpi_seg_1_1_trialist
+      - kpi_seg_1_3_engaged
+      - kpi_seg_1_8_churned
+      - kpi_active_funnel_pct
+      - formula.funnel_health
+      - kpi_no_market_count
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_total_customers: Sum
+      kpi_seg_1_1_trialist: Sum
+      kpi_seg_1_3_engaged: Sum
+      kpi_seg_1_8_churned: Sum

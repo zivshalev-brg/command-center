@@ -1,0 +1,47 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("programs")
+    - file.ext == "md"
+
+formulas:
+  health: 'if(kpi_conversion_rate > 30, "Strong", if(kpi_conversion_rate > 15, "Moderate", "Weak"))'
+  trend_icon: 'if(kpi_churn_rate_trend == "improving", "^", if(kpi_churn_rate_trend == "worsening", "v", "-"))'
+  days_since_refresh: '(now() - file.mtime).days'
+
+properties:
+  kpi_program:
+    displayName: "Program"
+  kpi_conversion_rate:
+    displayName: "Conversion %"
+  kpi_churn_rate:
+    displayName: "Churn %"
+  kpi_median_days_to_cancel:
+    displayName: "Median Days to Cancel"
+  kpi_total_revenue:
+    displayName: "Total Revenue"
+  formula.health:
+    displayName: "Health"
+  formula.trend_icon:
+    displayName: "Trend"
+  data-period:
+    displayName: "Data Period"
+  formula.days_since_refresh:
+    displayName: "Days Since Refresh"
+
+views:
+  - type: table
+    name: "Program Dashboard"
+    order:
+      - kpi_program
+      - kpi_conversion_rate
+      - kpi_churn_rate
+      - kpi_median_days_to_cancel
+      - kpi_total_revenue
+      - formula.health
+      - formula.trend_icon
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_conversion_rate: Average
+      kpi_churn_rate: Average

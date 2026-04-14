@@ -1,0 +1,63 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("revenue")
+    - file.ext == "md"
+
+formulas:
+  rev_health: 'if(kpi_actual_revenue > 0, "Active", "Pending Refresh")'
+  days_since_refresh: '(now() - file.mtime).days'
+  sub_rev_pct: 'if(kpi_actual_revenue > 0 && kpi_subscription_revenue > 0, ((kpi_subscription_revenue / kpi_actual_revenue) * 100).toFixed(1) + "%", "")'
+
+properties:
+  kpi_actual_revenue:
+    displayName: "Actual Revenue"
+  kpi_subscription_revenue:
+    displayName: "Sub Revenue"
+  kpi_gross_sales:
+    displayName: "Gross Sales"
+  kpi_net_sales:
+    displayName: "Net Sales"
+  kpi_aov:
+    displayName: "AOV"
+  kpi_abv:
+    displayName: "ABV"
+  kpi_abs:
+    displayName: "ABS"
+  kpi_asp:
+    displayName: "ASP"
+  kpi_gross_margin_pct:
+    displayName: "Gross Margin %"
+  kpi_cost_to_brg:
+    displayName: "Cost to BRG"
+  kpi_shipping_cost:
+    displayName: "Shipping Cost"
+  formula.rev_health:
+    displayName: "Status"
+  formula.sub_rev_pct:
+    displayName: "Sub Rev %"
+  data-period:
+    displayName: "Data Period"
+  formula.days_since_refresh:
+    displayName: "Days Since Refresh"
+
+views:
+  - type: table
+    name: "Revenue & Margins Dashboard"
+    order:
+      - file.name
+      - kpi_actual_revenue
+      - kpi_subscription_revenue
+      - formula.sub_rev_pct
+      - kpi_gross_sales
+      - kpi_net_sales
+      - kpi_aov
+      - kpi_gross_margin_pct
+      - kpi_cost_to_brg
+      - formula.rev_health
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_actual_revenue: Sum
+      kpi_subscription_revenue: Sum
+      kpi_aov: Average

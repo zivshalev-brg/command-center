@@ -1,0 +1,63 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("ftbp")
+    - file.ext == "md"
+formulas:
+  funnel_stage: if(kpi_conversion_rate_v2 > 0, "Conversions", if(kpi_eligible_v2 > 0, "Registrations", if(kpi_ftbp_revenue > 0, "Revenue", "FTBP")))
+  days_since_refresh: (now() - file.mtime).days
+properties:
+  kpi_eligible_v1:
+    displayName: Eligible v1
+  kpi_eligible_v2:
+    displayName: Eligible v2
+  kpi_signups_v1:
+    displayName: Signups v1
+  kpi_signups_v2:
+    displayName: Signups v2
+  kpi_optin_rate:
+    displayName: Opt-in Rate
+  kpi_conversion_rate_v1:
+    displayName: Conv Rate v1
+  kpi_conversion_rate_v2:
+    displayName: Conv Rate v2
+  kpi_free_bags_conv:
+    displayName: Free Bags Conv
+  kpi_sub_conv:
+    displayName: Sub Conv
+  kpi_milestone_payout:
+    displayName: Milestone Payout
+  kpi_ftbp_revenue:
+    displayName: FTBP Revenue
+  kpi_ftbp_aov:
+    displayName: FTBP AOV
+  kpi_source:
+    displayName: Source
+  formula.funnel_stage:
+    displayName: Funnel Stage
+  data-period:
+    displayName: Data Period
+  formula.days_since_refresh:
+    displayName: Days Since Refresh
+views:
+  - type: table
+    name: FTBP Funnel Dashboard
+    order:
+      - file.name
+      - formula.funnel_stage
+      - kpi_eligible_v2
+      - kpi_signups_v2
+      - kpi_optin_rate
+      - kpi_conversion_rate_v2
+      - kpi_free_bags_conv
+      - kpi_sub_conv
+      - kpi_milestone_payout
+      - kpi_ftbp_revenue
+      - kpi_ftbp_aov
+      - kpi_source
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_eligible_v2: Sum
+      kpi_signups_v2: Sum
+      kpi_conversion_rate_v2: Average

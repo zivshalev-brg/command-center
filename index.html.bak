@@ -1,0 +1,3127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beanz OS — Ziv Shalev</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top">
+  <button class="top-toggle" onclick="toggleSidebar()" title="Toggle sidebar (B)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <div class="top-brand">
+    <h1><span class="accent">Beanz</span> OS</h1>
+  </div>
+  <div class="top-spacer"></div>
+  <div class="top-actions">
+    <span class="learning-pulse" title="Self-learning intelligence active"><span class="learning-dot"></span><span style="font-size:10px">Learning</span></span>
+    <span class="badge r" id="actionBadge">5 actions</span>
+    <span class="badge o" id="decisionBadge">3 decisions</span>
+    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()" title="Refresh live data (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      Refresh <kbd>R</kbd>
+    </button>
+    <button class="top-search" onclick="openPalette()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> Search… <kbd>Ctrl+K</kbd></button>
+    <span class="date-l" id="dateLabel">Monday 23 February 2026</span>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab active" data-mod="summary" onclick="switchModule('summary',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    Daily Summary <span class="tab-key">1</span>
+  </div>
+  <div class="tab" data-mod="comms" onclick="switchModule('comms',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    Comms <span id="commsUnreadBadge" class="nb" style="display:none;margin-left:4px">0</span><span class="tab-key">2</span>
+  </div>
+  <div class="tab" data-mod="calendar" onclick="switchModule('calendar',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Calendar <span class="tab-key">3</span>
+  </div>
+  <div class="tab" data-mod="projects" onclick="switchModule('projects',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Projects <span class="tab-key">4</span>
+  </div>
+  <div class="tab" data-mod="people" onclick="switchModule('people',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    People <span class="tab-key">5</span>
+  </div>
+  <div class="tab" data-mod="metrics" onclick="switchModule('metrics',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+    Metrics <span class="tab-key">6</span>
+  </div>
+  <div class="tab" data-mod="strategy" onclick="switchModule('strategy',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Strategy <span class="tab-key">7</span>
+  </div>
+  <div class="tab" data-mod="news" onclick="switchModule('news',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    News <span class="tab-key">8</span>
+  </div>
+  <div class="tab-spacer"></div>
+  <span class="tab-hint">Press 1–8 or Ctrl+K</span>
+</div>
+
+<!-- APP LAYOUT -->
+<div class="app" id="app">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main" id="main"></div>
+</div>
+
+<!-- RIGHT PANEL (slide-in overlay) -->
+<div class="panel-overlay" id="panel">
+  <div class="panel-header">
+    <h3 id="panelTitle">Details</h3>
+    <button class="panel-close" onclick="closePanel()">&times;</button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+</div>
+
+<!-- COMMAND PALETTE -->
+<div class="palette-bg" id="paletteBg" onclick="if(event.target===this)closePalette()">
+  <div class="palette">
+    <input type="text" id="paletteInput" placeholder="Search everything…" oninput="searchPalette(this.value)" onkeydown="paletteKey(event)"/>
+    <div class="palette-results" id="paletteResults"></div>
+  </div>
+</div>
+
+<!-- KEYBOARD HELP MODAL -->
+<div class="kb-modal" id="kbModal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="kb-box">
+    <h2>Keyboard Shortcuts</h2>
+    <div class="kb-row"><span>Switch modules</span><span class="k">1 2 3 4 5 6 7 8</span></div>
+    <div class="kb-row"><span>Refresh data</span><span class="k">R</span></div>
+    <div class="kb-row"><span>Toggle sidebar</span><span class="k">B</span></div>
+    <div class="kb-row"><span>Command palette</span><span class="k">Ctrl+K</span></div>
+    <div class="kb-row"><span>Navigate list</span><span class="k">J / K</span></div>
+    <div class="kb-row"><span>Close panel / modal</span><span class="k">Esc</span></div>
+    <div class="kb-row"><span>This help</span><span class="k">?</span></div>
+  </div>
+</div>
+
+<!-- SEND MODAL -->
+<div class="modal-bg" id="sendModal">
+  <div class="modal">
+    <div class="modal-h"><h2 id="modalTitle">Send Message</h2><button class="modal-x" onclick="closeModal()">&times;</button></div>
+    <div class="modal-b">
+      <div class="modal-tabs">
+        <div class="modal-tab active" id="tabOutlook" onclick="switchSendTab('outlook')">Outlook</div>
+        <div class="modal-tab slack" id="tabSlack" onclick="switchSendTab('slack')">Slack</div>
+      </div>
+      <div id="outlookFields">
+        <label>To</label><input id="modalTo" type="text"/>
+        <label>Subject</label><input id="modalSubject" type="text"/>
+        <label>Body</label><textarea id="modalBody"></textarea>
+      </div>
+      <div id="slackFields" style="display:none">
+        <label>Send to</label>
+        <select id="slackTarget">
+          <option value="">-- Select channel or person --</option>
+        </select>
+        <div class="slack-hint" id="slackHint"><span class="slack-status"></span>Connected to Slack API &mdash; messages sent directly</div>
+        <label>Message</label>
+        <div class="slack-compose-bar">
+          <textarea id="slackBody" rows="3" placeholder="Write a message..."></textarea>
+          <div class="slack-compose-actions">
+            <button class="btn btn-sm btn-g" onclick="uploadSlackFileFromModal()" title="Attach file" style="font-size:14px">\u{1F4CE}</button>
+          </div>
+        </div>
+        <div class="slack-char-count"><span id="slackCharCount">0</span> chars</div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-outlook" id="btnSendOutlook" onclick="sendViaOutlook()">Open in Outlook</button>
+      <button class="btn btn-slack" id="btnSendSlack" onclick="sendViaSlack()" style="display:none">Send via Slack</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script>
+// ===============================================================
+// APP STATE
+// ===============================================================
+const state = {
+  module: 'summary',
+  summarySection: null,
+  sidebarCollapsed: false,
+  selectedDay: 0,
+  selectedTopic: null,
+  selectedThread: null, // unified inbox thread id
+  selectedProject: null,
+  selectedPerson: null,
+  panelOpen: false,
+  panelContent: null,
+  commsFilter: 'all',
+  commsGroupBy: 'priority',
+  commsSearch: '',
+  peopleSearch: '',
+  peopleGroup: 'team',
+  topicStatus: {}, // track done/snoozed per topic
+  threadStatus: {}, // track done/snoozed per thread
+  selectedCalEvent: -1,
+  // Comms three-pane state
+  commsFocus: 'focused',
+  commsSource: 'all',
+  commsDensity: 'comfortable',
+  commsPinned: {},
+  commsSnoozed: {},
+  commsSnoozePickerOpen: null,
+  // News tab state
+  newsCategory: 'all',
+  selectedNewsItem: null,
+  newsSearch: '',
+  newsSort: 'date'
+};
+
+function setState(key, val) {
+  state[key] = val;
+  renderAll();
+}
+
+// ===============================================================
+// UTILITIES
+// ===============================================================
+const $ = id => document.getElementById(id);
+const h = (tag, cls, html) => `<${tag} class="${cls||''}">${html||''}</${tag}>`;
+
+function getActionCount() {
+  let c = 0;
+  const threads = DATA.comms.threads || {};
+  for (const [id,th] of Object.entries(threads)) {
+    if ((th.priority==='critical'||th.priority==='action') && state.threadStatus[id]!=='done') c++;
+  }
+  return c;
+}
+function getDecisionCount() {
+  let c = 0;
+  const threads = DATA.comms.threads || {};
+  for (const [id,th] of Object.entries(threads)) {
+    if (th.priority==='critical' && state.threadStatus[id]!=='done') c++;
+  }
+  return c;
+}
+
+// ===============================================================
+// RENDER ENGINE
+// ===============================================================
+function renderAll() {
+  // Update badges
+  const ac = getActionCount();
+  const dc = getDecisionCount();
+  $('actionBadge').textContent = ac + ' action' + (ac!==1?'s':'');
+  $('decisionBadge').textContent = dc + ' decision' + (dc!==1?'s':'');
+
+  // Sidebar collapse + comms mode
+  $('app').classList.toggle('collapsed', state.sidebarCollapsed);
+  $('app').classList.toggle('comms-mode', state.module === 'comms');
+
+  // Render sidebar + main based on module
+  switch(state.module) {
+    case 'summary': renderSummarySidebar(); renderSummaryMain(); break;
+    case 'comms': renderCommsSidebar(); renderCommsMain(); break;
+    case 'calendar': renderCalendarSidebar(); renderCalendarMain(); break;
+    case 'projects': renderProjectsSidebar(); renderProjectsMain(); break;
+    case 'people': renderPeopleSidebar(); renderPeopleMain(); break;
+    case 'metrics': renderMetricsSidebar(); renderMetricsMain(); break;
+    case 'strategy': renderStrategySidebar(); renderStrategyMain(); break;
+    case 'news': renderNewsSidebar(); renderNewsMain(); break;
+  }
+}
+
+// ===============================================================
+// DAILY SUMMARY MODULE
+// ===============================================================
+function renderSummarySidebar() {
+  const sb = $('sidebar');
+  const sections = [
+    {id:'schedule',icon:'📅',label:"Today's Schedule"},
+    {id:'priorities',icon:'🔴',label:'Priority Actions'},
+    {id:'decisions',icon:'⚡',label:'Decisions Needed'},
+    {id:'insights',icon:'🔗',label:'Insights & Correlations'},
+    {id:'projects',icon:'📊',label:'Project Pulse'},
+    {id:'people',icon:'👥',label:'People in Focus'},
+    {id:'metrics',icon:'📈',label:'Key Metrics'}
+  ];
+  let html = '<div class="sb-section"><div class="sb-section-title">Daily Briefing</div><div class="summary-nav">';
+  sections.forEach(s => {
+    const act = state.summarySection===s.id ? ' active' : '';
+    html += `<div class="nav-i${act}" onclick="state.summarySection='${s.id}';renderSummarySidebar();document.getElementById('sum-${s.id}')?.scrollIntoView({behavior:'smooth',block:'start'})"><span>${s.icon}</span><span class="sb-label">${s.label}</span></div>`;
+  });
+  html += '</div></div>';
+  sb.innerHTML = html;
+}
+
+function renderSummaryMain() {
+  const el = $('main');
+  let html = '';
+
+  // 1. Today's Schedule (compact)
+  const day = DATA.comms.days[state.selectedDay];
+  html += `<div class="summary-section" id="sum-schedule"><div class="summary-section-h"><h2>📅 ${day.label} ${day.num} Feb — Today's Schedule</h2><span class="summary-goto" onclick="switchModule('calendar',document.querySelector('[data-mod=calendar]'))">Calendar →</span></div>`;
+  html += '<div class="card"><div class="schedule-compact">';
+  day.events.forEach(e => {
+    html += `<div class="tl-i${e.hl?' hl':''}"><div class="tl-t">${e.t}</div><div class="tl-c"><div class="t">${e.title}</div><div class="m">${e.meta}</div></div></div>`;
+  });
+  html += '</div></div></div>';
+
+  // 2. Priority Actions (from unified inbox threads)
+  const priorities = [];
+  for (const [id,th] of Object.entries(DATA.comms.threads || {})) {
+    if ((th.priority==='critical'||th.priority==='action') && state.threadStatus[id]!=='done') priorities.push([id,th]);
+  }
+  if (priorities.length) {
+    html += '<div class="summary-section" id="sum-priorities"><div class="summary-section-h"><h2>🔴 Priority Actions</h2><span class="summary-goto" onclick="switchModule(\'comms\',document.querySelector(\'[data-mod=comms]\'))">Comms →</span></div>';
+    priorities.forEach(([id,th]) => {
+      const accentCls = th.priority==='critical' ? ' accent-r' : ' accent-o';
+      const tagCls = th.priority==='critical' ? 'crit' : 'act';
+      const tagText = th.priority==='critical' ? 'Critical' : 'Action';
+      html += `<div class="card${accentCls}" style="margin-bottom:var(--sp3)"><div class="card-h"><h2 style="font-size:var(--f-md);cursor:pointer" onclick="navToComm('${id}')">${th.subject}</h2><span class="tag ${tagCls}">${tagText}</span></div>`;
+      html += `<div style="font-size:var(--f-sm);color:var(--tx2);margin:-4px 0 8px;padding:0 var(--sp3)">${th.preview}</div>`;
+      html += '<div class="act-strip">';
+      if (th.replyTo) html += `<button class="btn btn-p btn-sm" onclick="navToComm('${id}');setTimeout(()=>showReply('${id}'),100)">Reply</button>`;
+      html += '<span class="act-strip-spacer"></span>';
+      html += `<button class="btn btn-sm btn-s" onclick="markThreadDone('${id}')">✓ Done</button>`;
+      html += `<button class="btn btn-sm btn-d" onclick="snoozeThread('${id}')">⏸ Snooze</button>`;
+      html += '</div></div>';
+    });
+    html += '</div>';
+  }
+
+  // 3. Decisions Needed
+  const decisions = priorities.filter(([id,th]) => th.priority==='critical');
+  if (decisions.length) {
+    html += '<div class="summary-section" id="sum-decisions"><div class="summary-section-h"><h2>⚡ Decisions Needed</h2></div>';
+    decisions.forEach(([id,th]) => {
+      html += `<div class="card accent-r" style="margin-bottom:var(--sp3)"><div class="card-h"><h2 style="font-size:var(--f-md);cursor:pointer" onclick="navToComm('${id}')">${th.subject}</h2><span class="tag crit">Critical</span></div>`;
+      html += `<div class="card-b" style="font-size:var(--f-sm);color:var(--tx2);padding:0 var(--sp3)">${th.preview}</div>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // 4. Insights & Correlations
+  html += '<div class="summary-section" id="sum-insights"><div class="summary-section-h"><h2>🔗 Insights & Correlations</h2></div>';
+  DATA.dailySummary.insights.forEach(ins => {
+    html += `<div class="insight-card"><h3>${ins.title}</h3>`;
+    html += `<div class="insight-body">${ins.body}</div>`;
+    if (ins.businessOverlay) html += `<div class="biz" style="margin-top:var(--sp2)"><div class="bl">Business Overlay</div>${ins.businessOverlay}</div>`;
+    html += `<div class="insight-rec"><strong>Recommendation:</strong> ${ins.recommendation}</div>`;
+    // Project + People links
+    html += '<div class="insight-links">';
+    ins.relatedProjects.forEach(pid => {
+      const proj = DATA.projects[pid];
+      if (proj) html += `<span class="per" style="background:${proj.colour}22;color:${proj.colour}" onclick="navToProject('${pid}')">${proj.title}</span>`;
+    });
+    ins.relatedPeople.forEach(pid => {
+      const pe = DATA.people[pid];
+      if (pe) html += `<span class="per" onclick="navToPerson('${pid}')">${pe.n}</span>`;
+    });
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  // 5. Project Pulse
+  html += '<div class="summary-section" id="sum-projects"><div class="summary-section-h"><h2>📊 Project Pulse</h2><span class="summary-goto" onclick="switchModule(\'projects\',document.querySelector(\'[data-mod=projects]\'))">Projects →</span></div>';
+  for (const [id,p] of Object.entries(DATA.projects)) {
+    html += `<div class="pulse-row" onclick="navToProject('${id}')">`;
+    html += `<span class="dot" style="background:${p.colour}"></span>`;
+    html += `<span class="pulse-name">${p.title}</span>`;
+    html += `<div class="pulse-bar"><div class="pulse-fill" style="width:${p.progress}%;background:${p.colour}"></div></div>`;
+    html += `<span class="pulse-pct">${p.progress}%</span>`;
+    html += p.blockers.length ? `<span class="pulse-blockers">⚠ ${p.blockers.length}</span>` : '<span class="pulse-blockers"></span>';
+    html += `<span class="pulse-next" title="${p.nextActions[0]||''}">${p.nextActions[0]||'—'}</span>`;
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // 6. People in Focus — today's calendar attendees + people in open crit/act topics
+  const focusPeople = new Set();
+  // From today's calendar
+  day.events.forEach(e => {
+    // Extract people mentioned in meta
+    for (const [pid,pe] of Object.entries(DATA.people)) {
+      if (e.meta && e.meta.includes(pe.n.split(' ')[0])) focusPeople.add(pid);
+      if (e.title && e.title.includes(pe.n)) focusPeople.add(pid);
+    }
+  });
+  // From open crit/act threads
+  for (const [id,th] of Object.entries(DATA.comms.threads || {})) {
+    if ((th.priority==='critical'||th.priority==='action') && state.threadStatus[id]!=='done' && th.peopleLinks) {
+      th.peopleLinks.forEach(pid => focusPeople.add(pid));
+    }
+  }
+
+  if (focusPeople.size) {
+    html += '<div class="summary-section" id="sum-people"><div class="summary-section-h"><h2>👥 People in Focus</h2><span class="summary-goto" onclick="switchModule(\'people\',document.querySelector(\'[data-mod=people]\'))">People →</span></div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:4px">';
+    focusPeople.forEach(pid => {
+      const pe = DATA.people[pid];
+      if (!pe) return;
+      html += `<div class="focus-person" onclick="navToPerson('${pid}')"><div class="fp-avatar" style="background:${pe.colour}33;color:${pe.colour}">${pe.initials}</div><span class="fp-name">${pe.n}</span></div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // 7. Key Metrics Snapshot
+  const m = DATA.metrics;
+  html += '<div class="summary-section" id="sum-metrics"><div class="summary-section-h"><h2>📈 Key Metrics</h2><span class="summary-goto" onclick="switchModule(\'metrics\',document.querySelector(\'[data-mod=metrics]\'))">Metrics →</span></div>';
+  html += '<div class="metrics-grid">';
+  html += statCard(m.subscribers.total.toLocaleString(), 'Active Subscribers', '+'+m.subscribers.yoyGrowth+'% YoY', 'up');
+  html += statCard(m.subscribers.markets, 'Markets', '', '');
+  html += statCard(m.subscribers.avgDeliveries, 'Avg Deliveries', 'per subscriber', '');
+  html += statCard('+99%', 'YoY Growth', 'subscribers', 'up');
+  html += '</div></div>';
+
+  el.innerHTML = html;
+}
+
+// ===============================================================
+// COMMS MODULE — Unified Inbox
+// ===============================================================
+
+// ── Comms Helper Functions ──
+function relativeTime(dateStr) {
+  if (!dateStr) return '';
+  if (/ago|today|yesterday/i.test(dateStr)) return dateStr;
+  const now = new Date('2026-02-24T12:00:00');
+  try {
+    const normalised = /^\w{3}\s\d{1,2}$/.test(dateStr.trim()) ? dateStr.trim() + ' 2026' : dateStr;
+    const d = new Date(normalised);
+    if (isNaN(d)) return dateStr;
+    const diffMs = now - d;
+    const diffDays = Math.floor(diffMs / 86400000);
+    if (diffDays === 0) { const tm = dateStr.match(/\d{1,2}:\d{2}\s*(am|pm)?/i); return tm ? tm[0] : 'Today'; }
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return diffDays + 'd ago';
+    return dateStr;
+  } catch { return dateStr; }
+}
+
+function deriveActionType(th) {
+  if (th.actionType) return th.actionType;
+  if (th.priority === 'critical' || th.priority === 'action') return th.replyTo ? 'reply-needed' : 'approval-needed';
+  if (th.priority === 'fyi') return 'review';
+  return 'auto';
+}
+
+function getPersonInfo(name) {
+  if (!name || name === 'You') return {role:'You',initials:'ZS',colour:'var(--ac)'};
+  for (const pe of Object.values(DATA.people)) {
+    if (pe.n === name) return {role:pe.role||'',initials:pe.initials||name.slice(0,2).toUpperCase(),colour:pe.colour||'var(--s3)'};
+  }
+  // Fuzzy match by first name
+  for (const pe of Object.values(DATA.people)) {
+    if (name.includes(pe.n.split(' ')[0]) && pe.n.split(' ')[0].length > 2) return {role:pe.role||'',initials:pe.initials||'',colour:pe.colour||'var(--s3)'};
+  }
+  const parts = name.split(' ');
+  return {role:'',initials:(parts[0][0]+(parts.length>1?parts[parts.length-1][0]:'')).toUpperCase(),colour:'var(--tx3)'};
+}
+
+function buildThreadAvatars(th, limit) {
+  limit = limit || 3;
+  const pids = th.peopleLinks || [];
+  if (!pids.length) return '';
+  let h = '<div class="thread-avatars">';
+  pids.slice(0, limit).forEach(pid => {
+    const pe = DATA.people[pid];
+    if (!pe) return;
+    h += '<div class="thread-avatar-chip" style="background:'+pe.colour+'22;color:'+pe.colour+'" title="'+pe.n+'">'+pe.initials+'</div>';
+  });
+  if (pids.length > limit) h += '<div class="thread-avatar-chip" style="background:var(--s3);color:var(--tx3)">+' + (pids.length - limit) + '</div>';
+  h += '</div>';
+  return h;
+}
+
+// ── Comms Intelligence Functions ──
+function isFocusedThread(id, th) {
+  if (state.commsPinned[id]) return true;
+  if (th.priority === 'critical' || th.priority === 'action') return true;
+  if (th.unread) return true;
+  if (th.replyTo) return true;
+  if ((th.peopleLinks || []).some(pid => {
+    const pe = DATA.people[pid];
+    return pe && (pe.tier === 'executive' || pe.tier === 'core');
+  })) return true;
+  if (th.projectLinks && th.projectLinks.length) return true;
+  return false;
+}
+
+function computeThreadScore(th, id) {
+  let score = 0;
+  const priW = { critical: 100, action: 60, fyi: 20, auto: 5 };
+  score += priW[th.priority] || 5;
+  if (th.unread) score += 30;
+  if (state.commsPinned[id]) score += 50;
+  (th.peopleLinks || []).forEach(pid => {
+    const pe = DATA.people[pid];
+    if (pe && pe.tier === 'executive') score += 25;
+    else if (pe && pe.tier === 'core') score += 10;
+  });
+  (th.projectLinks || []).forEach(pid => {
+    const pr = DATA.projects[pid];
+    if (pr && pr.status === 'active') score += 15;
+  });
+  // Recency decay
+  try {
+    const now = new Date('2026-02-24T12:00:00');
+    const act = th.lastActivity || '';
+    const normalised = /^\w{3}\s\d{1,2}$/.test(act.trim()) ? act.trim() + ' 2026' : act;
+    const d = new Date(normalised);
+    if (!isNaN(d)) { const ageDays = Math.max(0, (now - d) / 86400000); score -= ageDays * 3; }
+  } catch {}
+  return score;
+}
+
+function getTimeGroup(dateStr) {
+  if (!dateStr) return 'Older';
+  try {
+    const now = new Date('2026-02-24T12:00:00');
+    const normalised = /^\w{3}\s\d{1,2}$/.test(dateStr.trim()) ? dateStr.trim() + ' 2026' : dateStr;
+    const d = new Date(normalised);
+    if (isNaN(d)) return 'Older';
+    const diffDays = Math.floor((now - d) / 86400000);
+    if (diffDays <= 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return 'This Week';
+    return 'Older';
+  } catch { return 'Older'; }
+}
+
+function getVisibleThreadIds() {
+  const threads = DATA.comms.threads || {};
+  return Object.entries(threads)
+    .filter(([id, th]) => {
+      if (state.threadStatus[id] === 'done') return false;
+      if (state.commsSnoozed[id]) return false;
+      if (state.commsSource !== 'all' && !(th.sources || []).includes(state.commsSource)) return false;
+      const focused = isFocusedThread(id, th);
+      if (state.commsFocus === 'focused' && !focused) return false;
+      if (state.commsFocus === 'other' && focused) return false;
+      if (state.commsFilter !== 'all' && th.priority !== state.commsFilter) return false;
+      // Search filter
+      if (state.commsSearch) {
+        const q = state.commsSearch.toLowerCase();
+        const hay = ((th.subject||'') + ' ' + (th.preview||'') + ' ' + (th.people||[]).join(' ')).toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    })
+    .sort((a, b) => computeThreadScore(b[1], b[0]) - computeThreadScore(a[1], a[0]))
+    .map(([id]) => id);
+}
+
+function enrichThreadsClient() {
+  const threads = DATA.comms.threads || {};
+  for (const [id, th] of Object.entries(threads)) {
+    // Auto-link projects for threads missing links
+    if ((!th.projectLinks || !th.projectLinks.length)) {
+      th.projectLinks = [];
+      const text = ((th.subject || '') + ' ' + (th.preview || '')).toLowerCase();
+      for (const [pid, proj] of Object.entries(DATA.projects)) {
+        if (proj.title && text.includes(proj.title.toLowerCase())) {
+          th.projectLinks.push(pid);
+        }
+      }
+    }
+    // Auto-link people
+    if ((!th.peopleLinks || !th.peopleLinks.length) && th.people && th.people.length) {
+      th.peopleLinks = [];
+      th.people.forEach(name => {
+        for (const [pid, pe] of Object.entries(DATA.people)) {
+          if (pe.n === name || (name.length > 3 && pe.n.includes(name.split(' ')[0]))) {
+            if (!th.peopleLinks.includes(pid)) th.peopleLinks.push(pid);
+            break;
+          }
+        }
+      });
+    }
+    // Infer priority from keywords if still fyi
+    if (th.priority === 'fyi' || th.priority === 'auto') {
+      const text = ((th.subject || '') + ' ' + (th.preview || '')).toLowerCase();
+      if (/urgent|critical|blocker|asap|escalat/.test(text)) th.priority = 'action';
+    }
+    // Compute smart score
+    th.smartScore = computeThreadScore(th, id);
+  }
+}
+
+function buildMsgCard(msg, threadId) {
+  const isYou = msg.sender === 'You' || msg.isYou;
+  const via = msg.via || 'email';
+  const viaCls = via === 'email' ? 'ol' : via === 'teams' ? 'ms' : 'sl';
+  const viaLabel = via === 'email' ? 'Email' : via === 'teams' ? 'Teams' : 'Slack';
+  const pi = getPersonInfo(msg.sender);
+  const avatarBg = msg.colour || pi.colour;
+  const avatarTxt = msg.avatar || pi.initials;
+  let h = '<div class="msg-card' + (isYou ? ' msg-you' : '') + '">';
+  // Header
+  h += '<div class="msg-card-h">';
+  h += '<div class="msg-avatar" style="background:'+avatarBg+'22;color:'+avatarBg+'">'+avatarTxt+'</div>';
+  h += '<div class="msg-sender-info"><div class="msg-sender-name">'+msg.sender+'</div>';
+  if (pi.role && !isYou) h += '<div class="msg-sender-role">'+pi.role+'</div>';
+  h += '</div><div class="msg-card-meta">';
+  h += '<span class="msg-via-badge '+viaCls+'">'+viaLabel+'</span>';
+  h += '<span class="msg-timestamp">'+relativeTime(msg.time)+'</span>';
+  h += '</div></div>';
+  // Recipients
+  if (msg.to && msg.to.length) {
+    let rl = '<strong>To:</strong> '+msg.to.join(', ');
+    if (msg.cc && msg.cc.length) rl += ' &nbsp;<strong>CC:</strong> '+msg.cc.join(', ');
+    h += '<div class="msg-recipients">'+rl+'</div>';
+  }
+  // Body
+  h += '<div class="msg-card-body">'+msg.text+'</div>';
+  // Attachments
+  if (msg.attachments && msg.attachments.length) {
+    h += '<div class="msg-attachments">';
+    msg.attachments.forEach(a => { h += '<span class="msg-attach-item">\u{1F4CE} '+a.name+(a.size?' \u00B7 '+a.size:'')+'</span>'; });
+    h += '</div>';
+  }
+  // Quick actions on hover
+  if (!isYou) {
+    h += '<div class="msg-quick-actions">';
+    h += '<button class="msg-qa-btn" onclick="event.stopPropagation();showReply(\''+threadId+'\');">\u21A9 Reply</button>';
+    if (via === 'email') h += '<button class="msg-qa-btn" onclick="event.stopPropagation();openSendModal(\''+threadId+'\',\'outlook\')">\u2197 Forward</button>';
+    if (via === 'slack') {
+      h += '<button class="msg-qa-btn" onclick="event.stopPropagation();addSlackReaction(\''+threadId+'\',\''+(msg.slackTs||'')+'\',\'\u{1F44D}\',\'thumbsup\')" title="React">\u{1F44D}</button>';
+      h += '<button class="msg-qa-btn" onclick="event.stopPropagation();addSlackReaction(\''+threadId+'\',\''+(msg.slackTs||'')+'\',\'\u2705\',\'white_check_mark\')" title="Done">\u2705</button>';
+      h += '<button class="msg-qa-btn" onclick="event.stopPropagation();addSlackReaction(\''+threadId+'\',\''+(msg.slackTs||'')+'\',\'\u{1F440}\',\'eyes\')" title="Looking">\u{1F440}</button>';
+    }
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function findRelatedThreads(currentId, th, threads) {
+  const related = [];
+  const myPeople = new Set(th.peopleLinks || []);
+  const myProjects = new Set(th.projectLinks || []);
+  for (const [rid, rth] of Object.entries(threads)) {
+    if (rid === currentId || state.threadStatus[rid] === 'done') continue;
+    const sharedPerson = (rth.peopleLinks || []).some(p => myPeople.has(p));
+    const sharedProject = (rth.projectLinks || []).some(p => myProjects.has(p));
+    if (sharedPerson || sharedProject) related.push([rid, rth]);
+  }
+  return related.slice(0, 4);
+}
+
+function copyInlineReply(id) {
+  const ta = $('inlineReplyText-' + id);
+  if (ta) { ta.select(); document.execCommand('copy'); toast('Copied to clipboard', 'ok'); }
+}
+
+async function sendInlineSlack(threadId, channel, threadTs) {
+  const ta = $('inlineReplyText-' + threadId);
+  if (!ta || !ta.value.trim()) { toast('Please enter a message', 'er'); return; }
+  const text = ta.value.trim();
+
+  // If we have a channel, send via API
+  if (channel) {
+    try {
+      const payload = { channel, text };
+      if (threadTs) payload.thread_ts = threadTs;
+      const resp = await fetch('/api/slack/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json();
+      if (data.ok) {
+        ta.value = '';
+        toast('Sent to Slack!', 'ok');
+        // Refresh comms to show the new message
+        DATA._commsLiveLoaded = false;
+        loadCommsLive();
+        return;
+      }
+      console.warn('Slack inline send failed:', data.error);
+    } catch (e) { console.warn('Slack inline send error:', e); }
+  }
+
+  // Fallback: open send modal for Slack
+  openSendModal(threadId, 'slack');
+}
+
+async function addSlackReaction(threadId, msgTs, emoji, emojiName) {
+  const th = DATA.comms.threads && DATA.comms.threads[threadId];
+  if (!th || !th.slackChannel) { toast('Not a Slack thread', 'er'); return; }
+  // If no specific message ts, use the thread ts
+  const timestamp = msgTs || th.slackThreadTs;
+  if (!timestamp) { toast('No message timestamp for reaction', 'er'); return; }
+  try {
+    const resp = await fetch('/api/slack/react', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channel: th.slackChannel, timestamp, name: emojiName })
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      toast(emoji + ' Reacted!', 'ok');
+    } else {
+      if (data.error === 'already_reacted') toast('Already reacted ' + emoji, 'ok');
+      else toast('Reaction failed: ' + (data.error || 'unknown'), 'er');
+    }
+  } catch(e) { toast('Reaction failed', 'er'); }
+}
+
+async function uploadSlackFile(threadId) {
+  const th = DATA.comms.threads && DATA.comms.threads[threadId];
+  if (!th || !th.slackChannel) { toast('Not a Slack thread', 'er'); return; }
+  // Create a simple file input and trigger it
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+    // Read as text for snippet upload
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const resp = await fetch('/api/slack/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            channel: th.slackChannel,
+            content: reader.result,
+            filename: file.name,
+            title: file.name,
+            thread_ts: th.slackThreadTs || undefined
+          })
+        });
+        const data = await resp.json();
+        if (data.ok) toast('File shared to Slack!', 'ok');
+        else toast('Upload failed: ' + (data.error || 'unknown'), 'er');
+      } catch(e) { toast('Upload failed', 'er'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function renderCommsSidebar() {
+  const sb = $('sidebar');
+  const threads = DATA.comms.threads || {};
+
+  // Count per source
+  const srcCounts = { all:0, email:0, slack:0, teams:0 };
+  const unreadCounts = { all:0, email:0, slack:0, teams:0 };
+  for (const [id, th] of Object.entries(threads)) {
+    if (state.threadStatus[id] === 'done') continue;
+    srcCounts.all++;
+    if (th.unread) unreadCounts.all++;
+    (th.sources || []).forEach(s => {
+      if (srcCounts[s] !== undefined) { srcCounts[s]++; if (th.unread) unreadCounts[s]++; }
+    });
+  }
+
+  const items = [
+    { key:'all', icon:'\u{1F4EC}', label:'All', count:unreadCounts.all },
+    { key:'email', icon:'\u2709\uFE0F', label:'Mail', count:unreadCounts.email },
+    { key:'slack', icon:'#', label:'Slack', count:unreadCounts.slack },
+    { key:'teams', icon:'\u{1F4AC}', label:'Teams', count:unreadCounts.teams }
+  ];
+
+  let html = '<div class="comms-rail">';
+  items.forEach(item => {
+    const active = state.commsSource === item.key ? ' active' : '';
+    const badge = item.count > 0 ? '<span class="rail-badge">'+item.count+'</span>' : '';
+    html += '<div class="comms-rail-item'+active+'" onclick="setState(\'commsSource\',\''+item.key+'\')">';
+    html += badge;
+    html += '<span class="comms-rail-icon">'+item.icon+'</span>';
+    html += '<span class="comms-rail-label">'+item.label+'</span>';
+    html += '</div>';
+  });
+  html += '<div class="comms-rail-sep"></div>';
+  // Compose button
+  html += '<div class="comms-rail-item" onclick="openSendModal(null,\'outlook\')" title="Compose">';
+  html += '<span class="comms-rail-icon">\u270F\uFE0F</span>';
+  html += '<span class="comms-rail-label">New</span>';
+  html += '</div>';
+  html += '</div>';
+  sb.innerHTML = html;
+}
+
+// [_oldRenderCommsSidebar deleted during refactor]
+function renderCommsMain() {
+  const el = $('main');
+  el.innerHTML = renderCommsThreadList() + renderCommsReadingPane();
+}
+
+// ── Thread List Pane (left) ──
+function renderCommsThreadList() {
+  const threads = DATA.comms.threads || {};
+  let html = '<div class="comms-list' + (state.commsDensity === 'compact' ? ' density-compact' : '') + '">';
+
+  // Header: title + density toggle + compose
+  html += '<div class="comms-list-header">';
+  html += '<h3>Inbox</h3>';
+  html += '<div class="density-toggle">';
+  html += '<button class="density-btn' + (state.commsDensity === 'comfortable' ? ' active' : '') + '" onclick="setState(\'commsDensity\',\'comfortable\')" title="Comfortable">&#x2630;</button>';
+  html += '<button class="density-btn' + (state.commsDensity === 'compact' ? ' active' : '') + '" onclick="setState(\'commsDensity\',\'compact\')" title="Compact">&#x2261;</button>';
+  html += '</div>';
+  html += '<button class="btn btn-sm btn-p" onclick="openSendModal(null,\'outlook\')" style="padding:3px 10px">&#x270F; Compose</button>';
+  html += '</div>';
+
+  // Focused / Other tabs
+  const allEntries = Object.entries(threads).filter(([id]) => state.threadStatus[id] !== 'done' && !state.commsSnoozed[id]);
+  const filteredBySource = allEntries.filter(([id,th]) => state.commsSource === 'all' || (th.sources || []).includes(state.commsSource));
+  const focusedCount = filteredBySource.filter(([id,th]) => isFocusedThread(id, th)).length;
+  const otherCount = filteredBySource.length - focusedCount;
+
+  html += '<div class="comms-focus-tabs">';
+  html += '<div class="comms-focus-tab' + (state.commsFocus === 'focused' ? ' active' : '') + '" onclick="setState(\'commsFocus\',\'focused\')">Focused<span class="focus-cnt">' + focusedCount + '</span></div>';
+  html += '<div class="comms-focus-tab' + (state.commsFocus === 'other' ? ' active' : '') + '" onclick="setState(\'commsFocus\',\'other\')">Other<span class="focus-cnt">' + otherCount + '</span></div>';
+  html += '</div>';
+
+  // Search
+  html += '<input class="comms-list-search" type="text" placeholder="Search conversations... (/)" value="' + (state.commsSearch || '') + '" oninput="state.commsSearch=this.value;renderCommsMain()" />';
+
+  // Thread list
+  const visibleIds = getVisibleThreadIds();
+  html += '<div class="comms-list-scroll">';
+
+  if (!DATA._commsLiveLoaded && Object.keys(threads).length === 0) {
+    // Skeleton loading
+    for (let i = 0; i < 6; i++) html += '<div class="skel skel-row"></div>';
+  } else if (visibleIds.length === 0) {
+    html += '<div style="padding:var(--sp5);text-align:center;color:var(--tx3)">';
+    html += '<div style="font-size:28px;opacity:.2;margin-bottom:var(--sp2)">\u{1F4ED}</div>';
+    html += '<div style="font-size:var(--f-sm)">No conversations match</div>';
+    html += '</div>';
+  } else {
+    // Group by time
+    const timeGroups = { 'Today': [], 'Yesterday': [], 'This Week': [], 'Older': [] };
+    visibleIds.forEach(id => {
+      const th = threads[id];
+      const grp = getTimeGroup(th.lastActivity);
+      timeGroups[grp].push([id, th]);
+    });
+
+    ['Today', 'Yesterday', 'This Week', 'Older'].forEach(tg => {
+      const items = timeGroups[tg];
+      if (!items.length) return;
+      html += '<div class="comms-time-h">' + tg + '<span class="time-cnt">' + items.length + '</span></div>';
+      items.forEach(([id, th]) => {
+        const active = state.selectedThread === id ? ' active' : '';
+        const unread = th.unread ? ' unread' : '';
+        const critRow = th.priority === 'critical' ? ' crit-row' : '';
+        const isSlack = (th.sources || []).includes('slack');
+        const slackU = isSlack && th.unread ? ' slack-unread' : '';
+
+        // Source icons
+        let srcHtml = '<div class="thread-src-badges">';
+        (th.sources || ['email']).forEach(s => {
+          const cls = s === 'email' ? 'ol' : s === 'teams' ? 'ms' : 'sl';
+          const ltr = s === 'email' ? '\u2709' : s === 'teams' ? 'T' : '#';
+          srcHtml += '<span class="thread-src-icon ' + cls + '">' + ltr + '</span>';
+        });
+        srcHtml += '</div>';
+
+        // Status icons
+        let statusHtml = '<div class="thread-status-icons">';
+        if (state.commsPinned[id]) statusHtml += '<span class="ts-pin" title="Pinned">\u2605</span>';
+        if (state.commsSnoozed[id]) statusHtml += '<span class="ts-snooze" title="Snoozed">\u23F0</span>';
+        statusHtml += '</div>';
+
+        // Unread dot
+        const dot = th.unread ? '<div class="thread-unread-dot"></div>' : '<div style="width:6px"></div>';
+
+        // Project chips
+        let projChips = '';
+        if (th.projectLinks && th.projectLinks.length) {
+          projChips = '<div class="thread-proj-chips">';
+          th.projectLinks.slice(0, 2).forEach(pid => { const p = DATA.projects[pid]; if (p) projChips += '<span class="thread-proj-chip">' + p.title + '</span>'; });
+          projChips += '</div>';
+        }
+
+        // Attachment badge
+        const attachB = th.attachmentCount ? '<span class="thread-attach-badge">\u{1F4CE} ' + th.attachmentCount + '</span>' : '';
+
+        html += '<div class="thread-row' + active + unread + critRow + slackU + '" onclick="selectThread(\'' + id + '\')">';
+        html += dot + srcHtml;
+        html += '<div class="thread-body">';
+        html += '<div class="thread-top">';
+        if (th.priority && th.priority !== 'auto') html += '<span class="pri-badge ' + th.priority + '">' + th.priority + '</span>';
+        html += '<span class="thread-subject">' + (th.subject || 'No subject') + '</span>';
+        html += statusHtml;
+        html += '<span class="thread-time">' + relativeTime(th.lastActivity) + '</span>';
+        html += '</div>';
+        html += '<div class="thread-preview">' + (th.lastSender ? th.lastSender + ': ' : '') + (th.preview || '').substring(0, 72) + '</div>';
+        html += '<div class="thread-meta">';
+        if (th.threadCount > 1) html += '<span class="thread-count">' + th.threadCount + ' msgs</span>';
+        html += buildThreadAvatars(th, 3);
+        html += projChips + attachB;
+        html += '</div></div></div>';
+      });
+    });
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+// ── Reading Pane (right) ──
+function renderCommsReadingPane() {
+  const threads = DATA.comms.threads || {};
+  const id = state.selectedThread;
+  const th = id ? threads[id] : null;
+
+  if (!th) {
+    // Empty state
+    let html = '<div class="comms-reading">';
+    html += '<div class="comms-reading-empty">';
+    html += '<div class="empty-icon">\u{1F4EC}</div>';
+    html += '<div class="empty-title">Select a conversation</div>';
+    html += '<div class="empty-hint">Use <kbd>J</kbd> / <kbd>K</kbd> to navigate threads<br/>Press <kbd>Enter</kbd> to open</div>';
+    html += '<div class="empty-shortcuts">';
+    html += '<span class="shortcut-chip"><kbd>E</kbd> Archive</span>';
+    html += '<span class="shortcut-chip"><kbd>S</kbd> Snooze</span>';
+    html += '<span class="shortcut-chip"><kbd>P</kbd> Pin</span>';
+    html += '<span class="shortcut-chip"><kbd>R</kbd> Reply</span>';
+    html += '<span class="shortcut-chip"><kbd>F</kbd> Focus toggle</span>';
+    html += '<span class="shortcut-chip"><kbd>X</kbd> Read/Unread</span>';
+    html += '</div></div></div>';
+    return html;
+  }
+
+  // Thread detail
+  let html = '<div class="comms-reading">';
+  html += '<div class="comms-reading-scroll">';
+
+  // Sticky header
+  const srcIcons = (th.sources || []).map(s => s === 'email' ? '<span class="thread-src-icon ol" style="width:20px;height:20px;font-size:10px">\u2709</span>' : s === 'teams' ? '<span class="thread-src-icon ms" style="width:20px;height:20px;font-size:10px">T</span>' : '<span class="thread-src-icon sl" style="width:20px;height:20px;font-size:10px">#</span>').join('');
+  html += '<div class="thread-detail-h">';
+  html += '<span class="pri-badge ' + (th.priority || 'auto') + '">' + th.priority + '</span>';
+  html += '<h2 style="flex:1;font-size:var(--f-lg);font-weight:var(--fw-sb)">' + th.subject + '</h2>';
+  html += srcIcons;
+  html += '</div>';
+
+  // Triage action bar
+  const isPinned = state.commsPinned[id];
+  html += '<div class="comms-triage">';
+  html += '<button class="triage-btn" onclick="markThreadDone(\'' + id + '\')"><kbd>E</kbd> Archive</button>';
+  html += '<button class="triage-btn" onclick="toggleSnoozePicker(\'' + id + '\')" style="position:relative"><kbd>S</kbd> Snooze';
+  if (state.commsSnoozePickerOpen === id) {
+    html += '<div class="snooze-picker">';
+    html += '<div class="snooze-option" onclick="event.stopPropagation();snoozeThreadUntil(\'' + id + '\',\'3h\')"><span>\u23F0</span> Later Today<span class="snooze-time">3 hours</span></div>';
+    html += '<div class="snooze-option" onclick="event.stopPropagation();snoozeThreadUntil(\'' + id + '\',\'tomorrow\')"><span>\u{1F305}</span> Tomorrow Morning<span class="snooze-time">9:00 AM</span></div>';
+    html += '<div class="snooze-option" onclick="event.stopPropagation();snoozeThreadUntil(\'' + id + '\',\'nextweek\')"><span>\u{1F4C5}</span> Next Week<span class="snooze-time">Mon 9:00 AM</span></div>';
+    html += '<div class="snooze-option" style="border-top:1px solid var(--bd);margin-top:4px;padding-top:8px" onclick="event.stopPropagation()"><input type="date" style="background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:4px 8px;border-radius:4px;font-size:var(--f-sm);width:100%" onchange="snoozeThreadUntil(\'' + id + '\',\'custom\',this.value)"/></div>';
+    html += '</div>';
+  }
+  html += '</button>';
+  html += '<button class="triage-btn' + (isPinned ? ' pinned' : '') + '" onclick="togglePin(\'' + id + '\')"><kbd>P</kbd> ' + (isPinned ? '\u2605 Pinned' : 'Pin') + '</button>';
+  html += '<button class="triage-btn" onclick="toggleReadStatus(\'' + id + '\')"><kbd>X</kbd> ' + (th.unread ? 'Mark Read' : 'Mark Unread') + '</button>';
+  html += '<span style="flex:1"></span>';
+  if (!state.threadStatus[id]) {
+    html += '<button class="triage-btn" onclick="state.threadStatus[\'' + id + '\']=\'done\';state.selectedThread=null;renderAll();">\u2713 Done</button>';
+  }
+  html += '</div>';
+
+  // Meta bar
+  const participants = th.people || [];
+  const isDone = state.threadStatus[id] === 'done';
+  html += '<div class="thread-detail-meta">';
+  html += '<span>\u{1F4E8} ' + (th.threadCount || 1) + ' message' + ((th.threadCount || 1) !== 1 ? 's' : '') + '</span>';
+  html += '<span>\u{1F465} ' + participants.length + ' participant' + (participants.length !== 1 ? 's' : '') + ': ' + participants.slice(0, 4).join(', ') + (participants.length > 4 ? ' +' + (participants.length - 4) : '') + '</span>';
+  html += '<span>\u{1F552} Last activity: ' + relativeTime(th.lastActivity) + '</span>';
+  html += '</div>';
+
+  // Slack thread context bar
+  const isSlackThread = th.sources && th.sources.includes('slack');
+  if (isSlackThread && th.slackChannelName) {
+    html += '<div class="slack-thread-header">';
+    html += '<span style="color:#E01E5A;font-weight:700">\u{1F4AC}</span>';
+    html += '<span class="slack-ch">' + th.slackChannelName + '</span>';
+    html += '<span class="slack-members">' + participants.length + ' in thread</span>';
+    html += '<div class="slack-actions">';
+    html += '<button class="btn btn-sm btn-slack" onclick="uploadSlackFile(\'' + id + '\')" style="font-size:10px">\u{1F4CE} Share File</button>';
+    html += '<button class="btn btn-sm btn-g" onclick="window.location.href=\'slack://channel?team=T061FA5PB&id=' + th.slackChannel + '\'" style="font-size:10px">Open in Slack</button>';
+    html += '</div></div>';
+  }
+
+  // Linked people & projects chips
+  if ((th.peopleLinks && th.peopleLinks.length) || (th.projectLinks && th.projectLinks.length)) {
+    html += '<div class="linked-items">';
+    if (th.peopleLinks) th.peopleLinks.forEach(pid => {
+      const pe = DATA.people[pid];
+      if (pe) html += '<span class="linked-item" onclick="navToPerson(\'' + pid + '\')"><span class="li-icon" style="color:var(--cy)">\u25CF</span>' + pe.n + (pe.role ? ' \u00B7 <span style="opacity:.6">' + pe.role + '</span>' : '') + '</span>';
+    });
+    if (th.projectLinks) th.projectLinks.forEach(pid => {
+      const proj = DATA.projects[pid];
+      if (proj) html += '<span class="linked-item" onclick="state.module=\'projects\';state.selectedProject=\'' + pid + '\';document.querySelectorAll(\'.tab\').forEach(t=>t.classList.toggle(\'active\',t.dataset.mod===\'projects\'));renderAll()"><span class="li-icon" style="color:var(--gn)">\u25C6</span>' + proj.title + '</span>';
+    });
+    html += '</div>';
+  }
+
+  // Messages
+  if (th.messages && th.messages.length) {
+    html += '<div class="thread-messages">';
+    th.messages.forEach(msg => { html += buildMsgCard(msg, id); });
+    html += '</div>';
+  }
+
+  // Related threads
+  const related = findRelatedThreads(id, th, threads);
+  if (related.length) {
+    html += '<div class="related-threads">';
+    html += '<div class="related-threads-h">\u{1F517} Related Threads</div>';
+    related.forEach(([rid, rth]) => {
+      const sharedProjects = (rth.projectLinks || []).filter(p => (th.projectLinks || []).includes(p)).map(p => DATA.projects[p] ? DATA.projects[p].title : p);
+      const sharedPeople = (rth.peopleLinks || []).filter(p => (th.peopleLinks || []).includes(p)).map(p => DATA.people[p] ? DATA.people[p].n : p);
+      let reason = '';
+      if (sharedProjects.length) reason += sharedProjects.join(', ');
+      if (sharedPeople.length) reason += (reason ? ' \u00B7 ' : '') + sharedPeople.join(', ');
+      html += '<div class="related-thread-chip" onclick="selectThread(\'' + rid + '\')">';
+      html += '<span class="pri-badge ' + (rth.priority || 'auto') + '" style="font-size:9px">' + rth.priority + '</span> ';
+      html += '<strong>' + rth.subject + '</strong>';
+      if (reason) html += '<span style="opacity:.5;margin-left:6px;font-size:11px">via ' + reason + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '</div>'; // end comms-reading-scroll
+
+  // Always-visible quick reply bar
+  const primarySource = (th.sources || ['email'])[0];
+  const qrCls = primarySource === 'email' ? 'ol' : primarySource === 'teams' ? 'ms' : 'sl';
+  const qrLabel = primarySource === 'email' ? 'Email' : primarySource === 'teams' ? 'Teams' : 'Slack';
+  html += '<div class="comms-quick-reply">';
+  html += '<span class="qr-source ' + qrCls + '">' + qrLabel + '</span>';
+  html += '<textarea id="commsQuickReply" placeholder="Quick reply... (R)" rows="1"></textarea>';
+  html += '<div class="comms-quick-reply-actions">';
+  html += '<button class="btn btn-sm btn-p" onclick="sendQuickReply()">Send</button>';
+  html += '<button class="btn btn-sm btn-g" onclick="openSendModal(\'' + id + '\',\'' + (isSlackThread ? 'slack' : 'outlook') + '\')">Full</button>';
+  html += '</div></div>';
+
+  html += '</div>'; // end comms-reading
+  return html;
+}
+
+// CALENDAR MODULE
+// ===============================================================
+function renderCalendarSidebar() {
+  const sb = $('sidebar');
+  const days = DATA.comms.days;
+
+  // Week strip
+  let cal = '<div class="cal-strip">' + days.map((d,i) =>
+    `<div class="cal-d${i===state.selectedDay?' sel':''}" onclick="setState('selectedDay',${i})">`+
+    `<div class="l">${d.label}</div><div class="n">${d.num}</div></div>`
+  ).join('') + '</div>';
+
+  // Meeting list for selected day
+  const day = days[state.selectedDay];
+  let html = cal + '<div class="sb-section"><div class="sb-section-title">' + day.label + ' ' + day.num + ' Feb</div>';
+  day.events.forEach((e,i) => {
+    const act = state.selectedCalEvent===i ? ' act' : '';
+    const dotCls = e.hl ? 'o' : 'b';
+    html += `<div class="nav-i${act}" onclick="state.selectedCalEvent=${i};renderCalendarSidebar();renderCalendarMain()"><span class="dot ${dotCls}"></span><span class="sb-label">${e.t?e.t+' ':''}${e.title}</span></div>`;
+  });
+  html += '</div>';
+  sb.innerHTML = html;
+}
+
+function renderCalendarMain() {
+  const el = $('main');
+  const day = DATA.comms.days[state.selectedDay];
+  let html = `<h2 style="font-size:var(--f-2xl);margin-bottom:var(--sp4)">${day.label} ${day.num} Feb — Schedule</h2>`;
+
+  day.events.forEach((e,i) => {
+    const hlCls = e.hl ? ' hl' : '';
+    const expanded = state.selectedCalEvent === i;
+
+    html += `<div class="cal-meeting-card${hlCls}" onclick="state.selectedCalEvent=${state.selectedCalEvent===i?-1:i};renderCalendarSidebar();renderCalendarMain()">`;
+    html += `<div class="cal-meeting-h"><span class="cal-time">${e.t||'—'}</span><span class="cal-title">${e.title}</span>`;
+    if (e.hl) html += '<span class="tag act">Key</span>';
+    html += '</div>';
+
+    if (expanded) {
+      html += '<div class="cal-meeting-detail">';
+      html += `<div class="cal-meta">${e.meta}</div>`;
+
+      // Find related people from meta
+      const relPeople = [];
+      for (const [pid,pe] of Object.entries(DATA.people)) {
+        const firstName = pe.n.split(' ')[0];
+        if ((e.meta && e.meta.includes(firstName)) || e.title.includes(pe.n)) relPeople.push([pid,pe]);
+      }
+      if (relPeople.length) {
+        html += '<div class="cal-people"><div class="people">';
+        relPeople.forEach(([pid,pe]) => html += `<span class="per" onclick="event.stopPropagation();navToPerson('${pid}')">${pe.n}</span>`);
+        html += '</div></div>';
+      }
+
+      // Find related threads for prep
+      const relTopics = [];
+      for (const [tid,th] of Object.entries(DATA.comms.threads || {})) {
+        if (state.threadStatus[tid]==='done') continue;
+        // Check if any related person is in this thread's people links
+        const hasOverlap = relPeople.some(([pid]) => th.peopleLinks && th.peopleLinks.includes(pid));
+        if (hasOverlap && (th.priority==='critical'||th.priority==='action'||th.priority==='fyi')) relTopics.push([tid,th]);
+      }
+      if (relTopics.length) {
+        html += '<div class="cal-prep"><div class="cal-prep-label">Meeting Prep</div>';
+        relTopics.forEach(([tid,th]) => {
+          const dotCls = th.priority==='critical'?'rd':th.priority==='action'?'or':'bl';
+          html += `<div style="display:flex;align-items:center;gap:6px;margin-top:4px;cursor:pointer" onclick="event.stopPropagation();navToComm('${tid}')"><span class="dot ${dotCls}"></span><span style="font-size:var(--f-sm);color:var(--tx)">${th.subject}</span><span class="tag ${th.priority==='critical'?'crit':th.priority==='action'?'act':'info'}" style="font-size:8px">${th.priority}</span></div>`;
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+
+  el.innerHTML = html;
+}
+
+// ===============================================================
+// PROJECTS MODULE
+// ===============================================================
+function renderProjectsSidebar() {
+  const sb = $('sidebar');
+  let html = '<div class="sb-section">';
+  html += '<div class="sb-section-title">Workstreams</div>';
+  for (const [id, proj] of Object.entries(DATA.projects)) {
+    const act = state.selectedProject===id ? ' act' : '';
+    const blockerBadge = proj.blockers.length ? `<span class="nb">${proj.blockers.length}</span>` : '';
+    html += `<div class="nav-i${act}" onclick="selectProject('${id}')"><span class="dot" style="background:${proj.colour}"></span><span class="sb-label">${proj.title}</span>${blockerBadge}</div>`;
+  }
+  html += '</div>';
+  sb.innerHTML = html;
+}
+
+function renderProjectsMain() {
+  const el = $('main');
+  if (state.selectedProject && DATA.projects[state.selectedProject]) {
+    // Detail view
+    const p = DATA.projects[state.selectedProject];
+    let html = `<div class="card"><div class="card-h"><h2>${p.title}</h2><span class="tag" style="background:${p.colour}22;color:${p.colour}">${p.status}</span></div>`;
+    html += `<div class="card-b">${p.desc}<div class="prog-bar" style="margin-top:12px"><div class="prog-fill" style="width:${p.progress}%;background:${p.colour}"></div></div><span style="font-size:10px;color:var(--tx3)">${p.progress}% complete</span></div></div>`;
+
+    // Milestones
+    html += '<div class="card"><div class="card-h"><h2>Milestones</h2></div><div class="card-b"><div class="milestone-track">';
+    p.milestones.forEach(m => html += `<div class="ms-item ${m.s}">${m.s==='done'?'✓ ':''}${m.t}</div>`);
+    html += '</div></div></div>';
+
+    // Blockers
+    if (p.blockers.length) {
+      html += '<div class="card accent-r"><div class="card-h"><h2>Blockers</h2><span class="tag crit">' + p.blockers.length + '</span></div><div class="card-b">';
+      p.blockers.forEach(b => html += `<div style="display:flex;gap:8px;margin-bottom:6px"><span style="color:var(--rd)">●</span>${b}</div>`);
+      html += '</div></div>';
+    }
+
+    // Next actions
+    if (p.nextActions.length) {
+      html += '<div class="card"><div class="card-h"><h2>Next Actions</h2></div><div class="card-b">';
+      p.nextActions.forEach(a => html += `<div style="display:flex;gap:8px;margin-bottom:6px"><span style="color:var(--ac)">→</span>${a}</div>`);
+      html += '</div></div>';
+    }
+
+    // People
+    if (p.people.length) {
+      html += '<div class="card"><div class="card-h"><h2>People</h2></div><div class="card-b"><div class="people">';
+      p.people.forEach(pid => {
+        const pe = DATA.people[pid];
+        if (pe) html += `<span class="per" onclick="navToPerson('${pid}')">${pe.n}</span>`;
+      });
+      html += '</div></div></div>';
+    }
+
+    // Related comms (threads)
+    if (p.commLinks.length) {
+      html += '<div class="card"><div class="card-h"><h2>Related Comms</h2></div><div class="card-b">';
+      p.commLinks.forEach(cid => {
+        const th = (DATA.comms.threads && DATA.comms.threads[cid]) || (DATA.comms.topics && DATA.comms.topics[cid]);
+        if (th) {
+          const dotCls = th.priority ? (th.priority==='critical'?'rd':th.priority==='action'?'or':'bl') : (th.dot||'bl');
+          const tagCls = th.priority ? (th.priority==='critical'?'crit':th.priority==='action'?'act':'info') : (th.tag||'info');
+          const label = th.subject || th.title || cid;
+          const tagLabel = th.priority ? (th.priority.charAt(0).toUpperCase()+th.priority.slice(1)) : (th.tagText||'');
+          html += `<div class="nav-i" onclick="navToComm('${cid}')" style="margin:0"><span class="dot ${dotCls}"></span><span class="sb-label">${label}</span><span class="tag ${tagCls}" style="margin-left:auto">${tagLabel}</span></div>`;
+        }
+      });
+      html += '</div></div>';
+    }
+
+    el.innerHTML = html;
+  } else {
+    // Overview grid
+    let html = '<div class="proj-grid">';
+    for (const [id,p] of Object.entries(DATA.projects)) {
+      html += `<div class="proj-card" onclick="selectProject('${id}')">`;
+      html += `<h3>${p.title}</h3>`;
+      html += `<div class="proj-status"><span class="dot" style="background:${p.colour}"></span>${p.status}${p.owner?' · '+((DATA.people[p.owner]||{}).n||p.owner):''}</div>`;
+      html += `<div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%;background:${p.colour}"></div></div>`;
+      html += `<div class="proj-meta"><span>${p.milestones.filter(m=>m.s==='done').length}/${p.milestones.length} milestones</span>`;
+      if (p.blockers.length) html += `<span style="color:var(--rd)">⚠ ${p.blockers.length} blocker${p.blockers.length>1?'s':''}</span>`;
+      html += '</div></div>';
+    }
+    html += '</div>';
+    el.innerHTML = html;
+  }
+}
+
+// ===============================================================
+// PEOPLE MODULE
+// ===============================================================
+function renderPeopleSidebar() {
+  const sb = $('sidebar');
+  let html = '<div class="sb-search"><input type="text" placeholder="Search people…" value="' + (state.peopleSearch||'') + '" oninput="setState(\'peopleSearch\',this.value)"/></div>';
+  html += '<div class="filter-bar">';
+  ['team','region','tier','all'].forEach(g => {
+    html += `<div class="filter-pill${state.peopleGroup===g?' active':''}" onclick="setState('peopleGroup','${g}')">${g.charAt(0).toUpperCase()+g.slice(1)}</div>`;
+  });
+  html += '</div>';
+  html += '<div class="sb-section">';
+
+  const search = (state.peopleSearch||'').toLowerCase();
+  const people = Object.entries(DATA.people).filter(([id,p]) => !search || p.n.toLowerCase().includes(search) || p.role.toLowerCase().includes(search) || p.team.toLowerCase().includes(search));
+
+  if (state.peopleGroup==='all') {
+    people.forEach(([id,p]) => {
+      const act = state.selectedPerson===id ? ' act':'';
+      const tierDot = p.tier === 'executive' ? ' style="background:var(--yl)"' : p.tier === 'leadership' ? ' style="background:var(--or)"' : '';
+      html += `<div class="nav-i${act}" onclick="selectPerson('${id}')"><span class="dot"${tierDot || ` style="background:${p.colour}"`}></span><span class="sb-label">${p.n}</span></div>`;
+    });
+  } else {
+    const groups = {};
+    people.forEach(([id,p]) => {
+      const key = state.peopleGroup==='team' ? p.team : state.peopleGroup==='tier' ? (p.tier || 'other').charAt(0).toUpperCase() + (p.tier || 'other').slice(1) : p.region;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push([id,p]);
+    });
+    Object.keys(groups).sort().forEach(g => {
+      html += `<div class="sb-section-title">${g}</div>`;
+      groups[g].forEach(([id,p]) => {
+        const act = state.selectedPerson===id ? ' act':'';
+        html += `<div class="nav-i${act}" onclick="selectPerson('${id}')"><span class="dot" style="background:${p.colour}"></span><span class="sb-label">${p.n}</span></div>`;
+      });
+    });
+  }
+  html += '</div>';
+  sb.innerHTML = html;
+}
+
+function renderPeopleMain() {
+  const el = $('main');
+  if (state.selectedPerson && DATA.people[state.selectedPerson]) {
+    const pid = state.selectedPerson;
+    const p = DATA.people[pid];
+    const tierColors = {executive:'var(--yl)',leadership:'var(--or)',core:'var(--ac)',finance:'var(--gn)',tech:'var(--cy)',regional:'var(--pu)',support:'var(--tx3)'};
+    const tierCol = tierColors[p.tier] || 'var(--tx3)';
+    let html = `<div class="card"><div class="card-h"><h2>${p.n}</h2><div style="display:flex;gap:6px">${p.tier?`<span class="tag" style="background:${tierCol}22;color:${tierCol}">${(p.tier||'').toUpperCase()}</span>`:''}<span class="tag info">${p.region}</span></div></div><div class="card-b">`;
+    html += `<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><div class="avatar" style="background:${p.colour}33;color:${p.colour}">${p.initials}</div>`;
+    html += `<div><strong>${p.role}</strong><br><span style="color:var(--tx3)">${p.team} · ${p.region}</span>`;
+    if (p.scope) html += `<br><span style="color:var(--tx2);font-size:var(--f-sm)">${p.scope}</span>`;
+    html += '</div></div>';
+
+    // Contact buttons
+    html += '<div style="display:flex;gap:8px;margin-bottom:16px">';
+    if (p.email) html += `<a class="btn btn-outlook" href="mailto:${p.email}" style="text-decoration:none">Email</a>`;
+    if (p.slackId) html += `<button class="btn btn-slack" onclick="openSlackDM('${p.slackId}','${p.n.replace(/'/g,"\\'")}')">Slack DM</button>`;
+    html += '</div>';
+
+    // Related threads
+    const relatedTopics = Object.entries(DATA.comms.threads || {}).filter(([id,th]) => th.peopleLinks && th.peopleLinks.includes(pid));
+    if (relatedTopics.length) {
+      html += '<strong style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:1px">Related Comms</strong><div style="margin-top:8px">';
+      relatedTopics.forEach(([id,th]) => {
+        const dotCls = th.priority==='critical'?'rd':th.priority==='action'?'or':'bl';
+        const tagCls = th.priority==='critical'?'crit':th.priority==='action'?'act':'info';
+        const tagLabel = th.priority.charAt(0).toUpperCase()+th.priority.slice(1);
+        html += `<div class="nav-i" onclick="navToComm('${id}')" style="margin:0"><span class="dot ${dotCls}"></span><span class="sb-label">${th.subject}</span><span class="tag ${tagCls}" style="margin-left:auto">${tagLabel}</span></div>`;
+      });
+      html += '</div>';
+    }
+
+    // Related projects
+    const relatedProjects = Object.entries(DATA.projects).filter(([id,proj]) => proj.people && proj.people.includes(pid));
+    if (relatedProjects.length) {
+      html += '<strong style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;display:block;margin-top:16px">Related Projects</strong><div style="margin-top:8px">';
+      relatedProjects.forEach(([id,proj]) => {
+        html += `<div class="nav-i" onclick="navToProject('${id}')" style="margin:0"><span class="dot" style="background:${proj.colour}"></span><span class="sb-label">${proj.title}</span></div>`;
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
+    el.innerHTML = html;
+  } else {
+    // Directory grid
+    const search = (state.peopleSearch||'').toLowerCase();
+    const people = Object.entries(DATA.people).filter(([id,p]) => !search || p.n.toLowerCase().includes(search) || p.role.toLowerCase().includes(search));
+    let html = '';
+
+    // Org insight banner (from email intelligence)
+    if (!search) {
+      html += '<div class="org-insight"><h4>Org Intelligence</h4><p>Beanz sits outside Phil McKnight\'s Specialty Coffee BU — regions interpret Beanz support as selective FTBP moments, not year-round brand narrative. Beanz has no separate budget line — relies on Breville regional budgets. Beanz is "arguably the first leg" of the moat Cliff is building (machines, beans service, premium experience).</p></div>';
+    }
+
+    html += '<div class="people-grid">';
+    people.forEach(([id,p]) => {
+      const tierColors = {executive:'var(--yl)',leadership:'var(--or)',core:'var(--ac)',finance:'var(--gn)',tech:'var(--cy)',regional:'var(--pu)',support:'var(--tx3)'};
+      const tierCol = tierColors[p.tier] || 'var(--tx3)';
+      html += `<div class="person-card" onclick="selectPerson('${id}')">`;
+      html += `<div class="avatar" style="background:${p.colour}33;color:${p.colour}">${p.initials}</div>`;
+      html += `<h4>${p.n}</h4><div class="role">${p.role}</div>`;
+      if (p.tier) html += `<div style="margin:4px 0"><span class="tag" style="background:${tierCol}22;color:${tierCol};font-size:8px">${p.tier.toUpperCase()}</span></div>`;
+      if (p.scope) html += `<div style="font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.3;max-height:30px;overflow:hidden">${p.scope}</div>`;
+      html += '<div class="person-actions">';
+      if (p.email) html += `<button class="btn btn-sm btn-g" onclick="event.stopPropagation();window.open('mailto:${p.email}')">Email</button>`;
+      if (p.slackId) html += `<button class="btn btn-sm btn-slack" onclick="event.stopPropagation();openSlackDM('${p.slackId}','${p.n.replace(/'/g,"\\'")}')">Slack</button>`;
+      html += '</div></div>';
+    });
+    html += '</div>';
+    el.innerHTML = html;
+  }
+}
+
+// ===============================================================
+// METRICS MODULE — Power BI Live Data
+// ===============================================================
+
+/** Fetch latest digest data from server API */
+async function loadDigestData(cadence) {
+  cadence = cadence || DATA.digestCadence || 'weekly';
+  DATA.digestCadence = cadence;
+  DATA.digestLoading = true;
+  DATA.digestError = null;
+  renderMetricsMain(); // show loading state
+
+  try {
+    const resp = await fetch(`/api/digest?cadence=${cadence}`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const json = await resp.json();
+    if (json.error) throw new Error(json.error);
+    DATA.digest = json;
+    DATA.digestLoading = false;
+    renderMetricsMain();
+  } catch (e) {
+    DATA.digestLoading = false;
+    DATA.digestError = e.message;
+    renderMetricsMain();
+  }
+}
+
+/** Switch cadence and reload */
+function setCadence(c) {
+  DATA.digestCadence = c;
+  loadDigestData(c);
+}
+
+/** Set metrics sub-view */
+function setDigestView(v) {
+  DATA.digestView = v;
+  renderMetricsSidebar();
+  renderMetricsMain();
+}
+
+/** Parse a value string like "712.2K" or "10.68M" into a number for comparisons */
+function parseMetricVal(s) {
+  if (!s) return 0;
+  s = String(s).replace(/,/g,'').trim();
+  const m = s.match(/^([\d.]+)\s*([KMB%])?$/i);
+  if (!m) return parseFloat(s) || 0;
+  const n = parseFloat(m[1]);
+  const suffix = (m[2]||'').toUpperCase();
+  if (suffix==='K') return n*1000;
+  if (suffix==='M') return n*1000000;
+  if (suffix==='B') return n*1000000000;
+  return n;
+}
+
+/** Determine delta direction from vs_ly string */
+function deltaDir(vsLy) {
+  if (!vsLy || vsLy === '--') return 'neutral';
+  const n = parseFloat(String(vsLy).replace(/[^0-9.-]/g,''));
+  if (isNaN(n)) return 'neutral';
+  return n >= 0 ? 'up' : 'down';
+}
+
+/** Format vs_ly nicely */
+function fmtVsLY(vsLy) {
+  if (!vsLy || vsLy === '--') return '--';
+  let s = String(vsLy).trim();
+  // Already has % or sign
+  if (s.includes('%')) {
+    if (!s.startsWith('+') && !s.startsWith('-') && !s.startsWith('▲') && !s.startsWith('▼')) {
+      const n = parseFloat(s);
+      if (!isNaN(n) && n > 0) s = '+' + s;
+    }
+    return s;
+  }
+  return s;
+}
+
+/** Known slicer/filter titles to exclude from KPI card display */
+const SLICER_TITLES = new Set([
+  'Currency','OrderType','FY, Month','Free Units','BAGSIZE','Country',
+  'RateType','FY, Month, Week_Ending','VendorName','FY','Month',
+  'Week_Ending','FreeUnits','BagSize'
+]);
+
+/** Check if a card looks like a real KPI (has a numeric value, not a slicer) */
+function isRealKPI(card) {
+  if (!card || !card.title) return false;
+  // Exclude known slicer titles
+  if (SLICER_TITLES.has(card.title)) return false;
+  // If it has a proper value field with numeric data, keep it
+  if (card.value && /[\d]/.test(card.value)) return true;
+  // If it has raw_lines, try to extract a summary value
+  if (card.raw_lines && card.raw_lines.length > 1) {
+    // Look for a total/summary value in raw_lines (usually a standalone number like "19.09K")
+    const summaryLine = card.raw_lines.find(l => /^[\d,.]+[KMB]?$/.test(l.trim()));
+    if (summaryLine) {
+      card.value = summaryLine.trim();
+      return true;
+    }
+    // Look for percentage breakdowns (e.g. "11K (44.49%)")
+    const pctLine = card.raw_lines.find(l => /^\d+[KMB]?\s*\(/.test(l.trim()));
+    if (pctLine) {
+      // Use the first value as the total
+      card.value = card.raw_lines[1]?.trim() || pctLine.trim();
+      return true;
+    }
+  }
+  // If it only has raw_lines and no value, it's a chart or slicer — skip
+  if (!card.value && card.raw_lines) return false;
+  return true;
+}
+
+/** Get the KPI cards from the digest data for current cadence */
+function getDigestKPIs() {
+  const d = DATA.digest;
+  if (!d) return { kpi: [], perf: [] };
+
+  // KPI Metrics page
+  let kpiCards = [];
+  if (d.kpi_metrics) {
+    const km = d.kpi_metrics;
+    // For weekly/monthly cadence, KPI metrics has daily/weekly/monthly sub-views
+    // Use the cadence-appropriate view
+    const cadKey = DATA.digestCadence === 'daily' ? 'daily' : DATA.digestCadence === 'monthly' ? 'monthly' : 'weekly';
+    if (km[cadKey]?.kpiCards) {
+      kpiCards = km[cadKey].kpiCards;
+    } else if (km.daily?.kpiCards) {
+      // Weekly extraction stores data under 'daily' and 'weekly' keys; use the latest available
+      kpiCards = km.weekly?.kpiCards || km.daily.kpiCards;
+    }
+  }
+
+  // Performance page
+  let perfCards = [];
+  if (d.performance?.kpiCards) {
+    perfCards = d.performance.kpiCards;
+  }
+
+  // Filter out slicer/filter cards
+  kpiCards = kpiCards.filter(isRealKPI);
+  perfCards = perfCards.filter(isRealKPI);
+
+  return { kpi: kpiCards, perf: perfCards };
+}
+
+function renderMetricsSidebar() {
+  const sb = $('sidebar');
+  const view = DATA.digestView || 'overview';
+  let html = '';
+
+  // Metrics Engine section (self-learning)
+  html += '<div class="sb-section"><div class="sb-section-title"><span class="learning-pulse"><span class="learning-dot"></span>Intelligence Engine</span></div>';
+  html += '<div class="digest-nav">';
+  const engineViews = [
+    {id:'engine', icon:'🧠', label:'Business Metrics'},
+    {id:'pnl', icon:'💰', label:'P&L Framework'},
+    {id:'alerts', icon:'🔔', label:'Metric Alerts'}
+  ];
+  engineViews.forEach(v => {
+    html += `<div class="nav-i${view===v.id?' active':''}" onclick="setDigestView('${v.id}')"><span>${v.icon}</span><span class="sb-label">${v.label}</span></div>`;
+  });
+  html += '</div></div>';
+
+  // Power BI section
+  html += '<div class="sb-section"><div class="sb-section-title">Power BI Dashboard</div>';
+  html += '<div class="digest-nav">';
+  const views = [
+    {id:'overview', icon:'📊', label:'KPI Overview'},
+    {id:'performance', icon:'📈', label:'Performance'},
+    {id:'subscriptions', icon:'🔄', label:'Subscriptions'},
+    {id:'static', icon:'📋', label:'Summit Sizzle'}
+  ];
+  views.forEach(v => {
+    html += `<div class="nav-i${view===v.id?' active':''}" onclick="setDigestView('${v.id}')"><span>${v.icon}</span><span class="sb-label">${v.label}</span></div>`;
+  });
+  html += '</div></div>';
+
+  // Static dashboards section
+  html += '<div class="sb-section"><div class="sb-section-title">Reference</div>';
+  html += '<div class="digest-nav">';
+  ['markets','retention','revenue'].forEach(v => {
+    const labels = {markets:'Market Breakdown',retention:'Retention by Collection',revenue:'Revenue Highlights'};
+    const icons = {markets:'🌍',retention:'🔄',revenue:'💰'};
+    html += `<div class="nav-i${view===v?' active':''}" onclick="setDigestView('${v}')"><span>${icons[v]}</span><span class="sb-label">${labels[v]}</span></div>`;
+  });
+  html += '</div></div>';
+
+  sb.innerHTML = html;
+}
+
+function renderMetricsMain() {
+  const el = $('main');
+  const view = DATA.digestView || 'overview';
+
+  // Intelligence Engine views
+  if (view === 'engine') { el.innerHTML = renderMetricsEngine(); return; }
+  if (view === 'pnl') { el.innerHTML = renderPnLFramework(); return; }
+  if (view === 'alerts') { el.innerHTML = renderMetricAlerts(); return; }
+
+  // Static views use old rendering
+  if (['markets','retention','revenue','static'].includes(view)) {
+    return renderMetricsStatic(el, view);
+  }
+
+  // Live data views
+  let html = '';
+
+  // Cadence toggle bar
+  html += '<div class="cadence-bar">';
+  ['daily','weekly','monthly'].forEach(c => {
+    html += `<button class="cadence-btn${DATA.digestCadence===c?' active':''}" onclick="setCadence('${c}')">${c.charAt(0).toUpperCase()+c.slice(1)}</button>`;
+  });
+  html += '</div>';
+
+  // Loading state
+  if (DATA.digestLoading) {
+    html += '<div class="no-data"><div class="nd-icon">⏳</div>Loading Power BI data...</div>';
+    el.innerHTML = html;
+    return;
+  }
+
+  // Error state
+  if (DATA.digestError) {
+    const is404 = DATA.digestError.includes('404');
+    if (is404) {
+      html += `<div class="no-data"><div class="nd-icon">📭</div>No ${DATA.digestCadence} extraction yet<div class="nd-sub">Run <code style="color:var(--ac)">node src/extract.js --cadence ${DATA.digestCadence}</code> to generate the first ${DATA.digestCadence} report.<br><button class="cadence-btn" onclick="loadDigestData()" style="margin-top:12px">Retry</button></div></div>`;
+    } else {
+      html += `<div class="no-data"><div class="nd-icon">⚠️</div>Could not load data<div class="nd-sub">${DATA.digestError}<br><button class="cadence-btn" onclick="loadDigestData()" style="margin-top:12px">Retry</button></div></div>`;
+    }
+    el.innerHTML = html;
+    return;
+  }
+
+  // No data yet
+  if (!DATA.digest) {
+    html += '<div class="no-data"><div class="nd-icon">📊</div>No extraction data loaded<div class="nd-sub">Click a cadence above to load the latest Power BI data, or run:<br><code style="color:var(--ac)">node src/extract.js --cadence weekly</code></div></div>';
+    el.innerHTML = html;
+    return;
+  }
+
+  // Freshness indicator
+  const d = DATA.digest;
+  const extractedAt = d.summary?.extractedAt || d.kpi_metrics?.extractedAt || '';
+  const ageMs = extractedAt ? Date.now() - new Date(extractedAt).getTime() : Infinity;
+  const ageHours = Math.round(ageMs / 3600000);
+  const freshClass = ageHours < 12 ? '' : ageHours < 48 ? 'stale' : 'error';
+  const ageText = ageHours < 1 ? 'just now' : ageHours < 24 ? `${ageHours}h ago` : `${Math.round(ageHours/24)}d ago`;
+  html += `<div class="freshness"><span class="dot ${freshClass}"></span> <span>Extracted ${ageText} · ${d.date || ''} · ${(d.cadence||DATA.digestCadence).charAt(0).toUpperCase()+(d.cadence||DATA.digestCadence).slice(1)}</span></div>`;
+
+  // Route to sub-view
+  if (view === 'overview') html += renderKPIOverview();
+  else if (view === 'performance') html += renderPerformanceView();
+  else if (view === 'subscriptions') html += renderSubscriptionsView();
+
+  el.innerHTML = html;
+}
+
+// ─── Overview: Top KPI cards from KPI Metrics page ─────────────
+function renderKPIOverview() {
+  const { kpi, perf } = getDigestKPIs();
+  let html = '';
+
+  if (kpi.length === 0 && perf.length === 0) {
+    return '<div class="no-data"><div class="nd-icon">📭</div>No KPI cards found in this extraction<div class="nd-sub">The dashboard may not have loaded fully during extraction.</div></div>';
+  }
+
+  // Top-line KPIs from KPI Metrics page
+  if (kpi.length > 0) {
+    html += '<div class="section-label">Topline KPIs — by Channel</div>';
+    html += '<div class="kpi-grid">';
+    kpi.forEach(card => {
+      const dir = deltaDir(card.vs_ly);
+      html += `<div class="kpi-card">
+        <div class="kpi-title">${card.title}</div>
+        <div class="kpi-val">${card.value}</div>
+        <div class="kpi-row">
+          ${card.ly_value ? `<span class="kpi-ly">LY: ${card.ly_value}</span>` : ''}
+          ${card.vs_ly ? `<span class="kpi-vs ${dir}">vs LY: ${fmtVsLY(card.vs_ly)}</span>` : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Summary stats from Performance page (first 4 cards = All channel)
+  if (perf.length > 0) {
+    const allChannel = perf.slice(0, 4);
+    html += '<div class="section-label">Performance — All Channels</div>';
+    html += '<div class="kpi-grid">';
+    allChannel.forEach(card => {
+      const dir = deltaDir(card.vs_ly);
+      html += `<div class="kpi-card">
+        <div class="kpi-title">${card.title}</div>
+        <div class="kpi-val">${card.value}</div>
+        <div class="kpi-row">
+          ${card.ly_value ? `<span class="kpi-ly">LY: ${card.ly_value}</span>` : ''}
+          ${card.vs_ly ? `<span class="kpi-vs ${dir}">vs LY: ${fmtVsLY(card.vs_ly)}</span>` : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  return html;
+}
+
+// ─── Performance: Paid/Free/All breakdown ──────────────────────
+function renderPerformanceView() {
+  const { perf } = getDigestKPIs();
+  let html = '';
+
+  if (perf.length === 0) {
+    return '<div class="no-data"><div class="nd-icon">📭</div>No performance data in this extraction</div>';
+  }
+
+  // Performance page cards come in groups:
+  // First 4 = All, Next 4 = Paid, Next 4 = Free, then Subscriptions
+  const groups = [
+    { label: 'All Channels', cards: perf.slice(0, 4), colour: 'var(--ac)' },
+    { label: 'Paid Channels', cards: perf.slice(4, 8), colour: 'var(--gn)' },
+    { label: 'Free Channels', cards: perf.slice(8, 12), colour: 'var(--pu)' }
+  ];
+
+  groups.forEach(g => {
+    if (g.cards.length === 0) return;
+    html += `<div class="section-label">${g.label}</div>`;
+    html += '<div class="kpi-grid">';
+    g.cards.forEach(card => {
+      const dir = deltaDir(card.vs_ly);
+      html += `<div class="kpi-card" style="border-left:3px solid ${g.colour}">
+        <div class="kpi-title">${card.title}</div>
+        <div class="kpi-val">${card.value}</div>
+        <div class="kpi-row">
+          ${card.ly_value ? `<span class="kpi-ly">LY: ${card.ly_value}</span>` : ''}
+          ${card.vs_ly ? `<span class="kpi-vs ${dir}">vs LY: ${fmtVsLY(card.vs_ly)}</span>` : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  // Lifetime values at the bottom
+  const ltvCards = perf.filter(c => c.title.toLowerCase().includes('lifetime'));
+  if (ltvCards.length > 0) {
+    html += '<div class="section-label">Lifetime Values</div>';
+    html += '<div class="kpi-grid" style="grid-template-columns:repeat(2,1fr)">';
+    ltvCards.forEach(card => {
+      html += `<div class="kpi-card" style="border-left:3px solid var(--yl)">
+        <div class="kpi-title">${card.title}</div>
+        <div class="kpi-val">$${card.value}</div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  return html;
+}
+
+// ─── Subscriptions: Active/Cancelled/New ───────────────────────
+function renderSubscriptionsView() {
+  const { perf } = getDigestKPIs();
+  let html = '';
+
+  // Subscription cards: Active Subs, Cancelled Subs, New Subs
+  const subCards = perf.filter(c =>
+    c.title.toLowerCase().includes('sub') &&
+    !c.title.toLowerCase().includes('lifetime')
+  );
+
+  if (subCards.length === 0) {
+    return '<div class="no-data"><div class="nd-icon">📭</div>No subscription data in this extraction</div>';
+  }
+
+  // Group by All vs Paid (first 3 = All, next 3 = Paid)
+  const allSubs = subCards.slice(0, 3);
+  const paidSubs = subCards.slice(3, 6);
+
+  if (allSubs.length > 0) {
+    html += '<div class="section-label">All Subscriptions</div>';
+    html += '<div class="kpi-grid">';
+    allSubs.forEach(card => {
+      const dir = deltaDir(card.vs_ly);
+      const borderColor = card.title.includes('Active') ? 'var(--gn)' :
+                          card.title.includes('Cancel') ? 'var(--rd)' :
+                          card.title.includes('New') ? 'var(--ac)' : 'var(--bd)';
+      html += `<div class="kpi-card" style="border-left:3px solid ${borderColor}">
+        <div class="kpi-title">${card.title}</div>
+        <div class="kpi-val">${card.value}</div>
+        <div class="kpi-row">
+          ${card.ly_value ? `<span class="kpi-ly">LY: ${card.ly_value}</span>` : ''}
+          ${card.vs_ly ? `<span class="kpi-vs ${dir}">vs LY: ${fmtVsLY(card.vs_ly)}</span>` : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (paidSubs.length > 0) {
+    html += '<div class="section-label">Paid Subscriptions</div>';
+    html += '<div class="kpi-grid">';
+    paidSubs.forEach(card => {
+      const dir = deltaDir(card.vs_ly);
+      const borderColor = card.title.includes('Active') ? 'var(--gn)' :
+                          card.title.includes('Cancel') ? 'var(--rd)' :
+                          card.title.includes('New') ? 'var(--ac)' : 'var(--bd)';
+      html += `<div class="kpi-card" style="border-left:3px solid ${borderColor}">
+        <div class="kpi-title">${card.title}</div>
+        <div class="kpi-val">${card.value}</div>
+        <div class="kpi-row">
+          ${card.ly_value ? `<span class="kpi-ly">LY: ${card.ly_value}</span>` : ''}
+          ${card.vs_ly ? `<span class="kpi-vs ${dir}">vs LY: ${fmtVsLY(card.vs_ly)}</span>` : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Net subscriber growth bar chart
+  if (allSubs.length >= 3) {
+    const active = parseMetricVal(allSubs.find(c=>c.title.includes('Active'))?.value);
+    const cancelled = parseMetricVal(allSubs.find(c=>c.title.includes('Cancel'))?.value);
+    const newSubs = parseMetricVal(allSubs.find(c=>c.title.includes('New'))?.value);
+    const maxVal = Math.max(active, cancelled, newSubs) || 1;
+
+    html += '<div class="section-label">Subscriber Flow</div>';
+    html += '<div class="card"><div class="card-b"><div class="bar-chart">';
+    html += `<div class="bar-row"><span class="bar-label">Active</span><div class="bar-track"><div class="bar-fill" style="width:${(active/maxVal*100).toFixed(0)}%;background:var(--gn)">${(active/1000).toFixed(1)}K</div></div></div>`;
+    html += `<div class="bar-row"><span class="bar-label">New</span><div class="bar-track"><div class="bar-fill" style="width:${(newSubs/maxVal*100).toFixed(0)}%;background:var(--ac)">${(newSubs/1000).toFixed(1)}K</div></div></div>`;
+    html += `<div class="bar-row"><span class="bar-label">Cancelled</span><div class="bar-track"><div class="bar-fill" style="width:${(cancelled/maxVal*100).toFixed(0)}%;background:var(--rd)">${(cancelled/1000).toFixed(1)}K</div></div></div>`;
+    html += '</div></div></div>';
+  }
+
+  return html;
+}
+
+// ─── Intelligence Engine: Computed Business Metrics ─────────────
+function renderMetricsEngine() {
+  const me = DATA._metricsEngine;
+  if (!me) {
+    loadMetricsEngine().then(() => renderMetricsMain());
+    return '<div class="no-data"><div class="nd-icon">🧠</div>Loading metrics engine...<div class="nd-sub">Computing business intelligence</div></div>';
+  }
+
+  let html = '<div class="section-label"><span class="learning-pulse"><span class="learning-dot"></span>Adaptive Business Metrics</span></div>';
+
+  // Top metrics cards
+  html += '<div class="metric-engine-grid">';
+  const topKeys = me.topMetrics || Object.keys(me.metrics).slice(0, 5);
+  topKeys.forEach(key => {
+    const m = me.metrics[key];
+    if (!m) return;
+    html += `<div class="metric-engine-card status-${m.status}">`;
+    html += `<div class="me-name">${m.name}</div>`;
+    html += `<div class="me-val">${formatMetricVal(m.value, m.format)}`;
+    if (m.yoy !== undefined) {
+      const dir = m.yoy > 0 ? 'up' : m.yoy < 0 ? 'down' : 'flat';
+      html += `<span class="me-yoy ${dir}">${m.yoy > 0 ? '+' : ''}${(m.yoy * 100).toFixed(0)}% YoY</span>`;
+    }
+    html += '</div>';
+    if (m.detail) html += `<div class="me-detail">${m.detail}</div>`;
+    if (m.target) html += `<div class="me-target">Target: <strong>${formatMetricVal(m.target, m.format)}</strong></div>`;
+    html += `<div class="cor-feedback" style="margin-top:8px;padding-top:6px">`;
+    html += `<button class="fb-btn fb-up" onclick="event.stopPropagation();sendFeedback('metric','${key}','up')" title="Important metric">&#9650;</button>`;
+    html += `<button class="fb-btn fb-down" onclick="event.stopPropagation();sendFeedback('metric','${key}','down')" title="Less important">&#9660;</button>`;
+    html += `</div>`;
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // All metrics table
+  html += '<div style="margin-top:var(--sp5)"><div class="section-label">All Computed Metrics</div>';
+  html += '<div class="card"><div class="card-b"><table class="bm-table"><thead><tr><th>Metric</th><th>Value</th><th>YoY</th><th>Status</th><th>Detail</th></tr></thead><tbody>';
+  Object.entries(me.metrics).forEach(([key, m]) => {
+    const statusCol = {healthy:'var(--gn)',warning:'var(--or)',critical:'var(--rd)',positive:'var(--cy)'}[m.status] || 'var(--tx3)';
+    html += '<tr>';
+    html += `<td style="font-weight:var(--fw-sb)">${m.name}</td>`;
+    html += `<td style="font-weight:var(--fw-b);color:var(--tx)">${formatMetricVal(m.value, m.format)}</td>`;
+    html += `<td>${m.yoy !== undefined ? (m.yoy > 0 ? '+' : '') + (m.yoy * 100).toFixed(0) + '%' : '—'}</td>`;
+    html += `<td><span style="color:${statusCol};font-weight:var(--fw-sb);font-size:var(--f-xs);text-transform:uppercase">${m.status}</span></td>`;
+    html += `<td style="font-size:var(--f-xs);color:var(--tx3)">${m.detail || ''}</td>`;
+    html += '</tr>';
+  });
+  html += '</tbody></table></div></div></div>';
+
+  // Business metrics framework from Power BI context
+  if (me.businessMetrics && me.businessMetrics.length) {
+    html += '<div style="margin-top:var(--sp5)"><div class="section-label">Business Metrics Framework (P&L)</div>';
+    me.businessMetrics.forEach(cat => {
+      const catIcons = {'Unit Economics':'💡','Retention Health':'🔄','Growth Efficiency':'🚀','Operational Health':'⚙️'};
+      html += `<div class="bm-category"><h3>${catIcons[cat.category]||'📊'} ${cat.category}</h3>`;
+      html += '<div class="card"><div class="card-b"><table class="bm-table"><thead><tr><th>Metric</th><th>Formula</th><th>Target</th><th>Priority</th></tr></thead><tbody>';
+      cat.metrics.forEach(m => {
+        html += '<tr>';
+        html += `<td style="font-weight:var(--fw-sb)">${m.name}</td>`;
+        html += `<td style="font-size:var(--f-xs);color:var(--tx3)">${m.formula}</td>`;
+        html += `<td>${m.target || m.current || '—'}</td>`;
+        html += `<td><span class="bm-importance ${m.importance}">${m.importance}</span></td>`;
+        html += '</tr>';
+      });
+      html += '</tbody></table></div></div></div>';
+    });
+    html += '</div>';
+  }
+
+  return html;
+}
+
+function formatMetricVal(val, format) {
+  if (format === 'currency') return '$' + Number(val).toLocaleString();
+  if (format === 'pct') return val + '%';
+  if (format === 'number') return Number(val).toLocaleString();
+  return val;
+}
+
+// ─── P&L Framework from Power BI Context ──────────────────────
+function renderPnLFramework() {
+  let html = '<div class="section-label">Beanz P&L Finance Report — Power BI</div>';
+
+  // P&L overview card
+  html += '<div class="org-insight"><h4>Report Owner: Usman Zia (GTM Finance Manager)</h4><p>Building Beanz P&L in Power BI aligned with D365. Reconciling CommerceTools data with D365 revenue/COGS/freight. Co-owned by Craig Robinson.</p></div>';
+
+  // Data sources
+  html += '<div class="card"><div class="card-h"><h2>Data Sources</h2><span class="tag act">MAPPING IN PROGRESS</span></div><div class="card-b">';
+  const sources = [
+    { name: 'D365', desc: 'Revenue, COGS, Freight — source of financial truth', col: 'var(--gn)' },
+    { name: 'CommerceTools', desc: 'Real-time order data, subscription management', col: 'var(--ac)' },
+    { name: 'Data Lake', desc: 'Historical data extraction and analysis', col: 'var(--pu)' },
+    { name: 'Bean Score', desc: 'Program classification, order-to-program mapping', col: 'var(--cy)' }
+  ];
+  sources.forEach(s => {
+    html += `<div style="display:flex;align-items:center;gap:var(--sp3);padding:8px 0;border-bottom:1px solid var(--bd)"><span style="width:10px;height:10px;border-radius:50%;background:${s.col};flex-shrink:0"></span><div><strong>${s.name}</strong><div style="font-size:var(--f-xs);color:var(--tx3)">${s.desc}</div></div></div>`;
+  });
+  html += '</div></div>';
+
+  // Reconciliation challenges
+  html += '<div class="card accent-o"><div class="card-h"><h2>Reconciliation Challenges</h2><span class="tag crit">5 ISSUES</span></div><div class="card-b">';
+  const challenges = [
+    'Timing difference in revenue recognition between CommerceTools and D365',
+    'Invoice generation timing creates discrepancies',
+    'Manual allocation file from Ellen Lou for month-end adjustments',
+    'Rebates handled manually by commercial managers',
+    'COGS values in CommerceTools are static, need updating to current pricing'
+  ];
+  challenges.forEach(c => {
+    html += `<div style="display:flex;gap:8px;margin-bottom:8px;font-size:var(--f-sm)"><span style="color:var(--or)">&#9888;</span><span>${c}</span></div>`;
+  });
+  html += '</div></div>';
+
+  // Report structure
+  html += '<div class="card"><div class="card-h"><h2>P&L Report Structure</h2></div><div class="card-b">';
+  const structure = [
+    { section: 'Revenue', items: ['Gross Sales by Program (FTBP, Subscription, CS, Non-Sub, PBB, Fusion)', 'Net Revenue after discounts, rebates, adjustments', 'Volume KG by program and region'], col: 'var(--gn)' },
+    { section: 'Costs', items: ['COGS: Coffee costs, packaging (reconciled with D365)', 'Freight: Delivery costs by market', 'Technology: Platform development (CC5021, CC7150)', 'Platform: Shipstation, Ship-engine'], col: 'var(--rd)' },
+    { section: 'Profitability', items: ['Contribution Margin: Revenue - COGS - Freight', 'Operating Margin: After technology and platform costs', 'By Program: Per sales program', 'By Market: Regional P&L view'], col: 'var(--ac)' }
+  ];
+  structure.forEach(s => {
+    html += `<div style="margin-bottom:12px"><div style="font-weight:var(--fw-b);color:${s.col};font-size:var(--f-sm);margin-bottom:4px">${s.section}</div>`;
+    s.items.forEach(item => { html += `<div style="font-size:var(--f-sm);color:var(--tx2);padding:2px 0 2px 16px">• ${item}</div>`; });
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  // Dashboard metrics planned
+  html += '<div class="card"><div class="card-h"><h2>Planned Dashboard Metrics</h2><span class="tag info">8 VISUALS</span></div><div class="card-b"><table class="bm-table"><thead><tr><th>Metric</th><th>Chart Type</th><th>Frequency</th></tr></thead><tbody>';
+  const planned = [
+    { name: 'Revenue by Program', type: 'bar_chart', freq: 'Monthly' },
+    { name: 'Contribution Margin %', type: 'gauge', freq: 'Monthly' },
+    { name: 'Cost per Acquisition by Channel', type: 'comparison', freq: 'Monthly' },
+    { name: 'FTBP Unit Economics', type: 'table', freq: 'Monthly' },
+    { name: 'Market P&L Comparison', type: 'heatmap', freq: 'Monthly' },
+    { name: 'Program Profitability Trend', type: 'line_chart', freq: 'Monthly' },
+    { name: 'Free Bag Cost Impact', type: 'waterfall', freq: 'Quarterly' },
+    { name: 'Technology Cost Ratio', type: 'gauge', freq: 'Quarterly' }
+  ];
+  planned.forEach(p => {
+    html += `<tr><td style="font-weight:var(--fw-sb)">${p.name}</td><td><span class="tag info">${p.type.replace('_',' ')}</span></td><td>${p.freq}</td></tr>`;
+  });
+  html += '</tbody></table></div></div>';
+
+  return html;
+}
+
+// ─── Metric Alerts ──────────────────────────────────────────────
+function renderMetricAlerts() {
+  const me = DATA._metricsEngine;
+  let html = '<div class="section-label">Metric Alerts & Thresholds</div>';
+
+  if (!me) {
+    loadMetricsEngine().then(() => renderMetricsMain());
+    return html + '<div class="no-data"><div class="nd-icon">🔔</div>Loading alerts...<div class="nd-sub">Connecting to intelligence engine</div></div>';
+  }
+
+  // Active alerts
+  const alerts = me.alerts || [];
+  if (alerts.length) {
+    html += '<div class="card accent-o"><div class="card-h"><h2>Active Alerts</h2><span class="tag crit">' + alerts.length + '</span></div><div class="card-b">';
+    alerts.forEach(a => {
+      const metric = me.metrics[a.metricId];
+      const name = metric ? metric.name : a.metricId;
+      const currentVal = metric ? formatMetricVal(metric.value, metric.format) : '?';
+      const breached = metric && ((a.direction === 'above' && metric.value > a.threshold) || (a.direction === 'below' && metric.value < a.threshold));
+      html += `<div style="display:flex;align-items:center;gap:var(--sp3);padding:8px 0;border-bottom:1px solid var(--bd)">`;
+      html += `<span style="font-size:16px">${breached ? '🔴' : '🟢'}</span>`;
+      html += `<div style="flex:1"><strong>${name}</strong>`;
+      html += `<div style="font-size:var(--f-xs);color:var(--tx3)">Alert if ${a.direction} ${formatMetricVal(a.threshold, metric?.format || '')} — Current: ${currentVal}</div>`;
+      html += `</div><span class="tag ${breached ? 'crit' : 'ok'}">${breached ? 'BREACHED' : 'OK'}</span></div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // Auto-detected warnings from metrics
+  html += '<div class="card"><div class="card-h"><h2>Auto-Detected Warnings</h2><span class="tag act">SYSTEM</span></div><div class="card-b">';
+  Object.entries(me.metrics).forEach(([key, m]) => {
+    if (m.status === 'critical' || m.status === 'warning') {
+      const icon = m.status === 'critical' ? '🔴' : '🟡';
+      html += `<div style="display:flex;align-items:center;gap:var(--sp3);padding:6px 0;border-bottom:1px solid var(--bd)">`;
+      html += `<span>${icon}</span><div style="flex:1"><strong>${m.name}</strong>: ${formatMetricVal(m.value, m.format)}`;
+      if (m.detail) html += ` — <span style="color:var(--tx3);font-size:var(--f-xs)">${m.detail}</span>`;
+      html += '</div></div>';
+    }
+  });
+  html += '</div></div>';
+
+  // Learning patterns (from feedback API)
+  const ls = DATA._learningState;
+  if (ls && ls.patterns && ls.patterns.length) {
+    html += '<div class="card"><div class="card-h"><h2>Learned Patterns</h2><span class="learning-pulse"><span class="learning-dot"></span>Self-Learning</span></div><div class="card-b">';
+    ls.patterns.forEach(p => {
+      const conf = Math.round(p.confidence * 100);
+      html += `<div style="display:flex;align-items:center;gap:var(--sp3);padding:6px 0;border-bottom:1px solid var(--bd)">`;
+      html += `<div style="flex:1;font-size:var(--f-sm)">${p.pattern}</div>`;
+      html += `<span style="font-size:var(--f-xs);color:var(--cy)">${conf}% conf</span></div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // System learnings
+  if (ls && ls.learnings && ls.learnings.length) {
+    html += '<div class="card"><div class="card-h"><h2>System Learnings</h2><span class="tag info">' + ls.learnings.length + ' RECORDED</span></div><div class="card-b">';
+    ls.learnings.forEach(l => {
+      html += `<div style="padding:6px 0;border-bottom:1px solid var(--bd);font-size:var(--f-sm)">`;
+      html += `<div style="color:var(--tx2)">${l.pattern}</div>`;
+      html += `<div style="display:flex;gap:8px;margin-top:2px"><span style="font-size:var(--f-xs);color:var(--cy)">${Math.round(l.confidence * 100)}%</span><span style="font-size:var(--f-xs);color:var(--tx3)">${l.source}</span></div>`;
+      html += '</div>';
+    });
+    html += '</div></div>';
+  }
+
+  return html;
+}
+
+// ─── Static views (legacy data + sizzle) ───────────────────────
+function renderMetricsStatic(el, view) {
+  const m = DATA.metrics;
+  let html = '';
+
+  if (view === 'static') {
+    // Brand Summit Sizzle — top-line stat cards from legacy data
+    html += '<div class="metrics-grid" id="met-overview">';
+    html += statCard(m.subscribers.total.toLocaleString(), 'Active Subscribers', '+'+m.subscribers.yoyGrowth+'% YoY', 'up');
+    html += statCard(m.subscribers.markets, 'Markets', '', '');
+    html += statCard(m.subscribers.avgDeliveries, 'Avg Deliveries', 'per subscriber', '');
+    html += statCard('+99%', 'YoY Growth', 'subscribers', 'up');
+    html += '</div>';
+    html += '<div class="card" id="met-revenue"><div class="card-h"><h2>Revenue Highlights</h2><span class="tag ok">Brand Summit Sizzle</span></div><div class="card-b"><div class="metrics-grid" style="grid-template-columns:repeat(2,1fr)">';
+    m.revenueHighlights.forEach(r => { html += statCard(r.val, r.label, r.delta, 'up'); });
+    html += '</div></div></div>';
+  }
+
+  if (view === 'markets') {
+    html += '<div class="card" id="met-markets"><div class="card-h"><h2>Market Breakdown</h2><span class="tag info">'+m.marketBreakdown.length+' markets</span></div><div class="card-b"><div class="bar-chart">';
+    m.marketBreakdown.forEach(mk => {
+      html += `<div class="bar-row"><span class="bar-label">${mk.name}</span><div class="bar-track"><div class="bar-fill" style="width:${mk.pct}%;background:${mk.colour}">${mk.pct}%</div></div><span class="bar-val">${mk.count.toLocaleString()}</span></div>`;
+    });
+    html += '</div></div></div>';
+    html += '<div class="card"><div class="card-h"><h2>Market Distribution</h2></div><div class="card-b"><div class="donut-wrap">';
+    html += buildDonut(m.marketBreakdown);
+    html += '<div class="donut-legend">';
+    m.marketBreakdown.forEach(mk => {
+      html += `<div class="donut-legend-item"><div class="donut-swatch" style="background:${mk.colour}"></div>${mk.name} — ${mk.pct}%</div>`;
+    });
+    html += '</div></div></div></div>';
+  }
+
+  if (view === 'retention') {
+    html += '<div class="card" id="met-retention"><div class="card-h"><h2>Retention by Collection</h2><span class="tag info">Avg Deliveries</span></div><div class="card-b"><div class="bar-chart">';
+    const maxRet = Math.max(...m.retention.map(r=>r.avg));
+    m.retention.forEach(r => {
+      html += `<div class="bar-row"><span class="bar-label">${r.name}</span><div class="bar-track"><div class="bar-fill" style="width:${(r.avg/maxRet*100).toFixed(0)}%;background:${r.colour}">${r.avg}</div></div></div>`;
+    });
+    html += '</div></div></div>';
+  }
+
+  if (view === 'revenue') {
+    html += '<div class="card" id="met-revenue"><div class="card-h"><h2>Revenue Highlights</h2><span class="tag ok">Brand Summit Sizzle</span></div><div class="card-b"><div class="metrics-grid" style="grid-template-columns:repeat(2,1fr)">';
+    m.revenueHighlights.forEach(r => { html += statCard(r.val, r.label, r.delta, 'up'); });
+    html += '</div></div></div>';
+  }
+
+  el.innerHTML = html;
+}
+
+function statCard(val, label, delta, dir) {
+  return `<div class="stat-card"><div class="stat-val">${val}</div><div class="stat-label">${label}</div>${delta?'<div class="stat-delta '+(dir||'')+'">' +delta+'</div>':''}</div>`;
+}
+
+function buildDonut(data) {
+  const size=140, cx=70, cy=70, r=55, sw=20;
+  let cumPct=0;
+  let paths='';
+  data.forEach(d => {
+    const start = cumPct/100*2*Math.PI - Math.PI/2;
+    cumPct += d.pct;
+    const end = cumPct/100*2*Math.PI - Math.PI/2;
+    const large = d.pct>50?1:0;
+    const x1=cx+r*Math.cos(start), y1=cy+r*Math.sin(start);
+    const x2=cx+r*Math.cos(end), y2=cy+r*Math.sin(end);
+    paths += `<path d="M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2}" fill="none" stroke="${d.colour}" stroke-width="${sw}" opacity=".85"/>`;
+  });
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}<text x="${cx}" y="${cy}" text-anchor="middle" dy=".3em" fill="var(--tx)" font-size="16" font-weight="700">${data.reduce((a,d)=>a+d.count,0).toLocaleString()}</text></svg>`;
+}
+
+// ===============================================================
+// ACTIONS
+// ===============================================================
+// ─── Slack Live Comms: polling, unread tracking ───
+let _commsPollingInterval = null;
+let _commsSeenThreadIds = new Set(); // tracks thread IDs user has seen
+let _commsUnreadCount = 0;
+
+async function loadCommsLive(silent) {
+  try {
+    // Refresh from Slack (will be fast if token is set)
+    try { await fetch('/api/comms/refresh'); } catch {}
+
+    const resp = await fetch('/api/comms');
+    if (!resp.ok) return;
+    const liveData = await resp.json();
+    if (liveData && liveData.threads) {
+      const existing = DATA.comms.threads || {};
+      let added = 0;
+      let updated = 0;
+      for (const [id, th] of Object.entries(liveData.threads)) {
+        if (!existing[id]) {
+          th.unread = !_commsSeenThreadIds.has(id);
+          existing[id] = th;
+          added++;
+        } else {
+          // Merge: update messages if newer
+          if (th.messages && th.messages.length > (existing[id].messages||[]).length) {
+            existing[id].messages = th.messages;
+            existing[id].threadCount = th.threadCount || th.messages.length;
+            existing[id].lastActivity = th.lastActivity || existing[id].lastActivity;
+            existing[id].preview = th.preview || existing[id].preview;
+            existing[id].lastSender = th.lastSender || existing[id].lastSender;
+            if (!_commsSeenThreadIds.has(id)) existing[id].unread = true;
+            updated++;
+          }
+        }
+      }
+      DATA.comms.threads = existing;
+      DATA._commsLiveLoaded = true;
+
+      // Enrich threads with smart scores, project/people linking
+      enrichThreadsClient();
+
+      // Count unread
+      _commsUnreadCount = Object.entries(DATA.comms.threads).filter(([id,th]) => th.unread && th.sources && th.sources.includes('slack')).length;
+      updateCommsUnreadBadge();
+
+      if (!silent && added > 0) { renderAll(); toast(added + ' new Slack thread' + (added>1?'s':''), 'ok'); }
+      else if (!silent && updated > 0) { renderAll(); }
+    }
+  } catch(e) { /* silently fail if endpoint not available */ }
+}
+
+function markThreadSeen(id) {
+  _commsSeenThreadIds.add(id);
+  const th = DATA.comms.threads && DATA.comms.threads[id];
+  if (th) th.unread = false;
+  _commsUnreadCount = Object.entries(DATA.comms.threads || {}).filter(([,t]) => t.unread && t.sources && t.sources.includes('slack')).length;
+  updateCommsUnreadBadge();
+}
+
+function updateCommsUnreadBadge() {
+  const badge = $('commsUnreadBadge');
+  if (badge) {
+    badge.textContent = _commsUnreadCount;
+    badge.style.display = _commsUnreadCount > 0 ? '' : 'none';
+  }
+}
+
+function startCommsPolling() {
+  if (_commsPollingInterval) return;
+  _commsPollingInterval = setInterval(() => {
+    if (state.module === 'comms') loadCommsLive(true);
+  }, 45000); // 45 seconds
+}
+
+function stopCommsPolling() {
+  if (_commsPollingInterval) { clearInterval(_commsPollingInterval); _commsPollingInterval = null; }
+}
+
+function switchModule(mod, tabEl) {
+  state.module = mod;
+  state.selectedTopic = null;
+  state.selectedProject = null;
+  state.selectedPerson = null;
+  closePanel();
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.mod===mod));
+  trackInteraction('module_view', mod, mod);
+  renderAll();
+  // Auto-load live comms data when switching to comms + start polling
+  if (mod === 'comms') { loadCommsLive(); startCommsPolling(); }
+  else { stopCommsPolling(); }
+  // Auto-load digest data when switching to metrics (if not already loaded)
+  if (mod === 'metrics' && !DATA.digest && !DATA.digestLoading) {
+    loadDigestData();
+  }
+  // Auto-load strategy data when switching to strategy
+  if (mod === 'strategy' && !DATA.strategy && !DATA.strategyLoading) {
+    loadStrategyData();
+  }
+  // Auto-load news data when switching to news
+  if (mod === 'news' && !DATA.news && !DATA.newsLoading) {
+    loadNewsData();
+  }
+  // Auto-load metrics engine data
+  if (mod === 'metrics' || mod === 'strategy') {
+    loadMetricsEngine();
+    loadLearningState();
+  }
+}
+
+function selectTopic(id) { state.selectedTopic = id; closePanel(); renderAll(); }
+function selectThread(id) { state.selectedThread = id; markThreadSeen(id); closePanel(); renderAll(); }
+function selectProject(id) { state.selectedProject = id; trackInteraction('project_view','projects',id); renderAll(); }
+function selectPerson(id) { state.selectedPerson = id; trackInteraction('person_view','people',id); renderAll(); }
+
+function markDone(id) { state.topicStatus[id] = 'done'; renderAll(); toast('Marked as done','ok'); }
+function markThreadDone(id) { state.threadStatus[id] = 'done'; advanceToNextThread(id); toast('Archived','ok'); }
+function snoozeThread(id) { state.threadStatus[id] = 'snoozed'; state.selectedThread = null; renderAll(); toast('Snoozed','ok'); }
+
+// ── Comms Triage Actions ──
+function advanceToNextThread(currentId) {
+  const ids = getVisibleThreadIds();
+  const idx = ids.indexOf(currentId);
+  if (idx >= 0 && idx < ids.length - 1) selectThread(ids[idx + 1]);
+  else if (idx > 0) selectThread(ids[idx - 1]);
+  else { state.selectedThread = null; renderAll(); }
+}
+function togglePin(id) {
+  if (!id) return;
+  state.commsPinned[id] = !state.commsPinned[id];
+  if (!state.commsPinned[id]) delete state.commsPinned[id];
+  renderAll();
+  toast(state.commsPinned[id] ? 'Pinned' : 'Unpinned', 'ok');
+}
+function toggleReadStatus(id) {
+  if (!id) return;
+  const th = DATA.comms.threads && DATA.comms.threads[id];
+  if (th) { th.unread = !th.unread; if (!th.unread) markThreadSeen(id); renderAll(); }
+}
+function toggleSnoozePicker(id) {
+  if (!id) return;
+  state.commsSnoozePickerOpen = state.commsSnoozePickerOpen === id ? null : id;
+  renderAll();
+}
+function snoozeThreadUntil(id, preset, customDate) {
+  const now = new Date('2026-02-24T12:00:00');
+  let until;
+  switch (preset) {
+    case '3h': until = new Date(now.getTime() + 3 * 3600000); break;
+    case 'tomorrow': until = new Date('2026-02-25T09:00:00'); break;
+    case 'nextweek': until = new Date('2026-03-02T09:00:00'); break;
+    case 'custom': until = customDate ? new Date(customDate + 'T09:00:00') : null; break;
+  }
+  if (until) {
+    state.commsSnoozed[id] = { until: until.toISOString() };
+    state.commsSnoozePickerOpen = null;
+    advanceToNextThread(id);
+    toast('Snoozed until ' + until.toLocaleDateString('en-AU', {weekday:'short',month:'short',day:'numeric'}), 'ok');
+  }
+}
+function focusQuickReply() {
+  const ta = document.getElementById('commsQuickReply');
+  if (ta) ta.focus();
+}
+function sendQuickReply() {
+  const ta = document.getElementById('commsQuickReply');
+  if (!ta || !ta.value.trim()) return;
+  const id = state.selectedThread;
+  const th = DATA.comms.threads && DATA.comms.threads[id];
+  if (!th) return;
+  const isSlack = th.sources && th.sources.includes('slack') && th.slackChannel;
+  if (isSlack) {
+    const text = ta.value.trim();
+    fetch('/api/slack/send', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ channel:th.slackChannel, text:text, thread_ts:th.slackThreadTs||undefined })})
+      .then(r => r.json())
+      .then(d => { if (d.ok) { ta.value = ''; toast('Sent via Slack','ok'); loadCommsLive(true); } else { toast('Send failed: '+(d.error||'unknown'),'er'); }})
+      .catch(() => toast('Send failed','er'));
+  } else {
+    openSendModal(id, 'outlook');
+  }
+}
+function snoozeTopic(id) { state.topicStatus[id] = 'snoozed'; renderAll(); toast('Snoozed','ok'); }
+
+function toggleSidebar() { state.sidebarCollapsed = !state.sidebarCollapsed; renderAll(); }
+
+// Cross-module navigation
+function navToPerson(pid) { state.module='people'; state.selectedPerson=pid; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mod==='people')); closePanel(); renderAll(); }
+function navToProject(pid) { state.module='projects'; state.selectedProject=pid; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mod==='projects')); closePanel(); renderAll(); }
+function navToComm(cid) { state.module='comms'; state.selectedTopic=cid; state.selectedThread=cid; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mod==='comms')); closePanel(); renderAll(); }
+function navToCalendar() { state.module='calendar'; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mod==='calendar')); closePanel(); renderAll(); }
+function navToSummary() { state.module='summary'; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mod==='summary')); closePanel(); renderAll(); }
+
+// ===============================================================
+// PANEL (slide-in)
+// ===============================================================
+function openPanel(title, html) {
+  $('panelTitle').textContent = title;
+  $('panelBody').innerHTML = html;
+  $('panel').classList.add('open');
+  state.panelOpen = true;
+}
+function closePanel() { $('panel').classList.remove('open'); state.panelOpen = false; }
+
+function showReply(id) {
+  // Try threads first, then legacy topics
+  const th = (DATA.comms.threads && DATA.comms.threads[id]) || DATA.comms.topics[id];
+  if (!th || !th.replyTo) return;
+  const subject = th.replySubject || th.subject || '';
+  let html = `<div class="reply-box"><div class="reply-h"><span class="lb">To: ${th.replyTo}</span><span class="ch">${subject}</span></div>`;
+  html += `<textarea class="reply-ta" id="replyText">${th.replyDraft || ''}</textarea>`;
+  html += `<div class="reply-f"><button class="btn btn-g" onclick="copyReply()">Copy</button><div style="display:flex;gap:6px"><button class="btn btn-outlook" onclick="openSendModal('${id}','outlook')">Outlook</button><button class="btn btn-slack" onclick="openSendModal('${id}','slack')">Slack</button></div></div></div>`;
+  openPanel('Reply to ' + th.replyTo, html);
+}
+
+function showContext(id) {
+  const tp = (DATA.comms.threads && DATA.comms.threads[id]) || (DATA.comms.topics && DATA.comms.topics[id]);
+  if (!tp) return;
+  if (tp.context) {
+    const html = tp.context.map(c =>
+      c.isBiz
+        ? `<div class="biz"><div class="bl">${c.label}</div><div class="ct">${c.text}</div>${c.meta?'<div class="cm">'+c.meta+'</div>':''}</div>`
+        : `<div class="ctx"><div class="cl">${c.label}</div><div class="ct">${c.text}</div>${c.meta?'<div class="cm">'+c.meta+'</div>':''}</div>`
+    ).join('');
+    openPanel('Context — ' + (tp.subject || tp.title), html);
+  } else if (tp.messages) {
+    // Thread view — show messages as context
+    const html = tp.messages.map(m =>
+      `<div class="ctx"><div class="cl">${m.sender} via ${m.via}</div><div class="ct">${m.text}</div><div class="cm">${m.time}</div></div>`
+    ).join('');
+    openPanel('Context — ' + tp.subject, html);
+  }
+}
+
+// ===============================================================
+// SEND MODAL (Outlook + Slack)
+// ===============================================================
+let activeSendTab = 'outlook';
+let currentSendTopicId = null;
+
+function openSendModal(id, tab) {
+  currentSendTopicId = id;
+  // Try threads first, then legacy topics
+  const tp = (DATA.comms.threads && DATA.comms.threads[id]) || DATA.comms.topics[id];
+  if (!tp) return;
+  const draft = $('replyText')?.value || tp.replyDraft || '';
+  $('modalTo').value = tp.replyEmail || '';
+  $('modalSubject').value = tp.replySubject || tp.subject || '';
+  $('modalBody').value = draft;
+  $('slackBody').value = draft;
+  const st = $('slackTarget');
+  st.value = tp.slackId || '';
+  $('modalTitle').textContent = 'Send to ' + (tp.replyTo || '');
+  switchSendTab(tab || 'outlook');
+  $('sendModal').classList.add('show');
+}
+
+function switchSendTab(tab) {
+  activeSendTab = tab;
+  $('tabOutlook').classList.toggle('active', tab==='outlook');
+  $('tabSlack').classList.toggle('active', tab==='slack');
+  $('outlookFields').style.display = tab==='outlook'?'':'none';
+  $('slackFields').style.display = tab==='slack'?'':'none';
+  $('btnSendOutlook').style.display = tab==='outlook'?'':'none';
+  $('btnSendSlack').style.display = tab==='slack'?'':'none';
+  if (tab === 'slack') populateSlackTargets();
+}
+
+function closeModal() { $('sendModal').classList.remove('show'); }
+
+// Populate Slack recipient dropdown dynamically from team directory + channels
+let _slackChannelsCache = null;
+async function populateSlackTargets() {
+  const sel = $('slackTarget');
+  const currentVal = sel.value;
+  sel.innerHTML = '<option value="">-- Select recipient --</option>';
+
+  // People from team directory (anyone with a slackId)
+  const peopleGroup = document.createElement('optgroup');
+  peopleGroup.label = 'People (DM)';
+  const sortedPeople = Object.entries(DATA.people)
+    .filter(([,p]) => p.slackId)
+    .sort(([,a],[,b]) => a.n.localeCompare(b.n));
+  sortedPeople.forEach(([id, p]) => {
+    const opt = document.createElement('option');
+    opt.value = p.slackId;
+    opt.textContent = p.n + (p.role ? ' \u00B7 ' + p.role : '');
+    peopleGroup.appendChild(opt);
+  });
+  if (peopleGroup.children.length) sel.appendChild(peopleGroup);
+
+  // Channels from API (with fallback to known channels)
+  const channelGroup = document.createElement('optgroup');
+  channelGroup.label = 'Channels';
+  try {
+    if (!_slackChannelsCache) {
+      const resp = await fetch('/api/comms/channels');
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.ok) _slackChannelsCache = data.channels;
+      }
+    }
+    if (_slackChannelsCache && _slackChannelsCache.length) {
+      _slackChannelsCache
+        .sort((a,b) => a.name.localeCompare(b.name))
+        .forEach(ch => {
+          const opt = document.createElement('option');
+          opt.value = ch.id;
+          opt.textContent = '#' + ch.name + (ch.memberCount ? ' (' + ch.memberCount + ')' : '');
+          channelGroup.appendChild(opt);
+        });
+    }
+  } catch(e) { /* fallback: no channels listed */ }
+  // Fallback if API didn't work
+  if (!channelGroup.children.length) {
+    [['C090HAX2V4H','#beanz-load-balancing'],['C046MM8NHHB','#beanz-bof'],['C05L5AA1ABW','#beanz-on-breville']].forEach(([id,name]) => {
+      const opt = document.createElement('option');
+      opt.value = id; opt.textContent = name;
+      channelGroup.appendChild(opt);
+    });
+  }
+  sel.appendChild(channelGroup);
+
+  // Restore previous selection
+  if (currentVal) sel.value = currentVal;
+}
+
+// Character counter for Slack body
+document.addEventListener('DOMContentLoaded', () => {
+  const sb = document.getElementById('slackBody');
+  if (sb) sb.addEventListener('input', () => {
+    const cc = document.getElementById('slackCharCount');
+    if (cc) cc.textContent = sb.value.length;
+  });
+});
+
+function uploadSlackFileFromModal() {
+  const target = $('slackTarget').value;
+  if (!target) { toast('Select a recipient first', 'er'); return; }
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const resp = await fetch('/api/slack/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ channel: target, content: reader.result, filename: file.name, title: file.name })
+        });
+        const data = await resp.json();
+        if (data.ok) toast('File shared to Slack!', 'ok');
+        else toast('Upload failed: ' + (data.error || 'unknown'), 'er');
+      } catch(e) { toast('Upload failed', 'er'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// Open send modal pre-set to Slack DM for a specific person
+function openSlackDM(slackId, personName) {
+  currentSendTopicId = null;
+  $('modalTo').value = '';
+  $('modalSubject').value = '';
+  $('modalBody').value = '';
+  $('slackBody').value = '';
+  $('modalTitle').textContent = 'Slack DM to ' + personName;
+  switchSendTab('slack');
+  // Wait for dropdown to populate, then select the person
+  setTimeout(() => { $('slackTarget').value = slackId; }, 100);
+  $('sendModal').classList.add('show');
+}
+
+function sendViaOutlook() {
+  const to = $('modalTo').value, subj = $('modalSubject').value, body = $('modalBody').value;
+  if (!to) { toast('Please enter a recipient','er'); return; }
+  window.open('mailto:'+encodeURIComponent(to)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body),'_blank');
+  closeModal(); toast('Opening Outlook with draft pre-filled','ok');
+}
+
+async function sendViaSlack() {
+  const target = $('slackTarget').value, body = $('slackBody').value;
+  if (!target) { toast('Please select a Slack recipient','er'); return; }
+  if (!body.trim()) { toast('Please enter a message','er'); return; }
+
+  // Resolve thread_ts if replying to a Slack thread
+  let threadTs = null;
+  if (currentSendTopicId) {
+    const tp = (DATA.comms.threads && DATA.comms.threads[currentSendTopicId]) || DATA.comms.topics[currentSendTopicId];
+    if (tp && tp.slackThreadTs) threadTs = tp.slackThreadTs;
+  }
+
+  // If target looks like a channel ID (C...) or user ID (U...), try API send first
+  if (/^[CUG]\w{8,}$/.test(target)) {
+    try {
+      const payload = { channel: target, text: body };
+      if (threadTs) payload.thread_ts = threadTs;
+      const resp = await fetch('/api/slack/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await resp.json();
+      if (data.ok) {
+        closeModal();
+        toast('Message sent to Slack!', 'ok');
+        // Refresh comms to show new message
+        DATA._commsLiveLoaded = false;
+        loadCommsLive();
+        return;
+      }
+      console.warn('Slack API send failed:', data.error);
+    } catch (e) {
+      console.warn('Slack API send error:', e);
+    }
+  }
+
+  // Fallback: copy to clipboard and open Slack deep link
+  try { await navigator.clipboard.writeText(body); } catch(e) {}
+  window.location.href = 'slack://user?team=T061FA5PB&id=' + target;
+  closeModal();
+  toast('\u2713 Message copied \u2014 Slack opening, Ctrl+V and send', 'ok');
+}
+
+function copyReply() {
+  const ta = $('replyText');
+  if (ta) { ta.select(); document.execCommand('copy'); toast('Copied to clipboard','ok'); }
+}
+
+// ===============================================================
+// COMMAND PALETTE
+// ===============================================================
+function openPalette() { $('paletteBg').classList.add('show'); $('paletteInput').value=''; $('paletteInput').focus(); searchPalette(''); }
+function closePalette() { $('paletteBg').classList.remove('show'); }
+
+function searchPalette(q) {
+  const results = [];
+  const ql = q.toLowerCase();
+  if (!ql) { $('paletteResults').innerHTML=''; return; }
+
+  // Threads (unified inbox) — search subject, preview, and message text
+  for (const [id,th] of Object.entries(DATA.comms.threads || {})) {
+    const matchSubject = th.subject.toLowerCase().includes(ql);
+    const matchPreview = th.preview && th.preview.toLowerCase().includes(ql);
+    const matchMessages = th.messages && th.messages.some(m => m.text && m.text.toLowerCase().includes(ql));
+    const matchPeople = th.people && th.people.some(p => p.toLowerCase().includes(ql));
+    if (matchSubject || matchPreview || matchMessages || matchPeople) {
+      const tagLabel = th.priority.charAt(0).toUpperCase()+th.priority.slice(1);
+      const isSlack = th.sources && th.sources.includes('slack');
+      const sub = tagLabel + (isSlack ? ' \u00B7 Slack' : '') + (th.slackChannelName ? ' ' + th.slackChannelName : '');
+      results.push({type:'comms',id,title:th.subject,sub,colour:th.priority==='critical'?'var(--rd)':th.priority==='action'?'var(--or)':isSlack?'var(--pu)':'var(--ac)'});
+    }
+  }
+  // Insights (Daily Summary)
+  DATA.dailySummary.insights.forEach(ins => {
+    if (ins.title.toLowerCase().includes(ql)) results.push({type:'summary',id:ins.id,title:ins.title,sub:'Insight',colour:'var(--cy)'});
+  });
+  // Projects
+  for (const [id,p] of Object.entries(DATA.projects)) {
+    if (p.title.toLowerCase().includes(ql)) results.push({type:'projects',id,title:p.title,sub:p.status,colour:p.colour});
+  }
+  // People
+  for (const [id,p] of Object.entries(DATA.people)) {
+    if (p.n.toLowerCase().includes(ql) || p.role.toLowerCase().includes(ql)) results.push({type:'people',id,title:p.n,sub:p.role,colour:p.colour});
+  }
+  // News articles
+  if (DATA.news?.articles) {
+    DATA.news.articles.forEach(a => {
+      if (a.title.toLowerCase().includes(ql) || (a.summary || '').toLowerCase().includes(ql)) {
+        results.push({type:'news',id:a.id,title:a.title,sub:(a.sourceName||a.source)+' \u00B7 '+timeAgo(a.publishedAt),colour:'var(--or)'});
+      }
+    });
+  }
+
+  $('paletteResults').innerHTML = results.slice(0,8).map((r,i) =>
+    `<div class="palette-item${i===0?' sel':''}" onclick="paletteGo('${r.type}','${r.id}')">` +
+    `<div class="pi-icon" style="background:${r.colour}22;color:${r.colour}">${r.type[0].toUpperCase()}</div>` +
+    `<div class="pi-text"><div class="pi-title">${r.title}</div><div class="pi-sub">${r.sub||''}</div></div>` +
+    `<span class="pi-mod">${r.type}</span></div>`
+  ).join('');
+}
+
+function paletteGo(type, id) {
+  closePalette();
+  if (type==='summary') { switchModule('summary', document.querySelector('[data-mod="summary"]')); }
+  else if (type==='comms') navToComm(id);
+  else if (type==='projects') navToProject(id);
+  else if (type==='people') navToPerson(id);
+  else if (type==='news') { switchModule('news', document.querySelector('[data-mod="news"]')); setTimeout(() => openNewsDetail(id), 300); }
+}
+
+function paletteKey(e) {
+  if (e.key==='Escape') closePalette();
+  if (e.key==='Enter') {
+    const sel = document.querySelector('.palette-item.sel');
+    if (sel) sel.click();
+  }
+}
+
+// ===============================================================
+// KEYBOARD SHORTCUTS
+// ===============================================================
+document.addEventListener('keydown', e => {
+  // Ignore if in input/textarea
+  if (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
+
+  if (e.key==='Escape') {
+    if ($('paletteBg').classList.contains('show')) { closePalette(); return; }
+    if ($('sendModal').classList.contains('show')) { closeModal(); return; }
+    if ($('kbModal').classList.contains('show')) { $('kbModal').classList.remove('show'); return; }
+    if (state.panelOpen) { closePanel(); return; }
+  }
+  if ((e.ctrlKey||e.metaKey) && e.key==='k') { e.preventDefault(); openPalette(); return; }
+  if (e.key==='1') switchModule('summary', document.querySelector('[data-mod="summary"]'));
+  if (e.key==='2') switchModule('comms', document.querySelector('[data-mod="comms"]'));
+  if (e.key==='3') switchModule('calendar', document.querySelector('[data-mod="calendar"]'));
+  if (e.key==='4') switchModule('projects', document.querySelector('[data-mod="projects"]'));
+  if (e.key==='5') switchModule('people', document.querySelector('[data-mod="people"]'));
+  if (e.key==='6') switchModule('metrics', document.querySelector('[data-mod="metrics"]'));
+  if (e.key==='7') switchModule('strategy', document.querySelector('[data-mod="strategy"]'));
+  if (e.key==='8') switchModule('news', document.querySelector('[data-mod="news"]'));
+  // R = reply in comms, refresh elsewhere. Shift+R always refreshes.
+  if (e.shiftKey && (e.key==='R')) { triggerRefresh(); return; }
+  if ((e.key==='r'||e.key==='R') && state.module !== 'comms') triggerRefresh();
+  if (e.key==='b'||e.key==='B') toggleSidebar();
+  if (e.key==='?') $('kbModal').classList.add('show');
+
+  // ── Comms-specific shortcuts ──
+  if (state.module === 'comms') {
+    // Triage (only with selected thread)
+    if (state.selectedThread) {
+      if (e.key==='e'||e.key==='E') { e.preventDefault(); markThreadDone(state.selectedThread); return; }
+      if (e.key==='r') { e.preventDefault(); focusQuickReply(); return; }
+      if (e.key==='s') { e.preventDefault(); toggleSnoozePicker(state.selectedThread); return; }
+      if (e.key==='p') { e.preventDefault(); togglePin(state.selectedThread); return; }
+      if (e.key==='x'||e.key==='X') { e.preventDefault(); toggleReadStatus(state.selectedThread); return; }
+    }
+    // Global comms shortcuts
+    if (e.key==='f') { e.preventDefault(); setState('commsFocus', state.commsFocus === 'focused' ? 'other' : 'focused'); return; }
+    if (e.key==='d') { e.preventDefault(); setState('commsDensity', state.commsDensity === 'comfortable' ? 'compact' : 'comfortable'); return; }
+    if (e.key==='/') {
+      e.preventDefault();
+      const searchEl = document.querySelector('.comms-list-search');
+      if (searchEl) searchEl.focus();
+      return;
+    }
+    if (e.key==='Enter' && !state.selectedThread) {
+      const ids = getVisibleThreadIds();
+      if (ids.length) selectThread(ids[0]);
+      return;
+    }
+    // Escape clears snooze picker first
+    if (e.key==='Escape' && state.commsSnoozePickerOpen) {
+      state.commsSnoozePickerOpen = null; renderAll(); return;
+    }
+  }
+
+  // j/k navigation — uses smart sorted visible thread list
+  if (e.key==='j'||e.key==='k') {
+    if (state.module==='comms') {
+      const ids = getVisibleThreadIds();
+      if (!ids.length) return;
+      const idx = ids.indexOf(state.selectedThread);
+      if (e.key==='j') selectThread(ids[Math.min(idx+1, ids.length-1)] || ids[0]);
+      if (e.key==='k' && idx>0) selectThread(ids[idx-1]);
+    }
+  }
+});
+
+// ===============================================================
+// TOAST
+// ===============================================================
+function toast(msg, type) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type||'ok') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function triggerRefresh() {
+  const btn = $('refreshBtn');
+  btn.classList.add('spinning');
+  toast('Run  /refresh-dashboard  in Claude Code to pull live data', 'ok');
+  setTimeout(() => {
+    btn.classList.remove('spinning');
+    btn.classList.add('done');
+    setTimeout(() => btn.classList.remove('done'), 2000);
+  }, 3000);
+}
+
+// ===============================================================
+// SELF-LEARNING ENGINE
+// ===============================================================
+/** Send feedback to the learning API */
+async function sendFeedback(type, target, value, context) {
+  try {
+    await fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'feedback', type, target, value, context: context || {} })
+    });
+    const feedbackMsg = { up: 'Boosted', down: 'Reduced weight', pin: 'Pinned', dismiss: 'Dismissed' }[value] || 'Recorded';
+    toast(`${feedbackMsg} — system learning`, 'ok');
+  } catch (e) {
+    toast('Feedback saved locally', 'ok');
+  }
+}
+
+/** Track interaction for adaptive learning */
+function trackInteraction(type, module, target) {
+  // Fire and forget — don't block UI
+  fetch('/api/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'interaction', type, module, target })
+  }).catch(() => {});
+}
+
+/** Load adaptive metrics from the metrics engine API */
+async function loadMetricsEngine() {
+  if (DATA._metricsEngine) return; // already loaded
+  try {
+    const resp = await fetch('/api/metrics');
+    if (!resp.ok) return;
+    DATA._metricsEngine = await resp.json();
+  } catch {}
+}
+
+/** Load feedback/learning state */
+async function loadLearningState() {
+  try {
+    const resp = await fetch('/api/feedback');
+    if (!resp.ok) return;
+    DATA._learningState = await resp.json();
+  } catch {}
+}
+
+// ===============================================================
+// NEWS DIGEST MODULE
+// ===============================================================
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return days + 'd ago';
+  if (days < 30) return Math.floor(days / 7) + 'w ago';
+  return new Date(dateStr).toLocaleDateString();
+}
+
+function newsCountByCategory(cat) {
+  return (DATA.news?.articles || []).filter(a => a.category === cat).length;
+}
+function newsCountPinned() {
+  return (DATA.news?.articles || []).filter(a => a.pinned).length;
+}
+
+function loadNewsData() {
+  DATA.newsLoading = true;
+  renderAll();
+  fetch('/api/news')
+    .then(r => r.json())
+    .then(d => { DATA.news = d; DATA.newsLoading = false; renderAll(); })
+    .catch(e => { DATA.newsLoading = false; DATA.newsError = e.message; renderAll(); });
+}
+
+async function refreshNews() {
+  toast('Refreshing news feeds...', 'ok');
+  try {
+    const resp = await fetch('/api/news/refresh');
+    const data = await resp.json();
+    if (data.ok) {
+      toast(data.newArticles + ' new article' + (data.newArticles !== 1 ? 's' : '') + ' fetched', 'ok');
+      DATA.news = null;
+      loadNewsData();
+    } else {
+      toast('Refresh failed: ' + (data.error || 'unknown'), 'er');
+    }
+  } catch {
+    toast('Refresh failed \u2014 server unreachable', 'er');
+  }
+}
+
+function renderNewsSidebar() {
+  const sb = $('sidebar');
+  const categories = [
+    { id: 'all', icon: '\uD83D\uDCF0', label: 'All News', count: (DATA.news?.articles || []).length },
+    { id: 'industry', icon: '\u2615', label: 'Coffee Industry', count: newsCountByCategory('industry') },
+    { id: 'reddit', icon: '\uD83D\uDDE8\uFE0F', label: 'Reddit', count: newsCountByCategory('reddit') },
+    { id: 'youtube', icon: '\uD83C\uDFA5', label: 'YouTube', count: newsCountByCategory('youtube') },
+    { id: 'competitors', icon: '\uD83C\uDFAF', label: 'Competitors', count: newsCountByCategory('competitors') },
+    { id: 'pinned', icon: '\u2B50', label: 'Pinned', count: newsCountPinned() }
+  ];
+  let html = '<div class="sb-section"><div class="sb-section-title">News Feed</div>';
+  categories.forEach(c => {
+    const act = state.newsCategory === c.id ? ' active' : '';
+    html += `<div class="nav-i${act}" onclick="state.newsCategory='${c.id}';renderAll()">
+      <span>${c.icon}</span><span class="sb-label">${c.label}</span>
+      <span class="nb">${c.count}</span></div>`;
+  });
+  html += '</div>';
+
+  // Sort controls
+  html += '<div class="sb-section"><div class="sb-section-title">Sort By</div>';
+  [['date','Latest'],['relevance','Relevance'],['engagement','Engagement']].forEach(([val, label]) => {
+    const act = state.newsSort === val ? ' active' : '';
+    html += `<div class="nav-i${act}" onclick="state.newsSort='${val}';renderAll()"><span class="sb-label">${label}</span></div>`;
+  });
+  html += '</div>';
+
+  // Source status + refresh
+  if (DATA.news) {
+    html += '<div class="sb-section" style="padding:var(--sp3)">';
+    if (DATA.news.lastRefreshed) {
+      html += `<div style="font-size:var(--f-xs);color:var(--tx3);margin-bottom:var(--sp2)">Updated: ${timeAgo(DATA.news.lastRefreshed)}</div>`;
+    }
+    const ss = DATA.news.sourceStatus || {};
+    if (ss.rss || ss.reddit || ss.youtube) {
+      html += '<div style="font-size:var(--f-xs);color:var(--tx3);margin-bottom:var(--sp2)">';
+      html += `RSS: ${ss.rss === 'ok' ? '\u2705' : '\u274C'} \u00B7 Reddit: ${ss.reddit === 'ok' ? '\u2705' : '\u274C'} \u00B7 YT: ${ss.youtube === 'ok' ? '\u2705' : '\u274C'}`;
+      html += '</div>';
+    }
+    html += `<button class="btn" onclick="refreshNews()" style="width:100%;font-size:var(--f-sm)">Refresh News</button>`;
+    html += '</div>';
+  }
+  sb.innerHTML = html;
+}
+
+function renderNewsMain() {
+  const el = $('main');
+
+  // Loading state
+  if (DATA.newsLoading || (!DATA.news && !DATA.newsError)) {
+    el.innerHTML = '<div class="no-data"><div class="nd-icon">\uD83D\uDCF0</div>Loading news...<div class="nd-sub">Fetching from RSS, Reddit, YouTube</div></div>';
+    return;
+  }
+  if (DATA.newsError) {
+    el.innerHTML = `<div class="no-data"><div class="nd-icon">\u26A0</div>Failed to load news<div class="nd-sub">${DATA.newsError}</div><button class="btn" onclick="loadNewsData()" style="margin-top:12px">Retry</button></div>`;
+    return;
+  }
+  if (!DATA.news || !DATA.news.articles) {
+    el.innerHTML = '<div class="no-data"><div class="nd-icon">\uD83D\uDCED</div>No news data<div class="nd-sub">Click Refresh News to fetch articles</div></div>';
+    return;
+  }
+
+  let articles = [...DATA.news.articles];
+
+  // Filter by category
+  if (state.newsCategory !== 'all' && state.newsCategory !== 'pinned') {
+    articles = articles.filter(a => a.category === state.newsCategory);
+  }
+  if (state.newsCategory === 'pinned') {
+    articles = articles.filter(a => a.pinned);
+  }
+  // Search filter
+  if (state.newsSearch) {
+    const q = state.newsSearch.toLowerCase();
+    articles = articles.filter(a =>
+      a.title.toLowerCase().includes(q) ||
+      (a.summary || '').toLowerCase().includes(q) ||
+      (a.source || '').toLowerCase().includes(q) ||
+      (a.author || '').toLowerCase().includes(q)
+    );
+  }
+  // Sort
+  if (state.newsSort === 'date') articles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  else if (state.newsSort === 'relevance') articles.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
+  else if (state.newsSort === 'engagement') articles.sort((a, b) =>
+    ((b.engagement?.redditScore || 0) + (b.engagement?.youtubeViews || 0)) -
+    ((a.engagement?.redditScore || 0) + (a.engagement?.youtubeViews || 0))
+  );
+
+  let html = '';
+
+  // Search bar
+  html += `<div style="padding:var(--sp3) 0"><input class="filter-input" placeholder="Search news..." value="${state.newsSearch || ''}" oninput="state.newsSearch=this.value;renderNewsMain()" style="width:100%"/></div>`;
+
+  // Stats bar
+  const stats = DATA.news.stats || {};
+  html += `<div style="display:flex;gap:var(--sp4);margin-bottom:var(--sp3);flex-wrap:wrap">`;
+  html += `<div class="stat-chip"><span class="stat-n">${stats.totalArticles || 0}</span><span class="stat-l">Total</span></div>`;
+  html += `<div class="stat-chip"><span class="stat-n">${stats.lastWeekCount || 0}</span><span class="stat-l">This Week</span></div>`;
+  html += `<div class="stat-chip"><span class="stat-n">${stats.byCategory?.industry || 0}</span><span class="stat-l">Industry</span></div>`;
+  html += `<div class="stat-chip"><span class="stat-n">${stats.byCategory?.reddit || 0}</span><span class="stat-l">Reddit</span></div>`;
+  html += `<div class="stat-chip"><span class="stat-n">${stats.byCategory?.youtube || 0}</span><span class="stat-l">YouTube</span></div>`;
+  html += `</div>`;
+
+  // Competitor alerts section
+  const alerts = DATA.news.competitorAlerts || [];
+  if (alerts.length && (state.newsCategory === 'all' || state.newsCategory === 'competitors')) {
+    html += '<div class="section-label" style="color:var(--or)">Competitor Alerts</div>';
+    alerts.forEach(a => {
+      html += `<div class="cor-card sev-${a.severity || 'warning'}" style="margin-bottom:var(--sp3)">
+        <div class="cor-h"><span class="cor-sev">${a.severity === 'critical' ? '\uD83D\uDD34' : '\uD83D\uDFE1'}</span>
+        <span class="cor-title">${a.title}</span><span class="tag">${a.competitor}</span></div>
+        <div class="cor-body"><div class="cor-finding">${a.type || 'alert'} \u2014 Detected ${timeAgo(a.detectedAt)}</div></div></div>`;
+    });
+  }
+
+  // Article cards
+  html += `<div class="section-label">Articles (${articles.length})</div>`;
+
+  if (!articles.length) {
+    html += '<div class="no-data" style="padding:var(--sp6)"><div class="nd-icon">\uD83D\uDCED</div>No articles found<div class="nd-sub">Try refreshing or broadening your filter</div></div>';
+  }
+
+  articles.forEach(a => {
+    const catBadge = {
+      industry: ['news-badge-industry', '\u2615'],
+      reddit: ['news-badge-reddit', '\uD83D\uDDE8\uFE0F'],
+      youtube: ['news-badge-youtube', '\uD83C\uDFA5'],
+      competitors: ['news-badge-competitors', '\uD83C\uDFAF']
+    }[a.category] || ['', '\uD83D\uDCF0'];
+
+    let engStr = '';
+    if (a.engagement?.redditScore) engStr = `\u2B06 ${a.engagement.redditScore} \u00B7 ${a.engagement.redditComments} comments`;
+    else if (a.engagement?.youtubeViews) engStr = `\u25B6 ${fmtNum(a.engagement.youtubeViews)} views`;
+
+    const pinnedClass = a.pinned ? ' news-pinned' : '';
+    const relBar = Math.round((a.relevanceScore || 0) * 100);
+
+    html += `<div class="card news-card${pinnedClass}" style="margin-bottom:var(--sp3);cursor:pointer" onclick="openNewsDetail('${a.id}')">`;
+    html += `<div class="card-h" style="align-items:flex-start">`;
+    html += `<div style="flex:1;min-width:0"><h2 style="font-size:var(--f-md);line-height:1.3">${a.pinned ? '\u2B50 ' : ''}${a.title}</h2>`;
+    html += `<div style="font-size:var(--f-xs);color:var(--tx3);margin-top:4px">${a.sourceName || a.source} \u00B7 ${timeAgo(a.publishedAt)}${a.author ? ' \u00B7 ' + a.author : ''}${engStr ? ' \u00B7 ' + engStr : ''}</div></div>`;
+    html += `<span class="news-source-badge ${catBadge[0]}">${catBadge[1]} ${a.category}</span>`;
+    html += `</div>`;
+    html += `<div class="card-b">`;
+    if (a.summary) html += `<div style="font-size:var(--f-sm);color:var(--tx2);margin-bottom:var(--sp2)">${a.summary.slice(0, 200)}${a.summary.length > 200 ? '...' : ''}</div>`;
+    // Relevance bar
+    html += `<div style="display:flex;align-items:center;gap:var(--sp2);margin-bottom:var(--sp2)"><span style="font-size:var(--f-xs);color:var(--tx3)">Relevance</span><div style="flex:1;height:4px;background:var(--bd);border-radius:2px"><div style="width:${relBar}%;height:100%;background:${relBar > 60 ? 'var(--gn)' : relBar > 30 ? 'var(--or)' : 'var(--tx3)'};border-radius:2px"></div></div><span style="font-size:var(--f-xs);color:var(--tx3)">${relBar}%</span></div>`;
+    // Feedback buttons
+    html += `<div class="cor-feedback">`;
+    html += `<button class="fb-btn fb-up" onclick="event.stopPropagation();sendFeedback('news','${a.id}','up')" title="Relevant">\u25B2</button>`;
+    html += `<button class="fb-btn fb-down" onclick="event.stopPropagation();sendFeedback('news','${a.id}','down')" title="Not relevant">\u25BC</button>`;
+    html += `<button class="fb-btn fb-pin" onclick="event.stopPropagation();sendFeedback('news','${a.id}','pin')" title="Pin">\u2605</button>`;
+    html += `<button class="fb-btn fb-dismiss" onclick="event.stopPropagation();sendFeedback('news','${a.id}','dismiss');setTimeout(()=>{DATA.news=null;loadNewsData()},300)" title="Dismiss">\u2715</button>`;
+    html += `<span class="fb-hint">Feedback trains the system</span>`;
+    html += `</div>`;
+    html += `</div></div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+function openNewsDetail(id) {
+  const a = (DATA.news?.articles || []).find(x => x.id === id);
+  if (!a) return;
+  state.selectedNewsItem = id;
+  trackInteraction('news_view', 'news', id);
+
+  const catIcon = { industry: '\u2615', reddit: '\uD83D\uDDE8\uFE0F', youtube: '\uD83C\uDFA5', competitors: '\uD83C\uDFAF' }[a.category] || '\uD83D\uDCF0';
+  let engHtml = '';
+  if (a.engagement?.redditScore) engHtml = `<div style="margin-top:var(--sp3);padding:var(--sp2) var(--sp3);background:var(--orbg);border-radius:var(--r2);font-size:var(--f-sm)">Reddit: \u2B06 ${a.engagement.redditScore} score \u00B7 ${a.engagement.redditComments} comments</div>`;
+  if (a.engagement?.youtubeViews) engHtml = `<div style="margin-top:var(--sp3);padding:var(--sp2) var(--sp3);background:var(--rdbg);border-radius:var(--r2);font-size:var(--f-sm)">YouTube: \u25B6 ${fmtNum(a.engagement.youtubeViews)} views</div>`;
+
+  const relBar = Math.round((a.relevanceScore || 0) * 100);
+
+  let html = `<div style="padding:var(--sp4)">
+    <div style="display:flex;align-items:center;gap:var(--sp2);margin-bottom:var(--sp3)">
+      <span class="news-source-badge news-badge-${a.category}">${catIcon} ${a.category}</span>
+      <span style="font-size:var(--f-xs);color:var(--tx3)">${a.sourceName || a.source}</span>
+    </div>
+    <a href="${a.url}" target="_blank" rel="noopener" style="font-size:var(--f-xl);font-weight:var(--fw-sb);color:var(--ac);text-decoration:none;line-height:1.3;display:block">${a.title}</a>
+    <div style="color:var(--tx3);font-size:var(--f-sm);margin:var(--sp2) 0">${a.author || 'Unknown author'} \u00B7 ${new Date(a.publishedAt).toLocaleDateString()} \u00B7 ${timeAgo(a.publishedAt)}</div>
+    <div style="margin:var(--sp4) 0;line-height:var(--lh);font-size:var(--f-sm)">${a.summary || 'No summary available.'}</div>
+    <div style="display:flex;align-items:center;gap:var(--sp2);margin:var(--sp3) 0"><span style="font-size:var(--f-xs);color:var(--tx3)">Beanz Relevance</span><div style="flex:1;height:6px;background:var(--bd);border-radius:3px"><div style="width:${relBar}%;height:100%;background:${relBar > 60 ? 'var(--gn)' : relBar > 30 ? 'var(--or)' : 'var(--tx3)'};border-radius:3px"></div></div><span style="font-size:var(--f-sm);font-weight:var(--fw-sb)">${relBar}%</span></div>
+    ${a.tags?.length ? '<div style="margin-top:var(--sp3)">' + a.tags.map(t => '<span class="tag">' + t + '</span>').join(' ') + '</div>' : ''}
+    ${engHtml}
+    <a href="${a.url}" target="_blank" rel="noopener" class="btn" style="display:inline-block;margin-top:var(--sp4);text-decoration:none">Open Source \u2197</a>
+    <div class="cor-feedback" style="margin-top:var(--sp4);padding-top:var(--sp3);border-top:1px solid var(--bd)">
+      <button class="fb-btn fb-up" onclick="sendFeedback('news','${a.id}','up')">\u25B2</button>
+      <button class="fb-btn fb-down" onclick="sendFeedback('news','${a.id}','down')">\u25BC</button>
+      <button class="fb-btn fb-pin" onclick="sendFeedback('news','${a.id}','pin')">\u2605 Pin</button>
+      <button class="fb-btn fb-dismiss" onclick="sendFeedback('news','${a.id}','dismiss');closePanel()">\u2715 Dismiss</button>
+    </div>
+  </div>`;
+  openPanel(a.title.slice(0, 60), html);
+}
+
+// ===============================================================
+// STRATEGY MODULE
+// ===============================================================
+function loadStrategyData() {
+  DATA.strategyLoading = true;
+  fetch('/api/strategy')
+    .then(r => r.json())
+    .then(d => { DATA.strategy = d; DATA.strategyLoading = false; renderAll(); })
+    .catch(() => { DATA.strategyLoading = false; });
+}
+
+function renderStrategySidebar() {
+  const sb = $('sidebar');
+  const sections = [
+    {id:'overview',icon:'\u2B50',label:'Performance Overview'},
+    {id:'correlations',icon:'\uD83D\uDD17',label:'Data Correlations'},
+    {id:'lifecycle',icon:'\u21BB',label:'Customer Lifecycle'},
+    {id:'priorities',icon:'\uD83C\uDFAF',label:'FY27 Priorities'},
+    {id:'feral',icon:'\uD83D\uDC3E',label:'Project Feral'},
+    {id:'markets',icon:'\uD83C\uDF0D',label:'Market Positions'},
+    {id:'gaps',icon:'\u26A0',label:'Data Gaps'}
+  ];
+  if (!state.stratSection) state.stratSection = 'overview';
+  let html = '<div class="sb-section"><div class="sb-section-title">Product Strategy</div><div class="strat-nav">';
+  sections.forEach(s => {
+    const act = state.stratSection===s.id ? ' active' : '';
+    html += `<div class="nav-i${act}" onclick="state.stratSection='${s.id}';renderStrategySidebar();document.getElementById('strat-${s.id}')?.scrollIntoView({behavior:'smooth',block:'start'})"><span>${s.icon}</span><span class="sb-label">${s.label}</span></div>`;
+  });
+  html += '</div></div>';
+  sb.innerHTML = html;
+}
+
+function renderStrategyMain() {
+  const el = $('main');
+  const S = DATA.strategy;
+  if (!S) {
+    el.innerHTML = '<div class="no-data"><div class="nd-icon">\u2B50</div>Loading strategy data...<div class="nd-sub">Connecting to KB engine</div></div>';
+    return;
+  }
+
+  let html = '';
+
+  // ── PERFORMANCE OVERVIEW ──
+  html += '<div id="strat-overview">';
+  html += '<div class="section-label">CY25 Performance Snapshot</div>';
+  const p = S.performance;
+  html += '<div class="strat-hero">';
+  html += shCard('$'+fmtNum(p.revenue.cy25), 'Revenue (AUD)', p.revenue.yoy, true);
+  html += shCard(fmtNum(p.bags.cy25), 'Bags Shipped', p.bags.yoy, true);
+  html += shCard(fmtNum(p.subscribers.total), 'Paid Subscribers', p.subscribers.yoyTotal, true);
+  html += shCard('$'+p.avgLTV.value, 'Avg LTV', p.avgLTV.yoy, true);
+  html += '</div>';
+
+  // Revenue mix comparison
+  html += '<div class="card" style="margin-bottom:var(--sp4)"><div class="card-h"><h2>Revenue Mix Transformation</h2><span class="tag info">CY24 \u2192 CY25</span></div><div class="card-b"><div class="mix-comparison">';
+  html += '<div class="mix-col"><h4>CY24</h4>';
+  html += mixBar('FTBP Paid', S.revenueMix.cy24.ftbp, 'var(--ac)');
+  html += mixBar('Beanz Sub', S.revenueMix.cy24.beanz, 'var(--gn)');
+  html += mixBar('Fusion', S.revenueMix.cy24.fusion, 'var(--pu)');
+  html += mixBar('Other', S.revenueMix.cy24.other, 'var(--tx3)');
+  html += '</div><div class="mix-col"><h4>CY25</h4>';
+  html += mixBar('FTBP Paid', S.revenueMix.cy25.ftbp, 'var(--ac)');
+  html += mixBar('Beanz Sub', S.revenueMix.cy25.beanz, 'var(--gn)');
+  html += mixBar('Fusion', S.revenueMix.cy25.fusion, 'var(--pu)');
+  html += mixBar('Other', S.revenueMix.cy25.other, 'var(--tx3)');
+  html += '</div></div></div></div>';
+
+  // Machine revenue insight
+  html += '<div class="card" style="margin-bottom:var(--sp4)"><div class="card-h"><h2>FTBP Revenue by Machine Type</h2><span class="tag corr">Oracle 21x Over-Index</span></div><div class="card-b">';
+  const machines = S.machineRevenue;
+  ['oracle','barista','bambino','drip'].forEach(m => {
+    const d = machines[m];
+    const label = m.charAt(0).toUpperCase()+m.slice(1)+' Series';
+    html += '<div class="bar-row"><div class="bar-label">'+label+'</div><div class="bar-track"><div class="bar-fill" style="width:'+d.revenue+'%;background:'+(m==='oracle'?'var(--cy)':'var(--ac)')+'">'+d.revenue+'%</div></div><div class="bar-val" style="font-size:10px;color:var(--tx3)">'+d.sellout+'% sell-out</div></div>';
+  });
+  html += '</div></div>';
+  html += '</div>';
+
+  // ── DATA CORRELATIONS ──
+  html += '<div id="strat-correlations">';
+  html += '<div class="section-label">Data Correlations & Insights</div>';
+  const sevOrder = {critical:0,warning:1,opportunity:2,positive:3};
+  const sorted = [...S.correlations].sort((a,b) => sevOrder[a.severity]-sevOrder[b.severity]);
+  sorted.forEach(c => {
+    const sevIcon = {critical:'\uD83D\uDD34',warning:'\uD83D\uDFE1',opportunity:'\uD83D\uDFE2',positive:'\u2705'}[c.severity]||'';
+    const priColour = {P1:'var(--rd)',P2:'var(--or)',P3:'var(--cy)',P4:'var(--pu)',P5:'var(--gn)'}[c.priority]||'var(--tx3)';
+    html += `<div class="cor-card sev-${c.severity}">`;
+    html += `<div class="cor-h"><span class="cor-sev">${sevIcon}</span><span class="cor-title">${c.title}</span><span class="cor-priority" style="background:${priColour}22;color:${priColour}">${c.priority}</span></div>`;
+    html += '<div class="cor-body">';
+    html += `<div class="cor-finding">${c.finding}</div>`;
+    html += '<div class="cor-data">' + c.dataPoints.map(dp => `<span class="cor-dp">${dp}</span>`).join('') + '</div>';
+    html += `<div class="cor-rec"><strong>Recommendation:</strong> ${c.recommendation}</div>`;
+    if (c.segments && c.segments.length) {
+      html += '<div class="cor-segments">' + c.segments.map(s => `<span class="cor-seg">${s}</span>`).join('') + '</div>';
+    }
+    // Feedback buttons (self-learning)
+    html += `<div class="cor-feedback">`;
+    html += `<button class="fb-btn fb-up" onclick="event.stopPropagation();sendFeedback('insight','${c.id}','up')" title="This insight is valuable">&#9650;</button>`;
+    html += `<button class="fb-btn fb-down" onclick="event.stopPropagation();sendFeedback('insight','${c.id}','down')" title="Less relevant">&#9660;</button>`;
+    html += `<button class="fb-btn fb-pin" onclick="event.stopPropagation();sendFeedback('insight','${c.id}','pin')" title="Pin this insight">&#9733;</button>`;
+    html += `<button class="fb-btn fb-dismiss" onclick="event.stopPropagation();sendFeedback('insight','${c.id}','dismiss')" title="Dismiss">&#10005;</button>`;
+    html += `<span class="fb-hint">Feedback trains the system</span>`;
+    html += `</div>`;
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  // ── CUSTOMER LIFECYCLE ──
+  html += '<div id="strat-lifecycle">';
+  html += '<div class="section-label">Customer Lifecycle Flow</div>';
+  html += '<div class="lifecycle-flow"><div class="lf-stages">';
+  const mainFlow = ['SEG-1.1','SEG-1.2','SEG-1.3','SEG-1.4','SEG-1.5'];
+  mainFlow.forEach((id,i) => {
+    const stage = S.lifecycle.stages.find(s => s.id===id);
+    if (!stage) return;
+    html += `<div class="lf-node" style="border-color:${stage.colour}40"><div class="lf-id">${stage.id}</div><div class="lf-name">${stage.name}</div></div>`;
+    if (i < mainFlow.length-1) {
+      const trans = S.lifecycle.transitions.find(t => t.from===id && t.to===mainFlow[i+1]);
+      const cls = trans ? trans.type : '';
+      html += `<div class="lf-arrow ${cls}">\u2192</div>`;
+    }
+  });
+  html += '</div>';
+
+  // Churn path
+  html += '<div style="margin-top:var(--sp4);display:flex;align-items:center;justify-content:center;gap:0;min-width:400px">';
+  const churnFlow = ['SEG-1.6','SEG-1.7','SEG-1.8'];
+  churnFlow.forEach((id,i) => {
+    const stage = S.lifecycle.stages.find(s => s.id===id);
+    if (!stage) return;
+    html += `<div class="lf-node" style="border-color:${stage.colour}40"><div class="lf-id">${stage.id}</div><div class="lf-name">${stage.name}</div></div>`;
+    if (i < churnFlow.length-1) html += '<div class="lf-arrow warning">\u2192</div>';
+  });
+  html += '</div>';
+
+  // Transition metrics
+  html += '<div style="margin-top:var(--sp4)">';
+  html += '<div class="sb-section-title" style="margin-bottom:var(--sp2)">Key Transitions</div>';
+  S.lifecycle.transitions.filter(t => t.metric).forEach(t => {
+    const colour = {positive:'var(--gn)',warning:'var(--or)',negative:'var(--rd)'}[t.type]||'var(--tx3)';
+    html += `<div style="display:flex;align-items:center;gap:var(--sp2);padding:4px 0;font-size:var(--f-sm)"><span style="color:${colour};font-weight:var(--fw-sb)">${t.from} \u2192 ${t.to}</span><span style="color:var(--tx3)">${t.label}</span><span style="margin-left:auto;font-weight:var(--fw-sb);color:${colour}">${t.metric}</span></div>`;
+  });
+  html += '</div></div>';
+  html += '</div>';
+
+  // ── FY27 PRIORITIES ──
+  html += '<div id="strat-priorities">';
+  html += '<div class="section-label">FY27 Strategic Priorities</div>';
+  html += '<div class="priority-grid">';
+  S.priorities.forEach(p => {
+    html += `<div class="pri-card"><div class="pri-num">${p.id.replace('P','')}</div><div class="pri-info"><h3>${p.name}</h3><div class="pri-kpis">${p.kpis.join(' \u00B7 ')}${p.baseline?' \u2014 '+p.baseline:''}</div></div><span class="pri-status ${p.status}">${p.status}</span></div>`;
+  });
+  html += '</div></div>';
+
+  // ── PROJECT FERAL ──
+  html += '<div id="strat-feral">';
+  html += '<div class="section-label">Project Feral (26-Week AI-First Initiative)</div>';
+  html += '<div class="card"><div class="card-h"><h2>Phase Timeline</h2><span class="tag act">Week 1-3: Foundation</span></div><div class="card-b">';
+  html += '<div class="feral-timeline">';
+  S.projectFeral.phases.forEach(ph => {
+    html += `<div class="feral-phase ${ph.status}"><div style="font-weight:var(--fw-b)">${ph.name}</div><div style="font-size:9px;margin-top:2px">Wk ${ph.weeks}</div></div>`;
+  });
+  html += '</div>';
+  html += '<div style="margin-top:var(--sp4)">';
+  S.projectFeral.workstreams.forEach(w => {
+    const stCol = {active:'var(--gn)','in-progress':'var(--ac)',planned:'var(--tx3)'}[w.status]||'var(--tx3)';
+    html += `<div style="display:flex;align-items:center;gap:var(--sp3);padding:6px 0;border-bottom:1px solid var(--bd)"><span style="width:8px;height:8px;border-radius:50%;background:${stCol};flex-shrink:0"></span><span style="flex:1;font-size:var(--f-md)">${w.name}</span><span style="font-size:var(--f-xs);color:${stCol};font-weight:var(--fw-sb)">${w.status}</span><span style="font-size:var(--f-xs);color:var(--tx3)">${w.lead}</span></div>`;
+  });
+  html += '</div></div></div>';
+  html += '</div>';
+
+  // ── MARKETS ──
+  html += '<div id="strat-markets">';
+  html += '<div class="section-label">Market Positions & Delivery</div>';
+  html += '<div class="market-grid">';
+  S.markets.forEach(m => {
+    const yoyCol = m.yoy > 0 ? 'var(--rd)' : m.yoy < 0 ? 'var(--gn)' : 'var(--tx3)';
+    const yoySign = m.yoy > 0 ? '+' : '';
+    const statusCol = m.status==='launching' ? 'var(--or)' : 'var(--gn)';
+    html += `<div class="mkt-card" style="border-top:3px solid ${statusCol}"><div class="mkt-code">${m.code}</div><div class="mkt-name">${m.name}</div>`;
+    if (m.deliveryDays) {
+      html += `<div class="mkt-days">${m.deliveryDays}d</div><div class="mkt-yoy" style="color:${yoyCol}">${yoySign}${m.yoy}% YoY</div>`;
+    } else {
+      html += `<div class="mkt-days" style="color:var(--or)">${m.launch}</div><div class="mkt-yoy" style="color:var(--tx3)">${m.note||''}</div>`;
+    }
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  // ── DATA GAPS ──
+  html += '<div id="strat-gaps">';
+  html += '<div class="section-label">Data Gaps & Open Questions</div>';
+  html += '<div class="card"><div class="card-h"><h2>Known Unknowns</h2><span class="tag act">' + S.dataGaps.length + ' gaps</span></div><div class="card-b"><div class="gap-list">';
+  S.dataGaps.forEach(g => {
+    html += `<div class="gap-item"><span class="gap-icon">\u26A0</span><span>${g}</span></div>`;
+  });
+  html += '</div></div></div></div>';
+
+  el.innerHTML = html;
+}
+
+// Strategy helpers
+function shCard(val, label, yoy, isPercent) {
+  const delta = yoy !== undefined ? (yoy >= 0 ? '+' : '') + (isPercent ? Math.round(yoy*100) + '%' : yoy) : '';
+  const cls = yoy > 0 ? 'up' : yoy < 0 ? 'down' : '';
+  return `<div class="sh-card"><div class="sh-val">${val}</div><div class="sh-label">${label}</div><div class="sh-delta stat-delta ${cls}">${delta} YoY</div></div>`;
+}
+
+function fmtNum(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(0)+'K';
+  return n.toString();
+}
+
+function mixBar(label, pct, colour) {
+  return `<div class="bar-row"><div class="bar-label" style="min-width:70px">${label}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${colour}">${pct}%</div></div></div>`;
+}
+
+// ===============================================================
+// INIT
+// ===============================================================
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("markets")
+formulas:
+  health: if(kpi_active_pct > 25, "Healthy", if(kpi_active_pct > 15, "Warning", "Critical"))
+  days_since_refresh: if(kpi_pbi_refresh, (now() - date(kpi_pbi_refresh)).days, (now() - file.mtime).days)
+  source_status: if(kpi_source == "pbi", "PBI", if(kpi_source == "sqlite_fallback", "SQLite (fallback)", "SQLite"))
+properties:
+  kpi_market:
+    displayName: Market
+  kpi_active_subscriptions:
+    displayName: Active Subs
+  kpi_active_pct:
+    displayName: Active %
+  kpi_monthly_revenue:
+    displayName: Monthly Rev
+  kpi_currency:
+    displayName: Currency
+  kpi_churn_pct:
+    displayName: Churn %
+  kpi_net_growth_30d:
+    displayName: Net Growth 30d
+  kpi_avg_subscription_price:
+    displayName: Avg Price
+  kpi_source:
+    displayName: Source
+  kpi_pbi_refresh:
+    displayName: PBI Refresh
+  formula.health:
+    displayName: Health
+  formula.source_status:
+    displayName: Data Source
+  formula.days_since_refresh:
+    displayName: Days Since Refresh
+  data-period:
+    displayName: Data Period
+views:
+  - type: table
+    name: Market Dashboard
+    order:
+      - kpi_market
+      - kpi_active_subscriptions
+      - kpi_monthly_revenue
+      - kpi_currency
+      - kpi_active_pct
+      - kpi_churn_pct
+      - kpi_net_growth_30d
+      - kpi_avg_subscription_price
+      - formula.health
+      - formula.source_status
+      - formula.days_since_refresh
+      - data-period
+    summaries:
+      kpi_active_subscriptions: Sum
+      kpi_monthly_revenue: Sum
+      kpi_active_pct: Average
+      kpi_churn_pct: Average
+      kpi_net_growth_30d: Sum

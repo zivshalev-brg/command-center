@@ -1,0 +1,3472 @@
+{
+  "files": [
+    {
+      "aliases": [
+        "AI Index",
+        "Automation Index"
+      ],
+      "data_period": null,
+      "description": "Machine learning, recommendations, and automation.",
+      "domain": "ai-automation",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "ai-automation/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "ai",
+        "automation",
+        "ml",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "AI & Automation",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Intelligence Platform",
+        "Ask Anything Platform",
+        "Beanz Intelligence"
+      ],
+      "data_period": null,
+      "description": "Cross-functional strategy for natural language queries across behavioral insights, segmentation, knowledge base, and business data.",
+      "domain": "ai-automation",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "ai-automation/intelligence-platform.md",
+      "related": [
+        "[[glossary|Glossary]]",
+        "[[beanz-hub|Beanz Hub]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "ai-automation",
+        "ai",
+        "data",
+        "platform"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Beanz Intelligence Platform",
+      "type": "platform"
+    },
+    {
+      "aliases": [
+        "Analytics Index",
+        "Data Index"
+      ],
+      "data_period": null,
+      "description": "Analytics platforms, reporting, and data pipelines.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "analytics/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/architecture/_index|Architecture]]",
+        "[[docs/voice-of-customer/_index|Voice of Customer]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "data",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Data & Analytics",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "CY25 Results",
+        "CY25 Performance",
+        "Calendar Year 2025 Results"
+      ],
+      "data_period": "CY2025",
+      "description": "Calendar year 2025 performance metrics showing 3x revenue growth, 1M bags shipped, and 36K paid subscribers.",
+      "domain": "analytics",
+      "market": [
+        "global",
+        "au",
+        "de",
+        "uk",
+        "us"
+      ],
+      "owner": "Finance",
+      "path": "analytics/cy25-performance.md",
+      "related": [
+        "[[fy27-brand-summit|FY27 Brand Summit]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[beanz-label-printing|Beanz Label Printing]]"
+      ],
+      "review_cycle": "annual",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "revenue",
+        "subscriptions",
+        "performance"
+      ],
+      "temporal_type": "static",
+      "title": "CY25 Performance Results",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Cancellation Metrics",
+        "Cancel Survey KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Cancellation survey data from PBI Cancellation Measures — revenue and volume from cancelled subscribers.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-cancellations.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-subscriptions|Subscription KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "cancellations"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Cancellation KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "AU Churn KPIs",
+        "Australia Churn Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live churn analysis for the Australian market.",
+      "domain": "analytics",
+      "market": [
+        "au"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-churn-au.md",
+      "related": [
+        "[[kpi-market-au|AU Market KPIs]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "churn"
+      ],
+      "temporal_type": "dynamic",
+      "title": "AU Churn KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "DE Churn KPIs",
+        "Germany Churn Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live churn analysis for the German market.",
+      "domain": "analytics",
+      "market": [
+        "de"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-churn-de.md",
+      "related": [
+        "[[kpi-market-de|DE Market KPIs]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "churn"
+      ],
+      "temporal_type": "dynamic",
+      "title": "DE Churn KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "SIOO Churn Analysis",
+        "Churn Situation Analysis"
+      ],
+      "data_period": "2026-03-14",
+      "description": "SIOO (Situation-Intent-Obstacles-Outcome) breakdown of churn reasons.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-churn-sioo.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "churn",
+        "sioo"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Churn SIOO Analysis",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "UK Churn KPIs",
+        "United Kingdom Churn Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live churn analysis for the United Kingdom market.",
+      "domain": "analytics",
+      "market": [
+        "uk"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-churn-uk.md",
+      "related": [
+        "[[kpi-market-uk|UK Market KPIs]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "churn"
+      ],
+      "temporal_type": "dynamic",
+      "title": "UK Churn KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "US Churn KPIs",
+        "United States Churn Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live churn analysis for the United States market.",
+      "domain": "analytics",
+      "market": [
+        "us"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-churn-us.md",
+      "related": [
+        "[[kpi-market-us|US Market KPIs]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "churn"
+      ],
+      "temporal_type": "dynamic",
+      "title": "US Churn KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Customer Metrics",
+        "Customer Base KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Customer base from PBI Customer Measures — totals, types, recency, acquisition, and FTBP breakdown.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-customers.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-subscriptions|Subscription KPIs]]",
+        "[[kpi-ftbp|FTBP KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "customers"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Customer KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP AU KPIs",
+        "AU FTBP Funnel"
+      ],
+      "data_period": "2026-03-15",
+      "description": "FTBP funnel metrics for Australia filtered by BusinessUnit=BAU.",
+      "domain": "analytics",
+      "market": [
+        "au"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-ftbp-au.md",
+      "related": [
+        "[[kpi-ftbp]]",
+        "[[kpi-market-au]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP KPIs — AU",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP DE KPIs",
+        "DE FTBP Funnel"
+      ],
+      "data_period": "2026-03-15",
+      "description": "FTBP funnel metrics for Germany filtered by BusinessUnit=BDE.",
+      "domain": "analytics",
+      "market": [
+        "de"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-ftbp-de.md",
+      "related": [
+        "[[kpi-ftbp]]",
+        "[[kpi-market-de]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP KPIs — DE",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP UK KPIs",
+        "UK FTBP Funnel"
+      ],
+      "data_period": "2026-03-15",
+      "description": "FTBP funnel metrics for United Kingdom filtered by BusinessUnit=BUK.",
+      "domain": "analytics",
+      "market": [
+        "uk"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-ftbp-uk.md",
+      "related": [
+        "[[kpi-ftbp]]",
+        "[[kpi-market-uk]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP KPIs — UK",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP US KPIs",
+        "US FTBP Funnel"
+      ],
+      "data_period": "2026-03-15",
+      "description": "FTBP funnel metrics for United States filtered by BusinessUnit=BUS.",
+      "domain": "analytics",
+      "market": [
+        "us"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-ftbp-us.md",
+      "related": [
+        "[[kpi-ftbp]]",
+        "[[kpi-market-us]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP KPIs — US",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP Metrics",
+        "Fast-Track Barista Pack KPIs"
+      ],
+      "data_period": "2026-03-15",
+      "description": "Fast-Track Barista Pack full funnel from DS_FTBP — registrations, signups, conversions, and milestones with v1/v2 splits.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-ftbp.md",
+      "related": [
+        "[[kpi-customers|Customer KPIs]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Global KPIs",
+        "Overall Metrics",
+        "Platform KPIs"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for all markets combined.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-global.md",
+      "related": [
+        "[[cy25-performance|CY25 Performance]]",
+        "[[market-overview|Market Overview]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Global KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "AU KPIs",
+        "Australia Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the Australian market.",
+      "domain": "analytics",
+      "market": [
+        "au"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-market-au.md",
+      "related": [
+        "[[market-overview|Market Overview]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "markets",
+        "kpi"
+      ],
+      "temporal_type": "dynamic",
+      "title": "AU Market KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "DE KPIs",
+        "Germany Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the German market.",
+      "domain": "analytics",
+      "market": [
+        "de"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-market-de.md",
+      "related": [
+        "[[market-overview|Market Overview]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "markets",
+        "kpi"
+      ],
+      "temporal_type": "dynamic",
+      "title": "DE Market KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "UK KPIs",
+        "United Kingdom Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the United Kingdom market.",
+      "domain": "analytics",
+      "market": [
+        "uk"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-market-uk.md",
+      "related": [
+        "[[market-overview|Market Overview]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "markets",
+        "kpi"
+      ],
+      "temporal_type": "dynamic",
+      "title": "UK Market KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "US KPIs",
+        "United States Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the United States market.",
+      "domain": "analytics",
+      "market": [
+        "us"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-market-us.md",
+      "related": [
+        "[[market-overview|Market Overview]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "markets",
+        "kpi"
+      ],
+      "temporal_type": "dynamic",
+      "title": "US Market KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Operations Metrics",
+        "MOT KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Manufacturing operations from PBI MOT Measures — roaster targets, achievement, and weight allocation.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-operations.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-products|Product KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "operations"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Operations KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Product Metrics",
+        "Product Catalog KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Product catalog from PBI Product Measures — SKU counts, capacity, inventory, and margins.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-products.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-revenue|Revenue KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "products"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Product KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Coffee Essentials KPIs",
+        "CE Program Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the Coffee Essentials subscription program.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-program-ce.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "programs",
+        "coffee-essentials"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Coffee Essentials Program KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP v1 KPIs",
+        "Fast-Track Barista Pack v1 Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the FTBP v1 trial program.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-program-ftbp-v1.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "programs",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP v1 Program KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP v2 KPIs",
+        "Fast-Track Barista Pack v2 Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the FTBP v2 trial program.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-program-ftbp-v2.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "programs",
+        "ftbp"
+      ],
+      "temporal_type": "dynamic",
+      "title": "FTBP v2 Program KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Fusion KPIs",
+        "Fusion Program Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live KPI snapshot for the Fusion appliance bundle program.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-program-fusion.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "programs",
+        "fusion"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Fusion Program KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Promotion Metrics",
+        "Coupon KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Promotional activity from PBI Promotions Measures — coupon redemptions.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-promotions.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-revenue|Revenue KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "promotions"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Promotion KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Revenue Metrics",
+        "Order Revenue KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Financial performance from PBI Order Measures — revenue, pricing, margins, costs, and units.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-revenue.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-subscriptions|Subscription KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "revenue",
+        "finance"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Revenue KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Segment Health",
+        "Lifecycle Stage Counts"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Customer lifecycle stage counts by market.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-segment-health.md",
+      "related": [
+        "[[customer-segments|Customer Segments]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "segments"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Segment Health KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Shipment Metrics",
+        "Fulfillment KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Fulfillment from PBI Shipment Measures — shipment counts, units, and fees.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-shipments.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-revenue|Revenue KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "shipments"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Shipment KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Subscription Metrics",
+        "Sub Lifecycle KPIs"
+      ],
+      "data_period": "2026-03-05",
+      "description": "Subscription lifecycle from PBI Subscription Measures — counts, churn, retention, and duration.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "analytics/kpi-subscriptions.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]",
+        "[[kpi-revenue|Revenue KPIs]]",
+        "[[kpi-cancellations|Cancellation KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "kpi",
+        "subscriptions"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Subscription KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Support by Market",
+        "Market Support Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live support case metrics broken down by market.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-support-by-market.md",
+      "related": [
+        "[[kpi-support-global|Global Support KPIs]]",
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "support"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Support KPIs by Market",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Global Support KPIs",
+        "Support Metrics"
+      ],
+      "data_period": "2026-03-14",
+      "description": "Live support case metrics aggregated across all markets.",
+      "domain": "analytics",
+      "market": [
+        "global"
+      ],
+      "owner": "Analytics",
+      "path": "analytics/kpi-support-global.md",
+      "related": [
+        "[[kpi-global|Global KPIs]]"
+      ],
+      "review_cycle": "weekly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "analytics",
+        "kpi",
+        "support"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Global Support KPIs",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "Architecture Index",
+        "Tech Stack"
+      ],
+      "data_period": null,
+      "description": "System components, tech stack, and integrations.",
+      "domain": "architecture",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "architecture/_index.md",
+      "related": [
+        "[[docs/strategy/_index|Strategy]]",
+        "[[docs/features/_index|Features]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "architecture",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Architecture",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Hub",
+        "B2B Platform",
+        "Beanz B2B"
+      ],
+      "data_period": null,
+      "description": "Unified B2B service platform encompassing BCC, Beanz Connect, and Powered by Beanz product streams.",
+      "domain": "architecture",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "architecture/beanz-hub.md",
+      "related": [
+        "[[brg-tech-landscape|BRG Tech Landscape]]",
+        "[[platinum-roaster-program|Platinum Roaster Program]]",
+        "[[beanz-label-printing|Beanz Label Printing]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "b2b",
+        "platform",
+        "bcc",
+        "pbb",
+        "beanz-connect"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Beanz Hub",
+      "type": "architecture"
+    },
+    {
+      "aliases": [
+        "BRG Architecture",
+        "Technology Stack",
+        "Tech Architecture",
+        "Platform Interactions",
+        "System Interaction Map"
+      ],
+      "data_period": null,
+      "description": "Multi-hub composable technology architecture spanning all Breville Group brands and beanz.com.",
+      "domain": "architecture",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "architecture/brg-tech-landscape.md",
+      "related": [
+        "[[beanz-hub|Beanz Hub]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "architecture",
+        "platform",
+        "integration",
+        "commercetools",
+        "salesforce"
+      ],
+      "temporal_type": "atemporal",
+      "title": "BRG Tech Landscape",
+      "type": "architecture"
+    },
+    {
+      "aliases": [
+        "KB Architecture",
+        "Platform Architecture",
+        "Documentation Platform"
+      ],
+      "data_period": null,
+      "description": "Comprehensive architectural documentation of the Beanz Knowledge Base platform with skills, validation pipelines, and quality gates.",
+      "domain": "architecture",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "architecture/kb-platform-architecture.md",
+      "related": [
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[beanz-hub|Beanz Hub]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "architecture",
+        "platform",
+        "validation",
+        "documentation-system",
+        "quality-assurance",
+        "context-engineering"
+      ],
+      "temporal_type": "atemporal",
+      "title": "KB Platform Architecture",
+      "type": "architecture"
+    },
+    {
+      "aliases": [
+        "Orchestration Services",
+        "Microservices Catalog",
+        "Platform Wrappers"
+      ],
+      "data_period": null,
+      "description": "Full microservices catalog spanning integration, data, utility, digital customer, and micro frontend services across BRG brand properties.",
+      "domain": "architecture",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "architecture/web-orchestration-services.md",
+      "related": [
+        "[[brg-tech-landscape|BRG Tech Landscape]]",
+        "[[beanz-hub|Beanz Hub]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "api",
+        "architecture",
+        "integration",
+        "platform"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Web Orchestration Services",
+      "type": "architecture"
+    },
+    {
+      "aliases": [
+        "Communications Index",
+        "Messaging Index"
+      ],
+      "data_period": null,
+      "description": "Email templates, push notifications, and messaging.",
+      "domain": "communications",
+      "market": [
+        "global"
+      ],
+      "owner": "Marketing",
+      "path": "communications/_index.md",
+      "related": [
+        "[[docs/users/_index|Users]]",
+        "[[docs/features/_index|Features]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "communications",
+        "email",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Communications",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Email Inventory",
+        "Notification Inventory",
+        "Emails and Notifications"
+      ],
+      "data_period": null,
+      "description": "Complete inventory of transactional emails and push notifications across all categories.",
+      "domain": "communications",
+      "market": [
+        "global"
+      ],
+      "owner": "Marketing",
+      "path": "communications/emails-and-notifications.md",
+      "related": [
+        "[[id-conventions|ID Conventions]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "communications",
+        "email",
+        "subscriptions",
+        "lifecycle"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Emails and Notifications",
+      "type": "operations"
+    },
+    {
+      "aliases": [
+        "Content Index",
+        "Catalog Index"
+      ],
+      "data_period": null,
+      "description": "Product catalog, content management, and translations.",
+      "domain": "content",
+      "market": [
+        "global"
+      ],
+      "owner": "Marketing",
+      "path": "content/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/partners/_index|Partners]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "content",
+        "catalog",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Content & Catalog",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Developer Index",
+        "API Index"
+      ],
+      "data_period": null,
+      "description": "APIs, SDKs, widgets, and developer tools.",
+      "domain": "developer-platform",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "developer-platform/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/architecture/_index|Architecture]]",
+        "[[docs/partners/_index|Partners]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "api",
+        "developer",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Developer Platform",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Features Index",
+        "Feature Catalog"
+      ],
+      "data_period": null,
+      "description": "Platform capabilities and feature taxonomy.",
+      "domain": "features",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "features/_index.md",
+      "related": [
+        "[[docs/pages/_index|Pages]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "features",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Features",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Finance Index",
+        "Payments Index"
+      ],
+      "data_period": null,
+      "description": "Payment processing, billing, and financial operations.",
+      "domain": "finance",
+      "market": [
+        "global"
+      ],
+      "owner": "Finance",
+      "path": "finance/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/architecture/_index|Architecture]]",
+        "[[docs/markets/_index|Markets]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "finance",
+        "payments",
+        "billing",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Finance & Payments",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Fulfillment Index",
+        "Logistics Index"
+      ],
+      "data_period": null,
+      "description": "Order fulfillment, warehouse operations, and logistics.",
+      "domain": "fulfillment",
+      "market": [
+        "global"
+      ],
+      "owner": "Operations",
+      "path": "fulfillment/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/partners/_index|Partners]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "fulfillment",
+        "logistics",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Fulfillment",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "BLP",
+        "Beanz Label Printing",
+        "Label Printing Platform"
+      ],
+      "data_period": null,
+      "description": "In-house fulfillment platform providing end-to-end control over label printing, shipping, and carrier management.",
+      "domain": "fulfillment",
+      "market": [
+        "global",
+        "au",
+        "de",
+        "uk",
+        "us",
+        "nl"
+      ],
+      "owner": "Operations",
+      "path": "fulfillment/beanz-label-printing.md",
+      "related": [
+        "[[beanz-hub|Beanz Hub]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "fulfillment",
+        "blp",
+        "logistics",
+        "pbb"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Beanz Label Printing",
+      "type": "operations"
+    },
+    {
+      "aliases": [
+        "Legal Index",
+        "Compliance Index"
+      ],
+      "data_period": null,
+      "description": "Legal requirements, terms, and regulatory compliance.",
+      "domain": "legal",
+      "market": [
+        "global"
+      ],
+      "owner": "Legal",
+      "path": "legal/_index.md",
+      "related": [
+        "[[docs/security/_index|Security]]",
+        "[[docs/markets/_index|Markets]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "legal",
+        "compliance",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Legal & Compliance",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Marketing Index",
+        "GTM Index"
+      ],
+      "data_period": null,
+      "description": "Marketing strategy, campaigns, and go-to-market.",
+      "domain": "marketing",
+      "market": [
+        "global"
+      ],
+      "owner": "Marketing",
+      "path": "marketing/_index.md",
+      "related": [
+        "[[docs/communications/_index|Communications]]",
+        "[[docs/markets/_index|Markets]]",
+        "[[docs/users/_index|Users]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "marketing",
+        "gtm",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Marketing & GTM",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Acquisition Programs",
+        "Customer Programs",
+        "Beanz Programs",
+        "Program History"
+      ],
+      "data_period": null,
+      "description": "Source of truth for all customer acquisition programs run on beanz.com.",
+      "domain": "marketing",
+      "market": [
+        "global",
+        "au",
+        "de",
+        "uk",
+        "us"
+      ],
+      "owner": "Marketing",
+      "path": "marketing/acquisition-programs.md",
+      "related": [
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[lifecycle-comms|Lifecycle Communications]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "marketing",
+        "acquisition",
+        "ftbp",
+        "subscriptions"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Acquisition Programs",
+      "type": "marketing"
+    },
+    {
+      "aliases": [
+        "Email Conversion Analysis",
+        "Email Performance Report",
+        "Email Attribution Analysis"
+      ],
+      "data_period": "Through March 2026",
+      "description": "Analysis of 12,738 email-driven conversions from 744K clicks across categories, programs, markets, and customer behaviors.",
+      "domain": "marketing",
+      "market": [
+        "global"
+      ],
+      "owner": "Marketing",
+      "path": "marketing/email-conversion-analysis.md",
+      "related": [
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[lifecycle-comms|Lifecycle Communications]]",
+        "[[customer-segments|Customer Segments]]",
+        "[[acquisition-programs|Acquisition Programs]]",
+        "[[emails-and-notifications|Emails and Notifications]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "marketing",
+        "email",
+        "conversion",
+        "performance",
+        "retention"
+      ],
+      "temporal_type": "static",
+      "title": "Email Conversion Performance Analysis",
+      "type": "analytics"
+    },
+    {
+      "aliases": [
+        "FTBP",
+        "Fast Track",
+        "Fast-Track Barista Pack",
+        "Barista Pack"
+      ],
+      "data_period": "CY2025",
+      "description": "Machine-attached promotional program converting Breville buyers into paid coffee subscribers through a free trial period.",
+      "domain": "marketing",
+      "market": [
+        "global",
+        "au",
+        "de",
+        "uk",
+        "us"
+      ],
+      "owner": "Marketing",
+      "path": "marketing/ftbp.md",
+      "related": [
+        "[[cy25-performance|CY25 Performance]]",
+        "[[platinum-roaster-program|Platinum Roaster Program]]",
+        "[[affordability-economics|Affordability Economics]]",
+        "[[lifecycle-comms|Lifecycle Communications]]",
+        "[[fy27-brand-summit|FY27 Brand Summit]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "marketing",
+        "ftbp",
+        "acquisition",
+        "conversion",
+        "subscriptions"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Fast-Track Barista Pack",
+      "type": "marketing"
+    },
+    {
+      "aliases": [
+        "Lifecycle Comms",
+        "Lifecycle Emails",
+        "Email Marketing Strategy"
+      ],
+      "data_period": null,
+      "description": "Lifecycle email strategy driving retention and incremental revenue across the customer journey.",
+      "domain": "marketing",
+      "market": [
+        "global"
+      ],
+      "owner": "Marketing",
+      "path": "marketing/lifecycle-comms.md",
+      "related": [
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[cy25-performance|CY25 Performance]]",
+        "[[fy27-brand-summit|FY27 Brand Summit]]",
+        "[[emails-and-notifications|Emails and Notifications]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "marketing",
+        "email",
+        "lifecycle",
+        "retention"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Lifecycle Communications",
+      "type": "marketing"
+    },
+    {
+      "aliases": [
+        "Markets Index",
+        "Market Operations"
+      ],
+      "data_period": null,
+      "description": "Market operations, launches, and business model.",
+      "domain": "markets",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "markets/_index.md",
+      "related": [
+        "[[docs/strategy/_index|Strategy]]",
+        "[[docs/users/_index|Users]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "markets",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Markets",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Market Overview",
+        "Markets Summary",
+        "Beanz Markets"
+      ],
+      "data_period": "CY2025",
+      "description": "Five beanz.com markets with launch dates, currencies, brands, and operational configuration.",
+      "domain": "markets",
+      "market": [
+        "global",
+        "au",
+        "de",
+        "uk",
+        "us",
+        "nl"
+      ],
+      "owner": "Product",
+      "path": "markets/market-overview.md",
+      "related": [
+        "[[cy25-performance|CY25 Performance]]",
+        "[[fy27-brand-summit|FY27 Brand Summit]]",
+        "[[beanz-label-printing|Beanz Label Printing]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "markets",
+        "cross-border"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Market Overview",
+      "type": "market"
+    },
+    {
+      "aliases": [
+        "Feb 2026 Meetings",
+        "February 2026 Meeting Notes"
+      ],
+      "data_period": null,
+      "description": "Meeting intelligence reports from February 2026.",
+      "domain": "meetings",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "meetings/2026-02/_index.md",
+      "related": [
+        "[[docs/meetings/_index|Meetings]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Meetings — February 2026",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Mar 2026 Meetings",
+        "March 2026 Meeting Notes"
+      ],
+      "data_period": null,
+      "description": "Meeting intelligence reports from March 2026.",
+      "domain": "meetings",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "meetings/2026-03/_index.md",
+      "related": [
+        "[[docs/meetings/_index|Meetings]]"
+      ],
+      "review_cycle": null,
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Meetings — March 2026",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Meeting Notes",
+        "Meeting Reports",
+        "Meeting Intelligence"
+      ],
+      "data_period": null,
+      "description": "Meeting intelligence reports from team stand-ups, planning sessions, and working groups.",
+      "domain": "meetings",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "meetings/_index.md",
+      "related": [
+        "[[docs/projects/_index|Projects]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Meetings",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Mobile Index",
+        "IoT Index"
+      ],
+      "data_period": null,
+      "description": "Mobile apps and connected device integrations.",
+      "domain": "mobile-iot",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "mobile-iot/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "mobile",
+        "iot",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Mobile & IoT",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Pages Index",
+        "Pages Domain"
+      ],
+      "data_period": null,
+      "description": "UI screens, page inventory, and user flows.",
+      "domain": "pages",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "pages/_index.md",
+      "related": [
+        "[[docs/features/_index|Features]]",
+        "[[docs/users/_index|Users]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "pages",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Pages",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Page Inventory",
+        "Page Catalog",
+        "P-Series Pages"
+      ],
+      "data_period": "2025-11-01",
+      "description": "Complete catalog of 65 beanz.com pages across 10 categories with URL patterns, authentication, and external dependencies.",
+      "domain": "pages",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "pages/page-inventory.md",
+      "related": [
+        "[[emails-and-notifications|Emails and Notifications]]",
+        "[[beanz-hub|Beanz Hub]]",
+        "[[id-conventions|ID Conventions]]",
+        "[[user-flows|User Flows]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "pages",
+        "platform",
+        "ux"
+      ],
+      "temporal_type": "static",
+      "title": "Page Inventory",
+      "type": "feature"
+    },
+    {
+      "aliases": [
+        "User Flows",
+        "User Journeys",
+        "Page Navigation"
+      ],
+      "data_period": "2025-11-01",
+      "description": "Navigation paths and user journeys across beanz.com pages.",
+      "domain": "pages",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "pages/user-flows.md",
+      "related": [
+        "[[page-inventory|Page Inventory]]",
+        "[[emails-and-notifications|Emails and Notifications]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "pages",
+        "ux",
+        "navigation"
+      ],
+      "temporal_type": "static",
+      "title": "User Flows",
+      "type": "feature"
+    },
+    {
+      "aliases": [
+        "Partners Index",
+        "B2B Index"
+      ],
+      "data_period": null,
+      "description": "Roaster partnerships, PBB program, and B2B operations.",
+      "domain": "partners",
+      "market": [
+        "global"
+      ],
+      "owner": "Operations",
+      "path": "partners/_index.md",
+      "related": [
+        "[[docs/users/_index|Users]]",
+        "[[docs/features/_index|Features]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "partners",
+        "b2b",
+        "roasters",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Partner Operations",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Platinum Program",
+        "Platinum Roasters",
+        "Roaster Tiers"
+      ],
+      "data_period": "FY26H1",
+      "description": "Tiered roaster partnership program providing guaranteed volume, commercial alignment, and incremental machine sales.",
+      "domain": "partners",
+      "market": [
+        "global",
+        "au",
+        "us",
+        "uk",
+        "de"
+      ],
+      "owner": "Operations",
+      "path": "partners/platinum-roaster-program.md",
+      "related": [
+        "[[fy27-brand-summit|FY27 Brand Summit]]",
+        "[[cy25-performance|CY25 Performance]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[beanz-hub|Beanz Hub]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "partners",
+        "roasters",
+        "b2b",
+        "platinum"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Platinum Roaster Program",
+      "type": "operations"
+    },
+    {
+      "aliases": [
+        "Pricing Index",
+        "Promotions Index"
+      ],
+      "data_period": null,
+      "description": "Subscription pricing, discount mechanics, promotional rules, and bundle strategies.",
+      "domain": "pricing",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "pricing/_index.md",
+      "related": [
+        "[[docs/finance/_index|Finance]]",
+        "[[docs/marketing/_index|Marketing]]",
+        "[[docs/features/_index|Features]]",
+        "[[docs/markets/_index|Markets]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "pricing",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Pricing & Promotions",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "1kg Pricing",
+        "Large Bag Economics",
+        "Affordability Economics"
+      ],
+      "data_period": "FY26H1",
+      "description": "Pricing strategy for 1kg/2lb bags delivering 15–20% savings versus small bags across all markets.",
+      "domain": "pricing",
+      "market": [
+        "au",
+        "de",
+        "uk",
+        "us"
+      ],
+      "owner": "Product",
+      "path": "pricing/affordability-economics.md",
+      "related": [
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[cy25-performance|CY25 Performance]]",
+        "[[fy27-brand-summit|FY27 Brand Summit]]"
+      ],
+      "review_cycle": "quarterly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "pricing",
+        "subscriptions",
+        "strategy"
+      ],
+      "temporal_type": "static",
+      "title": "Affordability Economics",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Projects Index",
+        "Initiatives",
+        "Programs"
+      ],
+      "data_period": null,
+      "description": "Cross-functional projects, initiatives, and programs with defined goals and timelines.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/_index.md",
+      "related": [
+        "[[docs/strategy/_index|Strategy]]",
+        "[[docs/markets/_index|Markets]]",
+        "[[docs/features/_index|Features]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Projects",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Ideas Backlog",
+        "Product Backlog",
+        "BNZID Backlog"
+      ],
+      "data_period": "2026-03",
+      "description": "Product ideas portfolio with 42 active initiatives tracked in Jira Product Discovery (BNZID).",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/ideas-backlog.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[beanz-label-printing|Beanz Label Printing]]",
+        "[[beanz-hub|Beanz Hub]]",
+        "[[customer-segments|Customer Segments]]",
+        "[[market-overview|Market Overview]]",
+        "[[ftbp|Fast-Track Barista Pack]]"
+      ],
+      "review_cycle": "monthly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "subscriptions",
+        "acquisition",
+        "retention",
+        "platform",
+        "pbb"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Ideas Backlog",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Operation Freedom Index",
+        "Op Freedom Hub"
+      ],
+      "data_period": null,
+      "description": "UK pilot — zero-upfront Barista Express + 2yr coffee bundle via Klarna financing.",
+      "domain": "projects",
+      "market": [
+        "uk"
+      ],
+      "owner": "Product",
+      "path": "projects/operation-freedom/_index.md",
+      "related": [
+        "[[docs/projects/_index|Projects]]"
+      ],
+      "review_cycle": null,
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Operation Freedom",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Op Freedom Bundling Kickoff",
+        "Operation Freedom Working Session 2026-03-12"
+      ],
+      "data_period": "2026-03",
+      "description": "Platform team walkthrough of the Operation Freedom appliance+coffee bundle, surfacing Klarna payment mechanics, GiveX risks, and alternative discount delivery approaches.",
+      "domain": "projects",
+      "market": [
+        "uk"
+      ],
+      "owner": "Product",
+      "path": "projects/operation-freedom/meetings/2026-03-12-operation-freedom-working-session-bundling-kickoff.md",
+      "related": [
+        "[[operation-freedom|Operation Freedom]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[acquisition-programs|Acquisition Programs]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "pricing",
+        "acquisition"
+      ],
+      "temporal_type": "static",
+      "title": "Operation Freedom Working Session: Bundling Kickoff",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Op Freedom Requirements",
+        "Operation Freedom PRD",
+        "Bundle Requirements"
+      ],
+      "data_period": null,
+      "description": "Product requirements for the UK machine + coffee bundle pilot, covering bundling, discount delivery, payments, and FTBP safeguards.",
+      "domain": "projects",
+      "market": [
+        "uk"
+      ],
+      "owner": "Product",
+      "path": "projects/operation-freedom/operation-freedom-requirements.md",
+      "related": [
+        "[[operation-freedom|Operation Freedom]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[2026-03-12-operation-freedom-working-session-bundling-kickoff|Bundling Kickoff Meeting]]"
+      ],
+      "review_cycle": "monthly",
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "pricing",
+        "acquisition",
+        "features"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Operation Freedom: Product Requirements",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Operation Freedom",
+        "Op Freedom",
+        "Machine Bundle Pilot"
+      ],
+      "data_period": null,
+      "description": "UK pilot of a zero-upfront machine + coffee bundle on sageappliances.com, financed via Klarna.",
+      "domain": "projects",
+      "market": [
+        "uk"
+      ],
+      "owner": "Product",
+      "path": "projects/operation-freedom/operation-freedom.md",
+      "related": [
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[acquisition-programs|Acquisition Programs]]",
+        "[[affordability-economics|Affordability Economics]]",
+        "[[platinum-roaster-program|Platinum Roaster Program]]",
+        "[[2026-03-12-operation-freedom-working-session-bundling-kickoff|Bundling Kickoff Meeting]]"
+      ],
+      "review_cycle": "monthly",
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "pricing",
+        "acquisition",
+        "subscriptions"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Operation Freedom",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Feral March Status",
+        "Project Feral March 2026",
+        "Feral Status Update Mar 2026"
+      ],
+      "data_period": "2026-03",
+      "description": "Month 1 status snapshot for Project Feral covering completed work, in-progress workstreams, gating requirements, and risks.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/2026-03-05-project-feral-status.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[customer-segments|Customer Segments]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "monthly",
+      "status": "superseded",
+      "superseded_by": "[[2026-03-12-project-feral-status|Project Feral Status — Week 5]]",
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "retention",
+        "platform",
+        "data"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Status — March 2026",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Feral Week 5 Status",
+        "Project Feral Status Mar 12",
+        "Feral Status Update Week 5"
+      ],
+      "data_period": "2026-03",
+      "description": "Week 5 status update. AEM deadline extended to May 29, PDP concepts approved, segmentation unblocked, personalization architecture finalized, AEO/GEO ratings critically low, standup cadence reduced.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/2026-03-12-project-feral-status.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-05-project-feral-status|Project Feral Status — March 2026]]",
+        "[[customer-segments|Customer Segments]]"
+      ],
+      "review_cycle": "monthly",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": "[[2026-03-05-project-feral-status|Project Feral Status — March 2026]]",
+      "tags": [
+        "projects",
+        "retention",
+        "platform",
+        "data"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Status — Week 5",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Project Feral Index",
+        "Feral Hub"
+      ],
+      "data_period": null,
+      "description": "26-week AI-first initiative — KB, Intelligence Platform, and rapid experimentation for retention.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/_index.md",
+      "related": [
+        "[[docs/projects/_index|Projects]]"
+      ],
+      "review_cycle": null,
+      "status": "in-progress",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Project Feral",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Project Feral Kickoff 2026-02-11",
+        "Feral Standup Feb 11"
+      ],
+      "data_period": "2026-02",
+      "description": "Project Feral daily standup kickoff aligning on three retention pillars — knowledge graph, front-end component library approach, and AI-driven email iteration.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-11-project-feral-standup-kickoff-alignment.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[lifecycle-comms|Lifecycle Communications]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "ai",
+        "retention"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Kickoff Alignment",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-12",
+        "Feral Standup Feb 12"
+      ],
+      "data_period": "2026-02",
+      "description": "Project Feral standup covering hybrid component library decision, Storybook setup, analytics platform alignment (Datasette to Databricks), web analytics gaps, and KB migration to Revel Digital.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-12-project-feral-standup-platform-tooling.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[kb-platform-architecture|KB Platform Architecture]]",
+        "[[2026-02-11-project-feral-standup-kickoff-alignment|Kickoff Alignment (Feb 11)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "platform",
+        "architecture"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Platform Tooling",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-13",
+        "Feral Standup Feb 13"
+      ],
+      "data_period": "2026-02",
+      "description": "Task board walkthrough covering AI-first dev progress (Storybook, Contentful, dev environment setup), roaster page migration to PIM, and intelligence platform scoping (AB testing, surveys, Hotjar).",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-13-project-feral-standup-task-review.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[2026-02-12-project-feral-standup-platform-tooling|Platform Tooling (Feb 12)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Task Review",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-16",
+        "Feral Standup Feb 16"
+      ],
+      "data_period": "2026-02",
+      "description": "Dev environment stabilization (QA configs to dev), Storybook and V2 migration complete, Contentful integration tomorrow, roaster data flow pivoting to RCC-direct-to-Contentful, Claude Code as primary dev tool, Hotjar for surveys (exit survey review pending), and intelligence platform demo with data sources walkthrough.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-16-project-feral-standup-dev-progress.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[2026-02-13-project-feral-standup-task-review|Task Review (Feb 13)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Dev Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-17",
+        "Feral Standup Feb 17"
+      ],
+      "data_period": "2026-02",
+      "description": "Vendor data flow decided (Americano DynamoDB, not PIM), component library guardrails and 80% code coverage baseline, survey tool evaluation ongoing, and Prasanna's Databricks import complete.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-17-project-feral-standup-platform-progress.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[beanz-hub|Beanz Hub]]",
+        "[[2026-02-16-project-feral-standup-dev-progress|Dev Progress (Feb 16)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Platform Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-18",
+        "Feral Standup Feb 18"
+      ],
+      "data_period": "2026-02",
+      "description": "AB testing hybrid model confirmed (Contentful + Blueconic), dev onboarding session planned for tomorrow, team moving from prototype to Storybook, personalization engine evaluation underway, and vendor data architecture documentation shared with Rishab.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-18-project-feral-standup-progress-update.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[beanz-hub|Beanz Hub]]",
+        "[[2026-02-17-project-feral-standup-platform-progress|Platform Progress (Feb 17)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "platform",
+        "architecture"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Progress Update",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-19",
+        "Feral Standup Feb 19"
+      ],
+      "data_period": "2026-02",
+      "description": "Beans frontend repo demo with agentic dev capabilities, hybrid XPS React component library, Storybook integration, V2 branch strategy, 80% code coverage achieved.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-19-project-feral-standup-frontend-agentic-demo.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-18-project-feral-standup-progress-update|Progress Update (Feb 18)]]",
+        "[[2026-02-20-project-feral-standup-project-update|Project Update (Feb 20)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "platform",
+        "developer-platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Frontend & Agentic Demo",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-20",
+        "Feral Standup Feb 20"
+      ],
+      "data_period": "2026-02",
+      "description": "AI-first dev infrastructure onboarded, Contentful integration underway, collection naming conventions debated, page-wise development approach confirmed, and agent-readiness identified as new requirement.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-20-project-feral-standup-project-update.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-18-project-feral-standup-progress-update|Progress Update (Feb 18)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Project Update",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-23",
+        "Feral Standup Feb 23"
+      ],
+      "data_period": "2026-02",
+      "description": "Page-wise development approach confirmed, Contentful integration progressing, AEO/GEO investigation underway, email strategy alignment needed, and CommerceTools recurring payments being evaluated.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-23-project-feral-standup-project-update.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-20-project-feral-standup-project-update|Project Update (Feb 20)]]",
+        "[[lifecycle-comms|Lifecycle Communications]]",
+        "[[customer-segments|Customer Segments]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "platform",
+        "architecture"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Project Update",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-24",
+        "Feral Standup Feb 24"
+      ],
+      "data_period": "2026-02",
+      "description": "Data extraction timeout challenges, AI email template integration follow-up, branching strategy documentation, and Hotjar requirements progressing.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-24-project-feral-standup-data-ai-progress.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-23-project-feral-standup-project-update|Project Update (Feb 23)]]",
+        "[[customer-segments|Customer Segments]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "analytics",
+        "ai-automation"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Data & AI Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-25",
+        "Feral Standup Feb 25"
+      ],
+      "data_period": "2026-02",
+      "description": "CMS migration reprioritized with April deadline, Databricks data work progressing, Ninetail personalization being evaluated.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-25-project-feral-standup-cms-migration-priority.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-24-project-feral-standup-data-ai-progress|Data & AI Progress (Feb 24)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: CMS Migration Priority",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-26",
+        "Feral Standup Feb 26"
+      ],
+      "data_period": "2026-02",
+      "description": "Marketing Cloud email integration underway, Contentful hybrid approach progressing with CMS team challenges, AEO/GEO strategy coordinating with Miles' team, and Coffee Journey migration potential identified.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-26-project-feral-standup-contentful-aeo-progress.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-25-project-feral-standup-cms-migration-priority|CMS Migration Priority (Feb 25)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "platform",
+        "marketing"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Contentful & AEO Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-02-27",
+        "Feral Standup Feb 27"
+      ],
+      "data_period": "2026-02",
+      "description": "AEO/GEO analysis reveals site needs significant agentic interaction improvements, Hotjar evaluated as preferred survey tool, Contentful pages now rendering with hybrid approach in progress, and churn analysis advancing.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-02-27-project-feral-standup-aeo-hotjar-contentful.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-26-project-feral-standup-contentful-aeo-progress|Contentful & AEO Progress (Feb 26)]]",
+        "[[customer-segments|Customer Segments]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "analytics",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: AEO/GEO, Hotjar & Contentful Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-03",
+        "Feral Standup Mar 3"
+      ],
+      "data_period": "2026-03",
+      "description": "Storybook prototype deadline April 6, Hotjar selected at $36K, CMS migration and redesign parallel tracks, milestone planning needed.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-03-project-feral-standup-prototype-milestones.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-02-27-project-feral-standup-aeo-hotjar-contentful|AEO, Hotjar & Contentful (Feb 27)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "analytics"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Prototype Milestones",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-04",
+        "Feral Standup Mar 4"
+      ],
+      "data_period": "2026-03",
+      "description": "APIs targeted for sprint-end readiness, Storybook prototyping in progress, branching strategy published, and experimentation framework planning underway.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-04-project-feral-standup-sprint-api-progress.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-03-project-feral-standup-prototype-milestones|Prototype & Milestones (Mar 3)]]",
+        "[[customer-segments|Customer Segments]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "platform"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Sprint API Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-05",
+        "Feral Standup Mar 5"
+      ],
+      "data_period": "2026-03",
+      "description": "Budget presentation first draft due, CMS walkthrough in progress, Raam travel disrupted in Dubai, need for target dates on project activities.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-05-project-feral-standup-budget-cms-walkthrough.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-04-project-feral-standup-sprint-api-progress|Sprint API Progress (Mar 4)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "finance"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Budget & CMS Walkthrough",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-06",
+        "Feral Standup Mar 6"
+      ],
+      "data_period": "2026-03",
+      "description": "AEM contract grace period to May 29 ($160K risk), email template API wrapper due end of sprint, segmentation nearing approval, Contentful agentic scope discussion.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-06-project-feral-standup-aem-contract-email-progress.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-05-project-feral-standup-budget-cms-walkthrough|Budget & CMS Walkthrough (Mar 5)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "analytics",
+        "marketing"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: AEM Contract & Email Progress",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-09",
+        "Feral Standup Mar 9"
+      ],
+      "data_period": "2026-03",
+      "description": "Storybook component prototyping with UI builder skill, Vercel developer access blocked, AEO/GEO ratings critically low at 1-2/10, homepage migration progressing.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-09-project-feral-standup-storybook-prototyping-aeo.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-06-project-feral-standup-aem-contract-email-progress|AEM Contract & Email Progress (Mar 6)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "analytics"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Storybook Prototyping & AEO",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-10",
+        "Feral Standup Mar 10"
+      ],
+      "data_period": "2026-03",
+      "description": "First production email deployment strategy, Marketing Cloud API pending, segmentation critical dependency for email success reporting, deck builder tool evolution.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-10-project-feral-standup-email-deployment-segmentation.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-09-project-feral-standup-storybook-prototyping-aeo|Storybook Prototyping & AEO (Mar 9)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "marketing",
+        "analytics"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Email Deployment & Segmentation",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-11",
+        "Feral Standup Mar 11"
+      ],
+      "data_period": "2026-03",
+      "description": "PDP concepts approved, segmentation strategy unblocked with Jennifer workshop, AEM decommissioned from roster detail, dataset dashboards demonstrated, OpenClaw security discussion.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-11-project-feral-standup-dataset-dashboards-segmentation.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-10-project-feral-standup-email-deployment-segmentation|Email Deployment & Segmentation (Mar 10)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "analytics",
+        "architecture"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Dataset Dashboards & Segmentation",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "Project Feral Standup 2026-03-12",
+        "Feral Standup Mar 12"
+      ],
+      "data_period": "2026-03",
+      "description": "Meeting cadence reduced to twice weekly, personalization three-layer solution finalized, Contentful demo next week, subscription CT postponed post-August, AB testing blocked until June/July.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/meetings/2026-03-12-project-feral-standup-cadence-personalization-contentful.md",
+      "related": [
+        "[[project-feral|Project Feral]]",
+        "[[2026-03-11-project-feral-standup-dataset-dashboards-segmentation|Dataset Dashboards & Segmentation (Mar 11)]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "meetings",
+        "meeting-notes",
+        "projects",
+        "architecture",
+        "marketing",
+        "analytics"
+      ],
+      "temporal_type": "static",
+      "title": "Project Feral Standup: Cadence, Personalization & Contentful",
+      "type": "meeting"
+    },
+    {
+      "aliases": [
+        "FERAL",
+        "Project Feral",
+        "Fast Experimentation Rapid AI Learning"
+      ],
+      "data_period": null,
+      "description": "26-week AI-first initiative connecting Knowledge Base, Intelligence Platform, and rapid experimentation to accelerate Beanz customer retention.",
+      "domain": "projects",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "projects/project-feral/project-feral.md",
+      "related": [
+        "[[intelligence-platform|Intelligence Platform]]",
+        "[[kb-platform-architecture|KB Platform Architecture]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[emails-and-notifications|Emails & Notifications]]",
+        "[[cy25-performance|CY25 Performance]]"
+      ],
+      "review_cycle": "monthly",
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "projects",
+        "ai",
+        "retention",
+        "platform",
+        "data",
+        "subscriptions"
+      ],
+      "temporal_type": "dynamic",
+      "title": "Project Feral",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Reference Index",
+        "KB Reference"
+      ],
+      "data_period": null,
+      "description": "Glossary, conventions, and stable reference documentation.",
+      "domain": "reference",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "reference/_index.md",
+      "related": [
+        "[[docs/_index|Knowledge Base Home]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "reference",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Reference",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Beanz Glossary",
+        "Terminology",
+        "Acronyms"
+      ],
+      "data_period": null,
+      "description": "Complete terminology, acronyms, and system names used across beanz.com documentation.",
+      "domain": "reference",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "reference/glossary.md",
+      "related": [
+        "[[id-conventions|ID Conventions]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "reference"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Glossary",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "ID System",
+        "Naming Conventions",
+        "Entity IDs"
+      ],
+      "data_period": null,
+      "description": "Hierarchical ID system for features, pages, segments, cohorts, emails, and notifications.",
+      "domain": "reference",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "reference/id-conventions.md",
+      "related": [
+        "[[glossary|Glossary]]",
+        "[[page-inventory|Page Inventory]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "reference"
+      ],
+      "temporal_type": "atemporal",
+      "title": "ID Conventions",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Security Index",
+        "Privacy Index"
+      ],
+      "data_period": null,
+      "description": "Security policies, authentication, and data privacy.",
+      "domain": "security",
+      "market": [
+        "global"
+      ],
+      "owner": "Platform",
+      "path": "security/_index.md",
+      "related": [
+        "[[docs/legal/_index|Legal]]",
+        "[[docs/architecture/_index|Architecture]]",
+        "[[docs/features/_index|Features]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "security",
+        "privacy",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Security & Privacy",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Strategy Index",
+        "Strategic Planning"
+      ],
+      "data_period": null,
+      "description": "Platform strategy, vision, and transformation initiatives.",
+      "domain": "strategy",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "strategy/_index.md",
+      "related": [
+        "[[docs/architecture/_index|Architecture]]",
+        "[[docs/markets/_index|Markets]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "strategy",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Strategy",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Brand Summit FY27",
+        "FY27 Strategy",
+        "From Proof to Profit"
+      ],
+      "data_period": "CY2025–FY27",
+      "description": "Strategic narrative from proven demand (CY25) through engine-building (FY26) to profitable scale (FY27).",
+      "domain": "strategy",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "strategy/fy27-brand-summit.md",
+      "related": [
+        "[[cy25-performance|CY25 Performance]]",
+        "[[platinum-roaster-program|Platinum Roaster Program]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[affordability-economics|Affordability Economics]]",
+        "[[lifecycle-comms|Lifecycle Communications]]",
+        "[[beanz-label-printing|Beanz Label Printing]]"
+      ],
+      "review_cycle": "annual",
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "strategy",
+        "growth",
+        "profitability"
+      ],
+      "temporal_type": "static",
+      "title": "FY27 Brand and Budgeting Summit",
+      "type": "strategy"
+    },
+    {
+      "aliases": [
+        "Support Index",
+        "Customer Service Index"
+      ],
+      "data_period": null,
+      "description": "Support workflows, SLAs, and service operations.",
+      "domain": "support",
+      "market": [
+        "global"
+      ],
+      "owner": "Operations",
+      "path": "support/_index.md",
+      "related": [
+        "[[docs/voice-of-customer/_index|Voice of Customer]]",
+        "[[docs/users/_index|Users]]",
+        "[[docs/architecture/_index|Architecture]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "support",
+        "service",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Customer Support",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Users Index",
+        "Users Domain"
+      ],
+      "data_period": null,
+      "description": "User segments, personas, and customer cohorts.",
+      "domain": "users",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "users/_index.md",
+      "related": [
+        "[[docs/voice-of-customer/_index|Voice of Customer]]",
+        "[[docs/features/_index|Features]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "users",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Users",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "Customer Advocacy",
+        "Advocacy Framework",
+        "Disruption Framework"
+      ],
+      "data_period": null,
+      "description": "Composite scoring framework for classifying customers as Advocate, Neutral, or Detractor with disruption-based suppression.",
+      "domain": "users",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "users/customer-advocacy.md",
+      "related": [
+        "[[customer-segments|Customer Segments & Cohorts]]",
+        "[[acquisition-programs|Acquisition Programs]]",
+        "[[lifecycle-comms|Lifecycle Communications]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "users",
+        "segmentation",
+        "retention",
+        "lifecycle"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Customer Advocacy & Disruption",
+      "type": "user"
+    },
+    {
+      "aliases": [
+        "Customer Segments",
+        "Segmentation Framework",
+        "Cohort Framework",
+        "SEG Framework"
+      ],
+      "data_period": null,
+      "description": "Framework for classifying beanz.com customers across lifecycle, experience, program, and demographic dimensions.",
+      "domain": "users",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "users/customer-segments.md",
+      "related": [
+        "[[customer-advocacy|Customer Advocacy & Disruption]]",
+        "[[acquisition-programs|Acquisition Programs]]",
+        "[[ftbp|Fast-Track Barista Pack]]",
+        "[[lifecycle-comms|Lifecycle Communications]]"
+      ],
+      "review_cycle": null,
+      "status": "draft",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "users",
+        "segmentation",
+        "cohorts",
+        "lifecycle"
+      ],
+      "temporal_type": "atemporal",
+      "title": "Customer Segments & Cohorts",
+      "type": "user"
+    },
+    {
+      "aliases": [
+        "UX Design Index",
+        "Design Index"
+      ],
+      "data_period": null,
+      "description": "User research, design system, brand guidelines, and accessibility standards.",
+      "domain": "ux-design",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "ux-design/_index.md",
+      "related": [
+        "[[docs/users/_index|Users]]",
+        "[[docs/voice-of-customer/_index|Voice of Customer]]",
+        "[[docs/pages/_index|Pages]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "ux-design",
+        "design",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "UX & Design",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "VOC Index",
+        "Voice of Customer Index"
+      ],
+      "data_period": null,
+      "description": "Customer feedback, research insights, and churn analysis.",
+      "domain": "voice-of-customer",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "voice-of-customer/_index.md",
+      "related": [
+        "[[docs/users/_index|Users]]",
+        "[[docs/features/_index|Features]]"
+      ],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "voc",
+        "index"
+      ],
+      "temporal_type": null,
+      "title": "Voice of Customer",
+      "type": "reference"
+    },
+    {
+      "aliases": [
+        "MOC",
+        "Index",
+        "Home"
+      ],
+      "data_period": null,
+      "description": "Central navigation hub for all beanz.com documentation.",
+      "domain": "(root)",
+      "market": [
+        "global"
+      ],
+      "owner": "Product",
+      "path": "_index.md",
+      "related": [],
+      "review_cycle": null,
+      "status": "complete",
+      "superseded_by": null,
+      "supersedes": null,
+      "tags": [
+        "index",
+        "navigation"
+      ],
+      "temporal_type": null,
+      "title": "Beanz Knowledge Base",
+      "type": "reference"
+    }
+  ],
+  "schema_version": 1,
+  "total_files": 110
+}

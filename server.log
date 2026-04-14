@@ -1,0 +1,367 @@
+Command Center running at http://localhost:3737
+Digest data from: C:\Users\Ziv.Shalev\beanz-digest\output
+[CIBE] Scheduler started — homepages: 24h, catalogues: 168h, social: 168h, trends: 168h, edms: 24h
+[Refresh] Starting background refresh engine...
+[Refresh] Slack: configured (every 60s)
+[Refresh] Outlook: configured (every 120s)
+[Refresh] PowerBI: configured (every 300s)
+[Refresh] AI classify: configured (every 120s)
+[Refresh] Cross-platform matching: every 300s
+[Refresh] Outlook: 44 threads (50 messages)
+[Comms] Failed to fetch attachments for message AAMkAGI4YTM5ZDlhLTJmNTEtNDM3Ny1hYjViLTA1ZGI0ZmNhMzFhZQBGAAAAAABfWqEFNdlyT6_hyduyb_F-BwBUylcQpmqWRIwRJ9pYW_D8AAAASm5LAABrwa8X1I3YR5xCB-BnSbhEAAbD9ooFAAA= Graph API error (fetchMessageAttachments): BadRequest — Parsing OData Select and Expand failed: Could not find a property named 'contentBytes' on type 'microsoft.graph.attachment'.
+[Comms] Failed to fetch attachments for message AAMkAGI4YTM5ZDlhLTJmNTEtNDM3Ny1hYjViLTA1ZGI0ZmNhMzFhZQBGAAAAAABfWqEFNdlyT6_hyduyb_F-BwBUylcQpmqWRIwRJ9pYW_D8AAAASm5LAABrwa8X1I3YR5xCB-BnSbhEAAbD9ooNAAA= Graph API error (fetchMessageAttachments): BadRequest — Parsing OData Select and Expand failed: Could not find a property named 'contentBytes' on type 'microsoft.graph.attachment'.
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Outlook] Refreshing access token via refresh_token...
+[MS Tokens] Tokens saved to C:\Users\Ziv.Shalev\.claude\command-center\.ms-tokens.json
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[AI] Classifying 2 threads (2 total need classification)
+[Refresh] Outlook: 44 threads (50 messages)
+[AI] Classified 2 threads (0 errors)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Refresh] Outlook: 44 threads (50 messages)
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads
+[Slack] Reached 10-page limit with 371 conversations
+[Slack] No member conversations found. Trying 3 known channels as fallback...
+[Slack] Processing 3 conversations (3 member, 371 total)
+[Slack] Built 0 threads from 3 conversations
+[Refresh] Slack: 0 threads

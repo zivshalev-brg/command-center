@@ -1,0 +1,477 @@
+{
+  "version": "2.0",
+  "updated": "2026-03-04",
+  "roasters": [
+    {
+      "id": "seven-seeds",
+      "name": "Seven Seeds",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "roaster",
+      "website": "https://sevenseeds.com.au",
+      "shop_url": "https://sevenseeds.com.au/collections/coffee",
+      "instagram": "sevenseedscoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "product_selector": ".product-card",
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "market-lane",
+      "name": "Market Lane Coffee",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "roaster",
+      "website": "https://marketlane.com.au",
+      "shop_url": "https://marketlane.com.au/collections/coffee",
+      "instagram": "marketlanecoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "padre",
+      "name": "Padre Coffee",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "roaster",
+      "website": "https://padrecoffee.com.au",
+      "shop_url": "https://padrecoffee.com.au/collections/coffee",
+      "instagram": "padrecoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "st-ali",
+      "name": "St Ali",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "roaster",
+      "website": "https://stali.com.au",
+      "shop_url": "https://stali.com.au/collections/coffee",
+      "instagram": "stalicoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "dukes",
+      "name": "Dukes Coffee Roasters",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "roaster",
+      "website": "https://dukescoffee.com.au",
+      "shop_url": "https://dukescoffee.com.au/collections/coffee",
+      "instagram": "dukescoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "ona-coffee",
+      "name": "ONA Coffee",
+      "country": "AU",
+      "city": "Canberra",
+      "type": "roaster",
+      "website": "https://onacoffee.com.au",
+      "shop_url": "https://onacoffee.com.au/collections/coffee",
+      "instagram": "onacoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "single-o",
+      "name": "Single O",
+      "country": "AU",
+      "city": "Sydney",
+      "type": "roaster",
+      "website": "https://singleo.com.au",
+      "shop_url": "https://singleo.com.au/collections/coffee",
+      "instagram": "saboroso",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "sample-coffee",
+      "name": "Sample Coffee",
+      "country": "AU",
+      "city": "Sydney",
+      "type": "roaster",
+      "website": "https://samplecoffee.com.au",
+      "shop_url": "https://samplecoffee.com.au/collections/coffee",
+      "instagram": "samplecoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "rumble-coffee",
+      "name": "Rumble Coffee Roasters",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "roaster",
+      "website": "https://rumblecoffee.com.au",
+      "shop_url": "https://rumblecoffee.com.au/collections/coffee",
+      "instagram": "rumblecoffeeroasters",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "tobys-estate",
+      "name": "Toby's Estate",
+      "country": "AU",
+      "city": "Sydney",
+      "type": "roaster",
+      "website": "https://tobysestate.com.au",
+      "shop_url": "https://tobysestate.com.au/collections/coffee",
+      "instagram": "tobysestate",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "nespresso-au",
+      "name": "Nespresso",
+      "country": "AU",
+      "city": "Sydney",
+      "type": "competitor",
+      "website": "https://www.nespresso.com/au",
+      "shop_url": "https://www.nespresso.com/au/en/order/capsules",
+      "instagram": "nespresso",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "weekly", "catalogue": "monthly" }
+      }
+    },
+    {
+      "id": "campos-coffee",
+      "name": "Campos Coffee",
+      "country": "AU",
+      "city": "Sydney",
+      "type": "competitor",
+      "website": "https://camposcoffee.com",
+      "shop_url": "https://camposcoffee.com/collections/coffee",
+      "instagram": "camposcoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "proud-mary",
+      "name": "Proud Mary Coffee",
+      "country": "AU",
+      "city": "Melbourne",
+      "type": "competitor",
+      "website": "https://proudmarycoffee.com",
+      "shop_url": "https://proudmarycoffee.com/collections/coffee",
+      "instagram": "proudmarycoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+
+    {
+      "id": "allpress-uk",
+      "name": "Allpress Espresso",
+      "country": "UK",
+      "city": "London",
+      "type": "roaster",
+      "website": "https://uk.allpressespresso.com",
+      "shop_url": "https://uk.allpressespresso.com/collections/coffee",
+      "instagram": "allpressespresso",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "GBP",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "square-mile",
+      "name": "Square Mile Coffee Roasters",
+      "country": "UK",
+      "city": "London",
+      "type": "roaster",
+      "website": "https://shop.squaremilecoffee.com",
+      "shop_url": "https://shop.squaremilecoffee.com/collections/coffee",
+      "instagram": "squaremilecoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "GBP",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "caravan-coffee",
+      "name": "Caravan Coffee Roasters",
+      "country": "UK",
+      "city": "London",
+      "type": "roaster",
+      "website": "https://www.caravancoffeeroasters.co.uk",
+      "shop_url": "https://www.caravancoffeeroasters.co.uk/collections/coffee",
+      "instagram": "caravancoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "GBP",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "climpson-sons",
+      "name": "Climpson & Sons",
+      "country": "UK",
+      "city": "London",
+      "type": "roaster",
+      "website": "https://climpsonandsons.com",
+      "shop_url": "https://climpsonandsons.com/collections/coffee",
+      "instagram": "climpsonandsons",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "GBP",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "origin-coffee",
+      "name": "Origin Coffee",
+      "country": "UK",
+      "city": "Cornwall",
+      "type": "roaster",
+      "website": "https://www.origincoffee.co.uk",
+      "shop_url": "https://www.origincoffee.co.uk/collections/coffee",
+      "instagram": "origincoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "GBP",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+
+    {
+      "id": "counter-culture",
+      "name": "Counter Culture Coffee",
+      "country": "US",
+      "city": "Durham",
+      "type": "roaster",
+      "website": "https://counterculturecoffee.com",
+      "shop_url": "https://counterculturecoffee.com/shop/coffee",
+      "instagram": "counterculturecoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "USD",
+        "subscription_url": "https://counterculturecoffee.com/shop/subscriptions",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "stumptown",
+      "name": "Stumptown Coffee Roasters",
+      "country": "US",
+      "city": "Portland",
+      "type": "roaster",
+      "website": "https://www.stumptowncoffee.com",
+      "shop_url": "https://www.stumptowncoffee.com/collections/coffee",
+      "instagram": "stumptowncoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "USD",
+        "subscription_url": "https://www.stumptowncoffee.com/pages/subscription",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "blue-bottle",
+      "name": "Blue Bottle Coffee",
+      "country": "US",
+      "city": "Oakland",
+      "type": "competitor",
+      "website": "https://bluebottlecoffee.com",
+      "shop_url": "https://bluebottlecoffee.com/us/eng/shop/coffee",
+      "instagram": "bluebottle",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "USD",
+        "subscription_url": "https://bluebottlecoffee.com/us/eng/shop/subscriptions",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "verve-coffee",
+      "name": "Verve Coffee Roasters",
+      "country": "US",
+      "city": "Santa Cruz",
+      "type": "roaster",
+      "website": "https://www.vervecoffee.com",
+      "shop_url": "https://www.vervecoffee.com/collections/all-coffee",
+      "instagram": "vervecoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "USD",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "onyx-coffee",
+      "name": "Onyx Coffee Lab",
+      "country": "US",
+      "city": "Rogers",
+      "type": "roaster",
+      "website": "https://onyxcoffeelab.com",
+      "shop_url": "https://onyxcoffeelab.com/collections/coffee",
+      "instagram": "onyxcoffeelab",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "USD",
+        "subscription_url": "https://onyxcoffeelab.com/collections/subscriptions",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+
+    {
+      "id": "the-barn",
+      "name": "The Barn",
+      "country": "DE",
+      "city": "Berlin",
+      "type": "roaster",
+      "website": "https://thebarn.de",
+      "shop_url": "https://thebarn.de/collections/coffee",
+      "instagram": "thebarnberlin",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "EUR",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "bonanza-coffee",
+      "name": "Bonanza Coffee",
+      "country": "DE",
+      "city": "Berlin",
+      "type": "roaster",
+      "website": "https://bonanzacoffee.de",
+      "shop_url": "https://bonanzacoffee.de/collections/coffee",
+      "instagram": "bonanzacoffee",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "EUR",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "five-elephant",
+      "name": "Five Elephant",
+      "country": "DE",
+      "city": "Berlin",
+      "type": "roaster",
+      "website": "https://fiveelephant.com",
+      "shop_url": "https://fiveelephant.com/collections/coffee",
+      "instagram": "fiveelephant",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "EUR",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    },
+    {
+      "id": "father-carpenter",
+      "name": "Father Carpenter Coffee Brewers",
+      "country": "DE",
+      "city": "Berlin",
+      "type": "roaster",
+      "website": "https://fathercarpenter.com",
+      "shop_url": null,
+      "instagram": "fathercarpenter",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "EUR",
+        "frequency": { "homepage": "weekly", "catalogue": "monthly" }
+      }
+    },
+    {
+      "id": "elbgold",
+      "name": "Elbgold",
+      "country": "DE",
+      "city": "Hamburg",
+      "type": "roaster",
+      "website": "https://www.elbgold.com",
+      "shop_url": "https://www.elbgold.com/collections/kaffee",
+      "instagram": "elbgold",
+      "edm_from": null,
+      "beanz_partner": false,
+      "scrape_config": {
+        "use_vision": true,
+        "currency": "EUR",
+        "frequency": { "homepage": "daily", "catalogue": "weekly" }
+      }
+    }
+  ]
+}

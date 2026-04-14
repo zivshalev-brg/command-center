@@ -1,0 +1,77 @@
+filters:
+  and:
+    - file.hasTag("kpi")
+    - file.hasTag("customer")
+    - file.ext == "md"
+formulas:
+  paid_total: if(kpi_paid_sub_only > 0 && kpi_paid_ondemand > 0 && kpi_paid_both > 0, kpi_paid_sub_only + kpi_paid_ondemand + kpi_paid_both, "")
+  paid_pct: if(kpi_all_customers > 0 && kpi_paid_sub_only > 0, (((kpi_paid_sub_only + kpi_paid_ondemand + kpi_paid_both) / kpi_all_customers) * 100).toFixed(1) + "%", "")
+  days_since_refresh: (now() - file.mtime).days
+properties:
+  kpi_all_customers:
+    displayName: All Customers
+  kpi_paid_sub_only:
+    displayName: Paid Sub Only
+  kpi_paid_ondemand:
+    displayName: Paid OnDemand
+  kpi_paid_both:
+    displayName: Paid Both
+  kpi_free_only:
+    displayName: Free Only
+  kpi_ftbp_customers:
+    displayName: FTBP Customers
+  kpi_new_customers:
+    displayName: New Customers
+  kpi_recency_0_30:
+    displayName: Active 0-30d
+  kpi_recency_31_60:
+    displayName: Active 31-60d
+  kpi_recency_61_90:
+    displayName: Active 61-90d
+  kpi_recency_91_180:
+    displayName: Active 91-180d
+  kpi_recency_181_365:
+    displayName: Active 181-365d
+  kpi_recency_365_plus:
+    displayName: Dormant 365d+
+  formula.paid_total:
+    displayName: Total Paid
+  formula.paid_pct:
+    displayName: Paid %
+  data-period:
+    displayName: Data Period
+  formula.days_since_refresh:
+    displayName: Days Since Refresh
+views:
+  - type: table
+    name: Customer Dashboard
+    order:
+      - file.name
+      - kpi_all_customers
+      - kpi_paid_sub_only
+      - kpi_paid_ondemand
+      - kpi_paid_both
+      - kpi_free_only
+      - formula.paid_total
+      - formula.paid_pct
+      - kpi_ftbp_customers
+      - kpi_new_customers
+      - data-period
+      - formula.days_since_refresh
+    summaries:
+      kpi_all_customers: Sum
+      kpi_new_customers: Sum
+  - type: table
+    name: Customer Recency
+    order:
+      - file.name
+      - kpi_recency_0_30
+      - kpi_recency_31_60
+      - kpi_recency_61_90
+      - kpi_recency_91_180
+      - kpi_recency_181_365
+      - kpi_recency_365_plus
+      - data-period
+    summaries:
+      kpi_recency_0_30: Sum
+      kpi_recency_365_plus: Sum

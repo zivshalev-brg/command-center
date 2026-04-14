@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beanz OS — Ziv Shalev</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top">
+  <button class="top-toggle" onclick="toggleSidebar()" title="Toggle sidebar (B)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+  <div class="top-brand">
+    <h1><span class="accent">Beanz</span> OS</h1>
+  </div>
+  <div class="top-spacer"></div>
+  <div class="top-actions">
+    <span class="learning-pulse" title="Self-learning intelligence active"><span class="learning-dot"></span><span style="font-size:10px">Learning</span></span>
+    <span class="badge r" id="actionBadge" onclick="showActionsPanel()" style="cursor:pointer" title="View all actions (A)">5 actions</span>
+    <span class="badge o" id="decisionBadge" onclick="showDecisionsPanel()" style="cursor:pointer" title="View critical decisions (Shift+D)">3 decisions</span>
+    <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()" title="Refresh live data (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      Refresh <kbd>R</kbd>
+    </button>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <svg class="theme-icon-dark" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon-light" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+    <button class="top-search" onclick="openPalette()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> Search… <kbd>Ctrl+K</kbd></button>
+    <span class="date-l" id="dateLabel"></span>
+  </div>
+</div>
+
+<!-- APP LAYOUT -->
+<div class="app" id="app">
+  <div class="nav-rail" id="navRail"></div>
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main" id="main"></div>
+</div>
+
+<!-- RIGHT PANEL (slide-in overlay) -->
+<div class="panel-overlay" id="panel">
+  <div class="panel-header">
+    <h3 id="panelTitle">Details</h3>
+    <button class="panel-close" onclick="closePanel()">&times;</button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+</div>
+
+<!-- COMMAND PALETTE -->
+<div class="palette-bg" id="paletteBg" onclick="if(event.target===this)closePalette()">
+  <div class="palette">
+    <input type="text" id="paletteInput" placeholder="Search everything…" oninput="searchPalette(this.value)" onkeydown="paletteKey(event)"/>
+    <div class="palette-results" id="paletteResults"></div>
+  </div>
+</div>
+
+<!-- KEYBOARD HELP MODAL -->
+<div class="kb-modal" id="kbModal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="kb-box">
+    <h2>Keyboard Shortcuts</h2>
+    <div class="kb-row"><span>Switch modules</span><span class="k">1-9, 0 (left nav)</span></div>
+    <div class="kb-row"><span>Refresh data</span><span class="k">R</span></div>
+    <div class="kb-row"><span>Toggle sidebar</span><span class="k">B</span></div>
+    <div class="kb-row"><span>Command palette</span><span class="k">Ctrl+K</span></div>
+    <div class="kb-row"><span>Navigate list</span><span class="k">J / K</span></div>
+    <div class="kb-row"><span>Close panel / modal</span><span class="k">Esc</span></div>
+    <div class="kb-row"><span>This help</span><span class="k">?</span></div>
+  </div>
+</div>
+
+<!-- SEND MODAL -->
+<div class="modal-bg" id="sendModal">
+  <div class="modal">
+    <div class="modal-h"><h2 id="modalTitle">Send Message</h2><button class="modal-x" onclick="closeModal()">&times;</button></div>
+    <div class="modal-b">
+      <div class="modal-tabs">
+        <div class="modal-tab active" id="tabOutlook" onclick="switchSendTab('outlook')">&#9993; Email</div>
+        <div class="modal-tab slack" id="tabSlack" onclick="switchSendTab('slack')"># Slack</div>
+      </div>
+      <div id="outlookFields">
+        <label>To</label><input id="modalTo" type="email" placeholder="recipient@company.com" autocomplete="off"/>
+        <div class="cc-bcc-toggle"><a href="#" onclick="event.preventDefault();toggleCcBcc()">Show CC/BCC</a></div>
+        <div id="ccBccFields" style="display:none">
+          <label>CC</label><input id="modalCc" type="text" placeholder="cc@company.com"/>
+          <label>BCC</label><input id="modalBcc" type="text" placeholder="bcc@company.com"/>
+        </div>
+        <label>Subject</label><input id="modalSubject" type="text"/>
+        <label>Body</label><textarea id="modalBody" rows="8" placeholder="Write your message..."></textarea>
+        <div class="modal-send-info">&#128231; Sends directly via Microsoft Graph API</div>
+      </div>
+      <div id="slackFields" style="display:none">
+        <label>Send to</label>
+        <select id="slackTarget">
+          <option value="">-- Select channel or person --</option>
+        </select>
+        <div class="slack-hint" id="slackHint"><span class="slack-status"></span>Connected to Slack API &mdash; messages sent directly</div>
+        <label>Message</label>
+        <div class="slack-compose-bar">
+          <textarea id="slackBody" rows="3" placeholder="Write a message..."></textarea>
+          <div class="slack-compose-actions">
+            <button class="btn btn-sm btn-g" onclick="uploadSlackFileFromModal()" title="Attach file" style="font-size:14px">\u{1F4CE}</button>
+          </div>
+        </div>
+        <div class="slack-char-count"><span id="slackCharCount">0</span> chars</div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-ai" id="btnAiAssist" onclick="aiAssistModal()">&#10024; AI Assist</button>
+      <span style="flex:1"></span>
+      <button class="btn btn-outlook" id="btnSendOutlook" onclick="sendViaOutlook()">&#9993; Send Email</button>
+      <button class="btn btn-slack" id="btnSendSlack" onclick="sendViaSlack()" style="display:none">Send via Slack</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL COMPOSER OVERLAY -->
+<div id="emailComposerContainer"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/mod-summary.js"></script>
+<script src="js/mod-comms.js"></script>
+<script src="js/comms-inbox.js"></script>
+<script src="js/comms-reading.js"></script>
+<script src="js/comms-compose.js"></script>
+<script src="js/comms-drafts.js"></script>
+<script src="js/mod-calendar.js"></script>
+<script src="js/cal-views.js"></script>
+<script src="js/cal-detail.js"></script>
+<script src="js/cal-create.js"></script>
+<script src="js/mod-projects.js"></script>
+<script src="js/mod-people.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/metrics-query.js"></script>
+<script src="js/mod-metrics.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/learning.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/palette.js"></script>
+<script src="js/shortcuts.js"></script>
+<script src="js/mod-news.js"></script>
+<script src="js/mod-tech-news.js"></script>
+<script src="js/mod-digest.js"></script>
+<script src="js/mod-strategy.js"></script>
+<script src="js/mod-comms-analytics.js"></script>
+<script src="js/mod-chat.js"></script>
+<script src="js/mod-email-marketing.js"></script>
+<script>
+// ─── Theme Toggle ───────────────────────────────────────────
+(function(){
+  // Apply saved theme before first render to prevent flash
+  var saved = localStorage.getItem('beanz-theme');
+  if (saved === 'light') document.body.classList.add('light');
+})();
+
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  localStorage.setItem('beanz-theme', isLight ? 'light' : 'dark');
+}
+
+// ─── Date Label ─────────────────────────────────────────────
+(function(){
+  const now = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('dateLabel').textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+})();
+loadPersistedStatuses().then(() => renderAll());
+</script>
+</body>
+</html>
