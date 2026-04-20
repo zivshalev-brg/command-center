@@ -120,12 +120,15 @@ function buildIndex() {
  * @returns {Array<{title, relPath, tags, score, content}>}
  */
 function search(query, opts) {
+  var t0 = Date.now();
   buildIndex();
   if (!_index.length) return [];
 
   var maxResults = (opts && opts.maxResults) || 15;
   var maxChars = (opts && opts.maxChars) || 60000;
   var maxPerPage = (opts && opts.maxPerPage) || 8000;
+  var traceSource = (opts && opts.traceSource) || 'chat';
+  var skipTrace = !!(opts && opts.skipTrace);
 
   // Tokenise query into meaningful keywords
   var keywords = query.toLowerCase()
@@ -186,6 +189,22 @@ function search(query, opts) {
     return { entry: entry, score: score };
   }).filter(function (s) { return s.score > 0; });
 
+  // Blend in feedback weights from brain_page_feedback
+  try {
+    var db = require('./db');
+    var feedbackMap = db.getBrainPageFeedback();
+    scored = scored.map(function(s){
+      var fb = feedbackMap[s.entry.relPath];
+      if (!fb) return s;
+      var mult = 1;
+      if (fb.pins > 0) mult *= Math.pow(1.5, Math.min(fb.pins, 3));
+      if (fb.dismisses > 0) mult *= Math.pow(0.4, Math.min(fb.dismisses, 3));
+      if (fb.thumbs_up > 0) mult *= Math.pow(1.2, Math.min(fb.thumbs_up, 5));
+      if (fb.thumbs_down > 0) mult *= Math.pow(0.8, Math.min(fb.thumbs_down, 5));
+      return { entry: s.entry, score: s.score * mult };
+    });
+  } catch (_) { /* DB unavailable or not initialised — skip weighting */ }
+
   // Sort descending by score
   scored.sort(function (a, b) { return b.score - a.score; });
 
@@ -214,6 +233,19 @@ function search(query, opts) {
       content: content
     });
     totalChars += content.length;
+  }
+
+  // Log the RAG trace for brain diagnostics + meta-agent
+  if (!skipTrace) {
+    try {
+      var dbTrace = require('./db');
+      dbTrace.logRagTrace({
+        query: query,
+        source: traceSource,
+        hits: results.map(function(r){ return { relPath: r.relPath, title: r.title, score: r.score }; }),
+        durationMs: Date.now() - t0
+      });
+    } catch (_) { /* fail-silent — tracing must never break search */ }
   }
 
   return results;
