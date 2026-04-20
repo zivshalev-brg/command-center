@@ -524,6 +524,50 @@ function initSchema() {
     CREATE INDEX IF NOT EXISTS idx_nb_msg_notebook ON notebook_messages(notebook_id);
   `);
 
+  // ═══ Obsidian Brain Traces + Feedback ══════════════════════
+  _db.exec(`
+    CREATE TABLE IF NOT EXISTS rag_traces (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      query         TEXT NOT NULL,
+      query_source  TEXT DEFAULT 'chat',        -- chat|notebook|probe|search
+      session_id    TEXT,
+      hits_json     TEXT,                        -- [{relPath, title, score}]
+      hit_count     INTEGER DEFAULT 0,
+      top_score     REAL DEFAULT 0,
+      was_answered  INTEGER DEFAULT NULL,        -- filled in after chat completes
+      cited_paths   TEXT,                        -- JSON array of relPaths Claude referenced
+      user_feedback TEXT,                        -- pin|dismiss|up|down|null
+      duration_ms   INTEGER,
+      created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_rag_traces_created ON rag_traces(created_at);
+    CREATE INDEX IF NOT EXISTS idx_rag_traces_answered ON rag_traces(was_answered);
+
+    CREATE TABLE IF NOT EXISTS brain_page_feedback (
+      rel_path      TEXT PRIMARY KEY,
+      pins          INTEGER DEFAULT 0,
+      dismisses     INTEGER DEFAULT 0,
+      thumbs_up     INTEGER DEFAULT 0,
+      thumbs_down   INTEGER DEFAULT 0,
+      last_hit_at   TEXT,
+      updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS brain_proposals (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      created_at    TEXT NOT NULL DEFAULT (datetime('now')),
+      origin        TEXT NOT NULL DEFAULT 'meta-agent',
+      summary       TEXT NOT NULL,
+      rationale     TEXT,
+      diff_patch    TEXT,
+      score_before  TEXT,                         -- JSON {H,R,U}
+      score_after   TEXT,
+      status        TEXT NOT NULL DEFAULT 'pending', -- pending|approved|rejected|merged
+      reviewed_at   TEXT,
+      reviewed_by   TEXT
+    );
+  `);
+
   // ═══ Genie (Databricks) Cache Table ════════════════════════
   _db.exec(`
     CREATE TABLE IF NOT EXISTS genie_cache (
@@ -1624,6 +1668,82 @@ function getClassificationsByProject(projectName) {
   ).all('%' + projectName + '%');
 }
 
+// ═══ Brain trace + feedback API ════════════════════════════
+
+function logRagTrace(entry) {
+  const d = getDb();
+  const res = d.prepare(`INSERT INTO rag_traces
+    (query, query_source, session_id, hits_json, hit_count, top_score, duration_ms)
+    VALUES (?,?,?,?,?,?,?)`).run(
+      entry.query || '', entry.source || 'chat', entry.sessionId || null,
+      entry.hits ? JSON.stringify(entry.hits) : null,
+      entry.hits ? entry.hits.length : 0,
+      entry.hits && entry.hits.length ? entry.hits[0].score : 0,
+      entry.durationMs || 0
+    );
+  if (entry.hits) {
+    const stmt = d.prepare(`INSERT INTO brain_page_feedback (rel_path, last_hit_at) VALUES (?, datetime('now'))
+      ON CONFLICT(rel_path) DO UPDATE SET last_hit_at = datetime('now')`);
+    entry.hits.forEach(h => { if (h.relPath) stmt.run(h.relPath); });
+  }
+  return res.lastInsertRowid;
+}
+
+function annotateRagTrace(traceId, { wasAnswered, citedPaths, userFeedback }) {
+  const d = getDb();
+  d.prepare(`UPDATE rag_traces SET was_answered = COALESCE(?, was_answered),
+    cited_paths = COALESCE(?, cited_paths), user_feedback = COALESCE(?, user_feedback) WHERE id = ?`)
+    .run(wasAnswered == null ? null : (wasAnswered ? 1 : 0),
+      citedPaths ? JSON.stringify(citedPaths) : null,
+      userFeedback || null, traceId);
+}
+
+function getRagTraces({ sinceHours = 168, limit = 500 } = {}) {
+  const d = getDb();
+  return d.prepare(`SELECT * FROM rag_traces
+    WHERE created_at >= datetime('now', '-' || ? || ' hours')
+    ORDER BY id DESC LIMIT ?`).all(sinceHours, limit);
+}
+
+function recordBrainPageFeedback(relPath, action) {
+  const d = getDb();
+  const col = { pin: 'pins', dismiss: 'dismisses', up: 'thumbs_up', down: 'thumbs_down' }[action];
+  if (!col) return;
+  d.prepare(`INSERT INTO brain_page_feedback (rel_path, ${col}) VALUES (?, 1)
+    ON CONFLICT(rel_path) DO UPDATE SET ${col} = ${col} + 1, updated_at = datetime('now')`).run(relPath);
+}
+
+function getBrainPageFeedback() {
+  const d = getDb();
+  const rows = d.prepare(`SELECT * FROM brain_page_feedback`).all();
+  const map = {};
+  rows.forEach(r => { map[r.rel_path] = r; });
+  return map;
+}
+
+function addBrainProposal(p) {
+  const d = getDb();
+  const res = d.prepare(`INSERT INTO brain_proposals
+    (origin, summary, rationale, diff_patch, score_before, score_after, status)
+    VALUES (?,?,?,?,?,?,?)`).run(
+      p.origin || 'meta-agent', p.summary || '', p.rationale || '', p.diffPatch || '',
+      p.scoreBefore ? JSON.stringify(p.scoreBefore) : null,
+      p.scoreAfter ? JSON.stringify(p.scoreAfter) : null,
+      p.status || 'pending');
+  return res.lastInsertRowid;
+}
+
+function listBrainProposals({ status = 'pending', limit = 50 } = {}) {
+  const d = getDb();
+  return d.prepare(`SELECT * FROM brain_proposals WHERE status = ? ORDER BY id DESC LIMIT ?`).all(status, limit);
+}
+
+function updateBrainProposal(id, status, reviewedBy) {
+  const d = getDb();
+  d.prepare(`UPDATE brain_proposals SET status=?, reviewed_at=datetime('now'), reviewed_by=? WHERE id=?`)
+    .run(status, reviewedBy || 'user', id);
+}
+
 // ─── Cleanup ───────────────────────────────────────────────────
 
 function closeDb() {
@@ -1681,6 +1801,10 @@ module.exports = {
   upsertAnalyticsSummary, getAnalyticsSummary, getLatestSnapshotDate,
   // Project Intelligence
   upsertProjectIntelligence, getProjectIntelligenceIfFresh, getClassificationsByProject,
+  // Brain: RAG traces + page feedback + proposals
+  logRagTrace, annotateRagTrace, getRagTraces,
+  recordBrainPageFeedback, getBrainPageFeedback,
+  addBrainProposal, listBrainProposals, updateBrainProposal,
   // Lifecycle
   closeDb
 };
