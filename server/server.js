@@ -224,6 +224,50 @@ async function handleAPI(req, res) {
   if (parts[0] === 'slack' && parts[1] === 'upload') return handleUpload(req, res, parts, url, ctx);
   if (parts[0] === 'cibe') return handleCIBE(req, res, parts, url, ctx);
 
+  // Roasters Insights health probe — scans known ports for the Next.js app
+  // and verifies it's actually Roasters Insights (not deck-builder or similar).
+  if (parts[0] === 'roasters-insights' && parts[1] === 'ping') {
+    const http = require('http');
+    const ports = [3005, 3000, 3002, 3003, 3004];
+    let done = false;
+    const finish = (payload, status) => {
+      if (done) return;
+      done = true;
+      jsonReply(res, status || (payload.ok ? 200 : 503), payload);
+    };
+    const tryPort = (i) => {
+      if (done) return;
+      if (i >= ports.length) return finish({ ok: false });
+      const port = ports[i];
+      const req2 = http.get({ hostname: 'localhost', port, path: '/', timeout: 500 }, (r) => {
+        let body = '';
+        let settled = false;
+        const settle = () => {
+          if (settled) return;
+          settled = true;
+          const isNext = r.statusCode < 400 && /<!DOCTYPE html|__NEXT_DATA__|_next/i.test(body);
+          if (isNext) return finish({ ok: true, port, url: 'http://localhost:' + port });
+          tryPort(i + 1);
+        };
+        r.on('data', (c) => {
+          body += c;
+          if (body.length >= 2000 && !settled) { settle(); r.resume(); }
+        });
+        r.on('end', settle);
+        r.on('error', () => { if (!settled) { settled = true; tryPort(i + 1); } });
+      });
+      req2.on('error', () => tryPort(i + 1));
+      req2.on('timeout', () => { req2.destroy(); tryPort(i + 1); });
+    };
+    tryPort(0);
+    return;
+  }
+
+  // Roasters Insights data proxy — delegates to routes/roasters-insights.js
+  if (parts[0] === 'roasters-insights') {
+    return require('./routes/roasters-insights')(req, res, parts.slice(1), url, ctx);
+  }
+
   // Obsidian vault sync
   if (parts[0] === 'obsidian') {
     const { syncVault, getSyncStatus } = require('./lib/obsidian-sync');
