@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { jsonReply, readBody } = require('../lib/helpers');
 const {
   setThreadStatus, getThreadStatuses, clearExpiredSnoozes,
@@ -7,7 +9,37 @@ const {
   logAction, getActionLog
 } = require('../lib/db');
 
+// Per-source staleness thresholds (minutes) for the live intelligence files.
+// UI reads this via GET /api/status to badge sources as fresh vs stale.
+const FRESHNESS_SOURCES = [
+  { key: 'comms',             file: 'comms-live.json',              staleMinutes: 10 },
+  { key: 'email',             file: 'email-live.json',              staleMinutes: 15 },
+  { key: 'calendar',          file: 'calendar-live.json',           staleMinutes: 120 },
+  { key: 'pbi',               file: 'pbi-live.json',                staleMinutes: 360 },
+  { key: 'metrics',           file: 'metrics-live.json',            staleMinutes: 24 * 60 * 2 },
+  { key: 'roastersInsights',  file: 'roasters-insights-live.json',  staleMinutes: 24 * 60 },
+  { key: 'jira',              file: 'jira-live.json',               staleMinutes: 60 }
+];
+
 module.exports = async function handleStatus(req, res, parts, url, ctx) {
+  // GET /api/status — freshness of live intelligence snapshots
+  if (!parts[1] && req.method === 'GET') {
+    const sources = FRESHNESS_SOURCES.map(f => {
+      const fp = path.join(ctx.intelDir, f.file);
+      let mtime = null;
+      let ageMinutes = null;
+      let status = 'missing';
+      try {
+        mtime = fs.statSync(fp).mtime.getTime();
+        ageMinutes = Math.round((Date.now() - mtime) / 60000);
+        status = ageMinutes > f.staleMinutes ? 'stale' : 'fresh';
+      } catch { /* file missing — keep status = 'missing' */ }
+      return { key: f.key, file: f.file, staleMinutes: f.staleMinutes, ageMinutes, status };
+    });
+    clearExpiredSnoozes();
+    return jsonReply(res, 200, { sources, checkedAt: new Date().toISOString() });
+  }
+
   // GET /api/status/threads — all thread statuses + pinned (includes completed as 'done')
   if (parts[1] === 'threads' && req.method === 'GET') {
     clearExpiredSnoozes();
