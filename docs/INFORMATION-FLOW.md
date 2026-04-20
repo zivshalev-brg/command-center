@@ -321,7 +321,107 @@ That is the full loop: **ingress → process → store → project → surface �
 
 ---
 
-## 11. Files Index (quick jump)
+## 11. Freshness & Deduplication Rules
+
+The system has two layered safeguards: **freshness rules** (TTLs + staleness thresholds) that answer "is this data still good?" and **deduplication rules** (idempotent merges + ID sets) that answer "have we already seen this?". The `/api/status` endpoint exposes freshness to the UI so the user can see when a source is stale.
+
+### 11.1 Per-source staleness thresholds
+
+`GET /api/status` reads the mtime of each live JSON file and labels it `fresh` or `stale` against a per-source threshold.
+
+| Source | File | Stale after | Source |
+|---|---|---|---|
+| Slack comms | `comms-live.json` | 10 min | [server/routes/status.js:16](server/routes/status.js) |
+| Outlook email | `email-live.json` | 15 min | status.js:17 |
+| Calendar | `calendar-live.json` | 2 h | status.js:18 |
+| Power BI | `pbi-live.json` | 6 h | status.js:19 |
+| Metrics | `metrics-live.json` | 48 h | status.js:20 |
+| Roasters Insights | `roasters-insights-live.json` | 24 h | status.js:21 |
+| Jira | `jira-live.json` | 1 h | status.js:22 |
+
+The UI shows a staleness badge per tab driven by this endpoint. `POST /api/refresh/now` forces an immediate scheduler pass.
+
+### 11.2 Cache TTLs (in-process and SQLite)
+
+| Cache | TTL | Key | Source |
+|---|---|---|---|
+| Obsidian RAG index | 5 min | in-memory vault index | [obsidian-rag.js:20](server/lib/obsidian-rag.js) |
+| Confluence API | 10 min | URL-keyed Map | [confluence-api.js:4](server/lib/confluence-api.js) |
+| Genie KPI | 15 min | SQLite `genie_cache` | [genie.js:20](server/routes/genie.js) |
+| Genie query | 60 min | SQLite `genie_cache` | genie.js:21 |
+| Databricks SQL | 60 min default (override per call) | SHA-256 of SQL text | [databricks-engine.js:108](server/lib/databricks-engine.js) |
+| AI classification | Until thread grows | `(threadId, messageCount)` | [ai-classifier.js:361](server/lib/ai-classifier.js) |
+| AI thread summary | Until thread grows | `(threadId, messageCount)` | ai-summariser.js |
+
+A janitor query (`genie-cache.js:149`) deletes SQLite cache rows where `age > ttl_minutes` so the DB doesn't grow forever.
+
+### 11.3 Ingress windows (how far back each puller looks)
+
+Each refresher pulls a **bounded window**, not the full history — the cache accumulates older data across runs.
+
+| Puller | Window | Source |
+|---|---|---|
+| Outlook | 14 days / max 200 messages | [refresh-engine.js:91](server/lib/refresh-engine.js) |
+| CIBE EDM scraper | 30 days | [cibe/scrapers/edm-scraper.js:117](server/lib/cibe/scrapers/edm-scraper.js) |
+| News daily report | 24 h, falls back to 3 days if <20 articles | [news.js:1026](server/routes/news.js) |
+| News weekly report | 7 days | news.js:1026 |
+| Video articles | 7 days daily / 14 days weekly | news.js:1035 |
+| Jira issues | 14 days default | [db.js:1627](server/lib/db.js) |
+
+### 11.4 Retention & pruning
+
+| What | Kept | Rule | Source |
+|---|---|---|---|
+| Slack threads | 90 days rolling | Pruned if `lastActivity < now − 90 days` on every refresh | [refresh-engine.js:54](server/lib/refresh-engine.js) |
+| Brain snapshots | 7 daily + 4 weekly + 3 monthly | Grandfather-father-son retention | [brain-snapshots.js:93](server/lib/brain-snapshots.js) |
+| Competitor alerts | Last 14 days considered "known" for dedup | [ai-news.js:613](server/lib/ai-news.js) |
+
+### 11.5 Scheduler intervals (the heartbeat)
+
+| Timer | Interval | Source |
+|---|---|---|
+| Slack refresh | 60 s | [server.js:519](server/server.js) |
+| Outlook refresh | 120 s | server.js:520 |
+| Jira refresh | 15 min | [jira-refresh.js:131](server/lib/jira-refresh.js) |
+| Power BI refresh | 4 h | pbi-refresh-scheduler.js |
+| CIBE homepages + EDMs | 24 h | [cibe/scrape-orchestrator.js:33](server/lib/cibe/scrape-orchestrator.js) |
+| CIBE catalogues / social / trends | 7 d | scrape-orchestrator.js:34-36 |
+| News refresh | 24 h | server.js:572 |
+| Daily scheduled jobs | 24 h wake-up + minute-level cron check | server.js:658 |
+
+### 11.6 Deduplication rules
+
+| Layer | Mechanism | Key | Source |
+|---|---|---|---|
+| **Server instance** | PID-file lock refuses to boot if another process holds it and is alive | `.server.pid` | [server.js:9-34](server/server.js) |
+| **AI classification** | Re-classifies only if message count changed — no duplicate Claude calls for unchanged threads | `(threadId, messageCount)` | [ai-classifier.js:361](server/lib/ai-classifier.js) |
+| **Slack conversations** | `Set()` on conversation ID across public, private, mpim, im | `conversation.id` | [slack-api.js:322](server/lib/slack-api.js) |
+| **News articles** | Existing-ID set consulted before inserting | `article.id` | [news-engine.js:776](server/lib/news-engine.js) |
+| **Competitor alerts** | "Persist new alerts (deduplicate by article_id)" checks last 14 days | `article_id` | [ai-news.js:612](server/lib/ai-news.js) |
+| **Cross-platform threads** | Slack↔email matcher: one conversation appears once in unified inbox | participants + subject similarity + timing | thread-matcher.js |
+| **Thread merge on refresh** | `{ ...existing, ...freshThreads }` — fresh always wins, older entries preserved until pruned | thread id | [refresh-engine.js:51](server/lib/refresh-engine.js) |
+| **CIBE products** | `INSERT OR REPLACE` — same URL updates `last_seen` and appends `price_history` instead of creating a new row | `(roaster_id, url)` | [catalogue-scraper.js:76](server/lib/cibe/scrapers/catalogue-scraper.js) |
+| **Obsidian chunks** | `seen` Set on relative path during chunk rebuild | `rel_path` | [obsidian-chunks.js:71](server/lib/obsidian-chunks.js) |
+| **Obsidian entities** | Lowercase phrase Set to avoid duplicate entity cards | `phrase.toLowerCase()` | [obsidian-entities.js:71](server/lib/obsidian-entities.js) |
+| **Jira sprints** | Dedup Set across multiple boards | `sprint.id` | [jira-api.js:470](server/lib/jira-api.js) |
+| **Thread participants** | `[...new Set(msgs.map(m => m.sender))]` | sender | [comms.js:72](server/routes/comms.js) |
+| **Completed threads** | Completed/dismissed threads filtered out on every `/api/comms` read | `getCompletedThreadIds()` | [comms.js:808](server/routes/comms.js) |
+| **Outlook self-addresses** | User's own aliases excluded from sender lists | `selfAddresses` Set | [outlook-api.js:386](server/lib/outlook-api.js) |
+| **Morning sweep debounce** | Prevents duplicate batch on restart between 7:30–7:31 (historical bug fixed) | timestamp gate | [server.js:611](server/server.js) |
+| **Comms analytics snapshot trigger** | 1-hour cooldown between manual triggers | `_lastSnapshotTrigger` | [comms-analytics.js:39](server/routes/comms-analytics.js) |
+
+### 11.7 Principles at a glance
+
+1. **Windowed pulls + merged cache** — pullers see only a recent horizon; older data survives in the merged JSON until it's older than the prune cutoff.
+2. **Fresh wins on merge** — when the same ID shows up in both the current snapshot and a new fetch, the new one replaces it (`{ ...existing, ...fresh }`).
+3. **Cache on growth, not on time** — AI classification re-runs only when a thread has new messages, so token cost stays flat for unchanged threads.
+4. **Idempotent writes** — CIBE products, competitor alerts, and news items all use ID-keyed upserts; re-running a scraper never doubles rows.
+5. **Single heartbeat** — the PID lock + the shared `refresh-engine` scheduler ensures one process owns all timers, preventing duplicate sends.
+6. **Visible staleness** — `GET /api/status` lets the UI show "stale" badges instead of silently serving old data.
+
+---
+
+## 12. Files Index (quick jump)
 
 - Refresh engine — [server/lib/refresh-engine.js](server/lib/refresh-engine.js)
 - Obsidian sync — [server/lib/obsidian-sync.js](server/lib/obsidian-sync.js)
