@@ -460,6 +460,70 @@ function initSchema() {
     CREATE INDEX IF NOT EXISTS idx_chat_msg_session ON chat_messages(session_id);
   `);
 
+  // ═══ Notebook Tables (NotebookLM-style workspace) ══════════
+  _db.exec(`
+    CREATE TABLE IF NOT EXISTS notebooks (
+      id          TEXT PRIMARY KEY,
+      title       TEXT NOT NULL,
+      description TEXT,
+      icon        TEXT DEFAULT '📒',
+      color       TEXT DEFAULT 'var(--ac)',
+      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE TABLE IF NOT EXISTS notebook_sources (
+      id             TEXT PRIMARY KEY,
+      notebook_id    TEXT NOT NULL,
+      kind           TEXT NOT NULL,            -- upload_pdf|upload_docx|upload_txt|upload_md|paste_text|paste_url|vault_page|dashboard_snapshot
+      title          TEXT NOT NULL,
+      url            TEXT,
+      content_text   TEXT NOT NULL,
+      metadata_json  TEXT,
+      size           INTEGER DEFAULT 0,
+      added_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY(notebook_id) REFERENCES notebooks(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_nb_sources_notebook ON notebook_sources(notebook_id);
+
+    CREATE TABLE IF NOT EXISTS notebook_source_chunks (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      source_id   TEXT NOT NULL,
+      notebook_id TEXT NOT NULL,
+      chunk_index INTEGER NOT NULL,
+      content     TEXT NOT NULL,
+      char_start  INTEGER DEFAULT 0,
+      char_end    INTEGER DEFAULT 0,
+      FOREIGN KEY(source_id) REFERENCES notebook_sources(id) ON DELETE CASCADE,
+      FOREIGN KEY(notebook_id) REFERENCES notebooks(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_nb_chunks_source ON notebook_source_chunks(source_id);
+    CREATE INDEX IF NOT EXISTS idx_nb_chunks_notebook ON notebook_source_chunks(notebook_id);
+
+    CREATE TABLE IF NOT EXISTS notebook_notes (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      notebook_id TEXT NOT NULL,
+      title       TEXT,
+      content_md  TEXT NOT NULL,
+      kind        TEXT NOT NULL DEFAULT 'user',      -- user|ai_summary|ai_faq|ai_briefing|ai_study_guide|ai_timeline|ai_concepts|ai_actions|chat_saved
+      pinned      INTEGER DEFAULT 0,
+      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at  TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY(notebook_id) REFERENCES notebooks(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_nb_notes_notebook ON notebook_notes(notebook_id);
+
+    CREATE TABLE IF NOT EXISTS notebook_messages (
+      id             INTEGER PRIMARY KEY AUTOINCREMENT,
+      notebook_id    TEXT NOT NULL,
+      role           TEXT NOT NULL,            -- user|assistant
+      content        TEXT NOT NULL,
+      citations_json TEXT,
+      created_at     TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY(notebook_id) REFERENCES notebooks(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_nb_msg_notebook ON notebook_messages(notebook_id);
+  `);
+
   // ═══ Genie (Databricks) Cache Table ════════════════════════
   _db.exec(`
     CREATE TABLE IF NOT EXISTS genie_cache (
