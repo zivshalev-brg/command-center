@@ -1,6 +1,7 @@
 # Secrets
 .env
 .ms-tokens.json
+.databricks-token.json
 
 # Database
 beanz-os.db
