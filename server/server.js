@@ -34,6 +34,7 @@ const { startCIBEScheduler } = require('./lib/cibe/scrape-orchestrator');
 const { startPBIRefreshScheduler, getPBIRefreshStatus } = require('./lib/pbi-refresh-scheduler');
 const handleCommsAnalytics = require('./routes/comms-analytics');
 const handleChat = require('./routes/chat');
+const handleNotebook = require('./routes/notebook');
 const handleEmailMarketing = require('./routes/email-marketing');
 const handleGenie = require('./routes/genie');
 const handleDailyDigest = require('./routes/daily-digest');
@@ -213,6 +214,7 @@ async function handleAPI(req, res) {
   if (parts[0] === 'news') return handleNews(req, res, parts, url, ctx);
   if (parts[0] === 'calendar') return handleCalendar(req, res, parts, url, ctx);
   if (parts[0] === 'chat') return handleChat(req, res, parts, url, ctx);
+  if (parts[0] === 'notebooks') return handleNotebook(req, res, parts, url, ctx);
   if (parts[0] === 'comms-analytics') return handleCommsAnalytics(req, res, parts, url, ctx);
   if (parts[0] === 'email-marketing') return handleEmailMarketing(req, res, parts, url, ctx);
   if (parts[0] === 'comms') return handleComms(req, res, parts, url, ctx);
