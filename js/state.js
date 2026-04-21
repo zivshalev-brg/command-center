@@ -149,6 +149,7 @@ function renderAll() {
     case 'digest': renderDigestSidebar(); renderDigestMain(); break;
     case 'commsanalytics': renderCommsAnalyticsSidebar(); renderCommsAnalyticsMain(); break;
     case 'chat': renderChatSidebar(); renderChatMain(); break;
+    case 'notes': renderNotesSidebar(); renderNotesMain(); break;
     case 'emailmarketing': renderEmailMarketingSidebar(); renderEmailMarketingMain(); break;
   }
 }
