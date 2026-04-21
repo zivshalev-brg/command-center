@@ -282,6 +282,40 @@ a { color: var(--ac); text-decoration: none; } a:hover { text-decoration: underl
 .comms-search:focus { border-color:var(--ac); }
 .comms-search::placeholder { color:var(--tx3); }
 
+/* ═══ Notes / NotebookLM polish — Phase 3 ═══ */
+.nblm-pane-sources { position:relative; }
+.nblm-pane-sources.drag-hover { outline:2px dashed var(--ac); outline-offset:-6px; background:rgba(108,140,255,.04); }
+.nblm-pane-sources.drag-hover .nblm-pane-drag-hint { opacity:1; transform:translateY(0); pointer-events:auto; }
+.nblm-pane-drag-hint { position:absolute; top:44px; left:12px; right:12px; text-align:center; padding:10px; font-size:var(--f-sm); color:var(--ac); background:var(--bg); border:1px dashed var(--ac); border-radius:8px; opacity:0; transform:translateY(-8px); transition:all var(--dur-f); pointer-events:none; z-index:5; font-weight:var(--fw-sb); }
+
+/* Add-Sources modal subviews (paste text / paste URL / vault pick) */
+.nblm-subview-back { display:inline-flex; align-items:center; gap:4px; background:transparent; border:none; color:var(--tx3); cursor:pointer; padding:4px 8px; border-radius:6px; font-size:var(--f-sm); margin-right:auto; }
+.nblm-subview-back:hover { color:var(--tx); background:var(--s2); }
+.nblm-subview-body { padding:var(--sp4); display:flex; flex-direction:column; gap:var(--sp3); }
+.nblm-subview-label { font-size:var(--f-xs); font-weight:var(--fw-sb); color:var(--tx3); text-transform:uppercase; letter-spacing:.4px; }
+.nblm-subview-input { padding:10px 12px; background:var(--s1); border:1px solid var(--bd); border-radius:8px; color:var(--tx); font-size:var(--f-md); font-family:inherit; }
+.nblm-subview-input:focus { outline:none; border-color:var(--ac); background:var(--bg); }
+.nblm-subview-textarea { padding:10px 12px; background:var(--s1); border:1px solid var(--bd); border-radius:8px; color:var(--tx); font-size:var(--f-sm); font-family:inherit; resize:vertical; min-height:180px; line-height:1.5; }
+.nblm-subview-textarea:focus { outline:none; border-color:var(--ac); background:var(--bg); }
+.nblm-subview-hint { font-size:var(--f-xs); color:var(--tx3); line-height:1.5; }
+.nblm-subview-actions { display:flex; gap:var(--sp2); justify-content:flex-end; margin-top:var(--sp2); }
+.nblm-subview-searchrow { display:flex; gap:var(--sp2); }
+.nblm-subview-searchrow .nblm-subview-input { flex:1; }
+.nblm-subview-loading { padding:var(--sp4); text-align:center; color:var(--tx3); font-size:var(--f-sm); }
+.nblm-subview-empty { padding:var(--sp4); text-align:center; color:var(--tx3); font-size:var(--f-sm); background:var(--s1); border-radius:8px; }
+.nblm-vault-results { display:flex; flex-direction:column; gap:4px; max-height:320px; overflow-y:auto; border:1px solid var(--bd); border-radius:8px; padding:4px; background:var(--s1); }
+.nblm-vault-row { display:flex; gap:var(--sp2); align-items:flex-start; padding:8px 10px; border-radius:6px; cursor:pointer; transition:background var(--dur-f); }
+.nblm-vault-row:hover { background:var(--s2); }
+.nblm-vault-row.selected { background:rgba(108,140,255,.12); outline:1px solid var(--ac); }
+.nblm-vault-row input[type=checkbox] { margin-top:3px; accent-color:var(--ac); }
+.nblm-vault-row-title { font-size:var(--f-sm); font-weight:var(--fw-sb); color:var(--tx); margin-bottom:2px; }
+.nblm-vault-row-meta { font-size:var(--f-xs); color:var(--tx3); }
+
+/* Citation marker polish — clickable chip instead of native tooltip */
+.nb-cite { display:inline-flex; align-items:center; padding:0 6px; margin:0 2px; font-size:10px; font-weight:var(--fw-sb); border-radius:10px; background:rgba(108,140,255,.12); color:var(--ac); cursor:help; vertical-align:middle; transition:all var(--dur-f); }
+.nb-cite:hover { background:var(--ac); color:var(--bg); }
+.nb-cite-invalid { background:var(--s2); color:var(--tx3); }
+
 /* ═══ Notebook Capture Button — shared "Save to notebook" UI ═══ */
 .nb-cap-btn { display:inline-flex; align-items:center; gap:4px; background:transparent; border:1px solid transparent; color:var(--tx3); cursor:pointer; border-radius:6px; transition:all var(--dur-f); padding:4px; vertical-align:middle; }
 .nb-cap-btn:hover { color:var(--ac); border-color:var(--bd); background:rgba(108,140,255,.08); }
