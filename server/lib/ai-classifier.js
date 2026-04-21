@@ -86,6 +86,7 @@ const SYSTEM_PROMPT = [
   '  "confidence": 0.0-1.0,',
   '  "projectTags": ["ALWAYS include matching projects from the list above. Use broad matching. Most business threads relate to at least one project."],',
   '  "isMarketing": true|false,',
+  '  "isNotification": true|false,  (system-generated: delivery receipts, calendar invites, Jira/GitHub/CI alerts, newsletter-unsubscribe confirmations, out-of-office, mailer-daemon — NOT marketing promos)',
   '  "urgencyReason": "brief reason for the priority level"',
   '}'
 ].join('\n');
@@ -236,6 +237,7 @@ function validateClassification(raw) {
     : [];
 
   const isMarketing = raw.isMarketing === true;
+  const isNotification = raw.isNotification === true;
 
   const urgencyReason = typeof raw.urgencyReason === 'string'
     ? raw.urgencyReason.slice(0, 200)
@@ -256,6 +258,7 @@ function validateClassification(raw) {
     confidence,
     projectTags,
     isMarketing,
+    isNotification,
     urgencyReason
   });
 }

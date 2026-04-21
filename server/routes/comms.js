@@ -826,6 +826,7 @@ module.exports = async function handleComms(req, res, parts, url, ctx) {
           try { th.aiProjectTags = JSON.parse(classification.project_tags); } catch (e) { th.aiProjectTags = []; }
         }
         th.aiIsMarketing = classification.is_marketing === 1;
+        th.aiIsNotification = classification.is_notification === 1;
         th.aiUrgencyReason = classification.urgency_reason || '';
       }
 
