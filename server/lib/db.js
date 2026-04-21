@@ -580,6 +580,16 @@ function initSchema() {
     );
   `);
 
+  // ═══ Email Performance Insights (FR-010) ═══════════════════
+  _db.exec(`
+    CREATE TABLE IF NOT EXISTS email_insights (
+      send_id       INTEGER PRIMARY KEY,
+      narrative_json TEXT NOT NULL,   -- { headline, sentiment, bullets, anomalies, recommendations }
+      generated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_email_insights_date ON email_insights(generated_at);
+  `);
+
   // ═══ Genie (Databricks) Cache Table ════════════════════════
   _db.exec(`
     CREATE TABLE IF NOT EXISTS genie_cache (
@@ -1703,6 +1713,34 @@ function getClassificationsByProject(projectName) {
   ).all('%' + projectName + '%');
 }
 
+// ═══ Email Performance Insights (FR-010) ═══════════════════
+
+// 7-day cache — insights are stable unless the underlying data changes.
+// Invalidate by DELETE on the send_id if the perf snapshot reflows.
+const EMAIL_INSIGHT_TTL_MS = 7 * 86400000;
+
+function getEmailInsight(sendId) {
+  const d = getDb();
+  const row = d.prepare(`SELECT narrative_json, generated_at FROM email_insights WHERE send_id = ?`).get(sendId);
+  if (!row) return null;
+  const ageMs = Date.now() - new Date(row.generated_at + 'Z').getTime();
+  if (!isFinite(ageMs) || ageMs > EMAIL_INSIGHT_TTL_MS) return null;
+  try { return { narrative: JSON.parse(row.narrative_json), generated_at: row.generated_at, cached: true }; }
+  catch { return null; }
+}
+
+function saveEmailInsight(sendId, narrative) {
+  const d = getDb();
+  d.prepare(
+    `INSERT OR REPLACE INTO email_insights (send_id, narrative_json, generated_at) VALUES (?, ?, datetime('now'))`
+  ).run(sendId, JSON.stringify(narrative));
+}
+
+function deleteEmailInsight(sendId) {
+  const d = getDb();
+  d.prepare(`DELETE FROM email_insights WHERE send_id = ?`).run(sendId);
+}
+
 // ═══ Brain trace + feedback API ════════════════════════════
 
 function logRagTrace(entry) {
@@ -1871,6 +1909,8 @@ module.exports = {
   logRagTrace, annotateRagTrace, getRagTraces,
   recordBrainPageFeedback, getBrainPageFeedback,
   addBrainProposal, listBrainProposals, updateBrainProposal,
+  // Email insights (FR-010)
+  getEmailInsight, saveEmailInsight, deleteEmailInsight,
   // Lifecycle
   closeDb
 };
