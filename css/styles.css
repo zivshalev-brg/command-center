@@ -282,6 +282,17 @@ a { color: var(--ac); text-decoration: none; } a:hover { text-decoration: underl
 .comms-search:focus { border-color:var(--ac); }
 .comms-search::placeholder { color:var(--tx3); }
 
+/* ═══ Notebook Capture Button — shared "Save to notebook" UI ═══ */
+.nb-cap-btn { display:inline-flex; align-items:center; gap:4px; background:transparent; border:1px solid transparent; color:var(--tx3); cursor:pointer; border-radius:6px; transition:all var(--dur-f); padding:4px; vertical-align:middle; }
+.nb-cap-btn:hover { color:var(--ac); border-color:var(--bd); background:rgba(108,140,255,.08); }
+.nb-cap-btn:active { transform:scale(.92); }
+.nb-cap-btn svg { width:14px; height:14px; display:block; }
+.nb-cap-sm svg { width:14px; height:14px; }
+.nb-cap-md { padding:6px 10px; }
+.nb-cap-md svg { width:16px; height:16px; }
+.nb-cap-with-label { padding:4px 10px; }
+.nb-cap-label { font-size:var(--f-xs); font-weight:var(--fw-sb); white-space:nowrap; }
+
 /* Lane tabs (Inbox / Sent) — primary split above everything else */
 .comms-lane-tabs { display:flex; border-bottom:1px solid var(--bd); flex-shrink:0; background:var(--s1); }
 .comms-lane-tab { flex:1; text-align:center; padding:10px var(--sp3); font-size:var(--f-md); font-weight:var(--fw-sb); color:var(--tx3); cursor:pointer; border-bottom:2px solid transparent; transition:all var(--dur-f); user-select:none; letter-spacing:.2px; }

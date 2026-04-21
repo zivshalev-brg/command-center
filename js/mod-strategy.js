@@ -176,6 +176,12 @@ function renderStrategyMain() {
     html += `<button class="fb-btn fb-pin${pinned ? ' active' : ''}" onclick="event.stopPropagation();sendFeedback('insight','${c.id}','pin');setTimeout(()=>{loadStrategyData()},500)" title="Pin this insight">&#9733;</button>`;
     html += `<button class="fb-btn fb-dismiss" onclick="event.stopPropagation();sendFeedback('insight','${c.id}','dismiss');setTimeout(()=>{loadStrategyData()},500)" title="Dismiss">&#10005;</button>`;
     html += `<span class="fb-hint">${fbCount > 0 ? fbCount + ' signals' : 'Train the system'}</span>`;
+    html += saveToNotebookButton({
+      sourceType: 'custom',
+      ref: { title: 'Strategy · ' + c.title, content: JSON.stringify(c, null, 2) },
+      title: c.title,
+      summary: c.finding || ''
+    });
     html += `</div>`;
     html += '</div></div>';
   });

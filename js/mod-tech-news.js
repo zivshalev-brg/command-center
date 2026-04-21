@@ -327,6 +327,12 @@ function _tnRenderArticle(a) {
             '<button class="fb-btn fb-down" onclick="event.stopPropagation();sendFeedback(\'tech-news\',\'' + a.id + '\',\'down\')" title="Not relevant">&#9660;</button>' +
             '<button class="fb-btn fb-dismiss" onclick="event.stopPropagation();sendFeedback(\'tech-news\',\'' + a.id + '\',\'dismiss\');setTimeout(function(){DATA.techNews=null;loadTechNewsData()},300)" title="Dismiss">&#10005;</button>' +
           '</div>' +
+          saveToNotebookButton({
+            sourceType: a.videoId ? 'news_video' : 'news_article',
+            ref: a.videoId ? { videoId: a.videoId, articleId: a.id } : { url: a.url, title: a.title, summary: summary },
+            title: a.title,
+            summary: summary
+          }) +
         '</div>' +
       '</div>' +
     '</div>' +
