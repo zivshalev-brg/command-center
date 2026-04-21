@@ -226,10 +226,22 @@ function renderChatMain() {
   // Messages + streaming
   var msgsHtml = '<div class="chat-messages" id="chat-messages">';
 
-  state.chatMessages.forEach(function(m) {
+  state.chatMessages.forEach(function(m, idx) {
+    var saveBtn = '';
+    if (m.role === 'assistant') {
+      // Preview summary = first 140 chars of the message
+      var preview = (m.content || '').replace(/\s+/g, ' ').trim().slice(0, 140);
+      saveBtn = '<div class="chat-msg-save">' + saveToNotebookButton({
+        sourceType: 'chat_message',
+        ref: { content: m.content, role: m.role, sessionId: state.chatSessionId || null },
+        title: 'Chat · ' + (preview.slice(0, 60) || 'Assistant reply'),
+        summary: preview
+      }) + '</div>';
+    }
     msgsHtml += '<div class="chat-msg chat-' + m.role + '">' +
       '<div class="chat-msg-role">' + (m.role === 'user' ? 'You' : 'Obsidian Brain') + '</div>' +
       '<div class="chat-msg-content">' + (m.role === 'assistant' ? _chatRenderMd(m.content) : _chatEnc(m.content)) + '</div>' +
+      saveBtn +
     '</div>';
   });
 
