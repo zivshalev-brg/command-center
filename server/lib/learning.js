@@ -35,16 +35,35 @@ function saveLearningStore(storePath, store) {
   fs.writeFileSync(storePath, JSON.stringify(store, null, 2), 'utf-8');
 }
 
-/** Compute adaptive insight weights based on feedback history */
+const { HALF_LIFE_DAYS, decayFactorFromDate } = require('./decay');
+
+/**
+ * Compute adaptive insight weights with exponential time-decay.
+ * Phase 1: thumbs up/down dropped — only pin (+0.5) and dismiss (-0.3) count.
+ * A pin from today contributes +0.5; a pin from 45 days ago contributes +0.25.
+ * Falls back gracefully if feedback entries lack timestamps (treated as fresh).
+ */
 function computeInsightWeights(store) {
   const weights = { ...store.insightWeights };
-  store.pinnedInsights.forEach(id => { weights[id] = (weights[id] || 1) + 0.5; });
-  store.dismissedInsights.forEach(id => { weights[id] = Math.max(0, (weights[id] || 1) - 0.3); });
-  store.feedback.forEach(f => {
-    if (f.type === 'insight') {
-      weights[f.target] = (weights[f.target] || 1) + (f.value === 'up' ? 0.2 : -0.2);
-    }
+  const now = Date.now();
+
+  store.pinnedInsights.forEach(id => {
+    weights[id] = (weights[id] || 1) + 0.5;
   });
+
+  store.dismissedInsights.forEach(id => {
+    weights[id] = Math.max(0, (weights[id] || 1) - 0.3);
+  });
+
+  store.feedback.forEach(f => {
+    if (f.type !== 'insight') return;
+    if (f.value !== 'pin' && f.value !== 'dismiss') return;
+    const adj = f.value === 'pin' ? 0.5 : -0.3;
+    const ts = f.created_at || f.createdAt || f.timestamp || f.ts;
+    const decay = decayFactorFromDate(ts, now, HALF_LIFE_DAYS);
+    weights[f.target] = Math.max(0, (weights[f.target] || 1) + adj * decay);
+  });
+
   return weights;
 }
 
