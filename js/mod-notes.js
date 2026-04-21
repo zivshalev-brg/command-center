@@ -105,23 +105,87 @@ function notesSubmitWebSearch() {
 
 function notesAddSource(kind) {
   var nbId = state.selectedNotebookId; if (!nbId) return;
+  // Upload flow still uses native file picker (browser-native UX)
+  if (kind === 'upload') { notesCloseAddSourcesModal(); return _notesTriggerUpload(nbId); }
+  // Dashboard snapshot uses inline option picker — toast-based, no prompt
+  if (kind === 'dashboard_snapshot') { notesCloseAddSourcesModal(); return _notesSnapshotDashboard(nbId); }
+  // All other source types render an inline subview in the modal
+  state.notesAddSourcesSubview = kind;
+  state.notesVaultResults = null;
+  state.notesVaultQuery = '';
+  renderAll();
+  setTimeout(function(){
+    var focusMap = { paste_text: 'nb-paste-text-title', paste_url: 'nb-paste-url-input', vault_page: 'nb-vault-search-input' };
+    var el = focusMap[kind] ? document.getElementById(focusMap[kind]) : null;
+    if (el) el.focus();
+  }, 80);
+}
+
+function notesBackToAddSources() {
+  state.notesAddSourcesSubview = null;
+  state.notesVaultResults = null;
+  renderAll();
+}
+
+function notesSubmitPasteText() {
+  var nbId = state.selectedNotebookId; if (!nbId) return;
+  var titleEl = document.getElementById('nb-paste-text-title');
+  var bodyEl = document.getElementById('nb-paste-text-body');
+  var title = (titleEl && titleEl.value.trim()) || 'Pasted text';
+  var content = bodyEl ? bodyEl.value.trim() : '';
+  if (!content) {
+    if (typeof showToast === 'function') showToast('Paste some text first', 'er');
+    return;
+  }
   notesCloseAddSourcesModal();
-  if (kind === 'upload') return _notesTriggerUpload(nbId);
-  if (kind === 'paste_text') return _notesPasteText(nbId);
-  if (kind === 'paste_url') return _notesPasteUrl(nbId);
-  if (kind === 'vault_page') return _notesOpenVaultPicker(nbId);
-  if (kind === 'dashboard_snapshot') return _notesSnapshotDashboard(nbId);
+  _notesSubmitSource(nbId, { kind: 'paste_text', title: title, contentText: content });
 }
 
-function _notesPasteText(nbId) {
-  var title = prompt('Title for this text source:', 'Pasted text'); if (title == null) return;
-  var content = prompt('Paste text:'); if (!content) return;
-  _notesSubmitSource(nbId, { kind: 'paste_text', title, contentText: content });
+function notesSubmitPasteUrl() {
+  var nbId = state.selectedNotebookId; if (!nbId) return;
+  var urlEl = document.getElementById('nb-paste-url-input');
+  var url = urlEl ? urlEl.value.trim() : '';
+  if (!/^https?:\/\//i.test(url)) {
+    if (typeof showToast === 'function') showToast('Enter a valid URL starting with http(s)://', 'er');
+    return;
+  }
+  notesCloseAddSourcesModal();
+  _notesSubmitSource(nbId, { kind: 'paste_url', url: url });
 }
 
-function _notesPasteUrl(nbId) {
-  var url = prompt('Paste a URL (https://…)'); if (!url) return;
-  _notesSubmitSource(nbId, { kind: 'paste_url', url });
+function notesSearchVault() {
+  var qEl = document.getElementById('nb-vault-search-input');
+  var q = qEl ? qEl.value.trim() : '';
+  if (!q) return;
+  state.notesVaultQuery = q;
+  state.notesVaultLoading = true;
+  renderAll();
+  fetch('/api/notebooks/vault-search?q=' + encodeURIComponent(q)).then(r=>r.json()).then(function(d){
+    state.notesVaultResults = d.results || [];
+    state.notesVaultLoading = false;
+    state.notesVaultSelected = {};
+    renderAll();
+  }).catch(function(){ state.notesVaultLoading = false; renderAll(); });
+}
+
+function notesToggleVaultPick(idx) {
+  state.notesVaultSelected = state.notesVaultSelected || {};
+  state.notesVaultSelected[idx] = !state.notesVaultSelected[idx];
+  renderAll();
+}
+
+function notesSubmitVaultPicks() {
+  var nbId = state.selectedNotebookId; if (!nbId) return;
+  var results = state.notesVaultResults || [];
+  var picks = Object.keys(state.notesVaultSelected || {}).filter(function(k){ return state.notesVaultSelected[k]; }).map(function(k){ return results[parseInt(k,10)]; }).filter(Boolean);
+  if (!picks.length) {
+    if (typeof showToast === 'function') showToast('Select at least one page', 'er');
+    return;
+  }
+  notesCloseAddSourcesModal();
+  picks.forEach(function(r){
+    _notesSubmitSource(nbId, { kind: 'vault_page', title: r.title, relPath: r.relPath, content: r.content, tags: r.tags });
+  });
 }
 
 function _notesSubmitSource(nbId, body) {
@@ -151,30 +215,37 @@ function _notesTriggerUpload(nbId) {
   input.click();
 }
 
-function _notesOpenVaultPicker(nbId) {
-  var q = prompt('Search your Obsidian vault:'); if (!q) return;
-  fetch('/api/notebooks/vault-search?q=' + encodeURIComponent(q)).then(r=>r.json()).then(d => {
-    var results = d.results || [];
-    if (!results.length) { if (typeof showToast === 'function') showToast('No vault pages matched'); return; }
-    var listing = results.slice(0, 12).map(function(r,i){return (i+1) + '. ' + r.title + ' (' + r.relPath + ')';}).join('\n');
-    var pick = prompt('Matches:\n' + listing + '\n\nEnter numbers (comma-separated):'); if (!pick) return;
-    var indices = pick.split(/[,\s]+/).map(function(s){return parseInt(s,10);}).filter(function(n){return !isNaN(n) && n >= 1;});
-    indices.forEach(function(idx){
-      var r = results[idx - 1]; if (!r) return;
-      _notesSubmitSource(nbId, { kind: 'vault_page', title: r.title, relPath: r.relPath, content: r.content, tags: r.tags });
-    });
-  });
-}
-
 function _notesSnapshotDashboard(nbId) {
   var options = [];
   if (typeof _metricsData !== 'undefined' && _metricsData && _metricsData.snapshot) options.push({ label: 'Metrics snapshot', title: 'Metrics · ' + (state._metricsPeriod || 'current'), data: _metricsData.snapshot });
   if (typeof DATA !== 'undefined' && DATA.strategy) options.push({ label: 'Strategy correlations', title: 'Strategy Correlations', data: DATA.strategy });
-  if (!options.length) { alert('Open Metrics or Strategy first to enable snapshots.'); return; }
-  var listing = options.map(function(o,i){return (i+1) + '. ' + o.label;}).join('\n');
-  var pick = prompt('Snapshot which?\n' + listing); var idx = parseInt(pick, 10);
-  var sel = options[idx - 1]; if (!sel) return;
-  _notesSubmitSource(nbId, { kind: 'dashboard_snapshot', title: sel.title, contentText: JSON.stringify(sel.data, null, 2) });
+  if (!options.length) {
+    if (typeof showToast === 'function') showToast('Open Metrics or Strategy first to enable snapshots', 'er');
+    return;
+  }
+  // Auto-snapshot all available options — avoids prompt() picker
+  options.forEach(function(sel){
+    _notesSubmitSource(nbId, { kind: 'dashboard_snapshot', title: sel.title, contentText: JSON.stringify(sel.data, null, 2) });
+  });
+}
+
+// Drag-drop handler for the main Sources pane (not just the modal).
+// Accepts dropped files anywhere in the pane; uses the same upload flow.
+function _nbSourcesPaneDragOver(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-hover'); }
+function _nbSourcesPaneDragLeave(ev) { ev.currentTarget.classList.remove('drag-hover'); }
+function _nbSourcesPaneDrop(ev) {
+  ev.preventDefault();
+  ev.currentTarget.classList.remove('drag-hover');
+  var nbId = state.selectedNotebookId; if (!nbId) return;
+  var files = (ev.dataTransfer && ev.dataTransfer.files) || [];
+  if (!files.length) return;
+  Array.from(files).forEach(function(file){
+    var form = new FormData(); form.append('file', file);
+    state.notesUploading = true; renderAll();
+    fetch('/api/notebooks/' + encodeURIComponent(nbId) + '/sources', { method: 'POST', body: form })
+      .then(r=>r.json()).then(()=> { state.notesUploading = false; notesLoadNotebook(nbId); })
+      .catch(()=> { state.notesUploading = false; renderAll(); });
+  });
 }
 
 function notesDeleteSource(sid) {
@@ -432,6 +503,19 @@ function _notesEditorKeydown(ev) {
 function notesToggleSourcesPane() { state.notesSourcesCollapsed = !state.notesSourcesCollapsed; renderAll(); }
 function notesToggleStudioPane() { state.notesStudioCollapsed = !state.notesStudioCollapsed; renderAll(); }
 
+// ── Keyboard shortcut: `/` focuses chat input when in Notes tab
+// (ignored if user is typing in another input/textarea/modal)
+document.addEventListener('keydown', function(e) {
+  if (state.module !== 'notes') return;
+  if (e.key !== '/') return;
+  var tag = (document.activeElement && document.activeElement.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if (state.notesEditor && state.notesEditor.open) return;
+  if (state.notesAddSourcesOpen) return;
+  var el = document.getElementById('nb-chat-input');
+  if (el) { e.preventDefault(); el.focus(); }
+});
+
 // ── SSE utility ─────────────────────────────────────────────
 async function _notesReadSse(resp, cb) {
   var reader = resp.body.getReader();
@@ -574,11 +658,15 @@ function _nblmSourcesPane(nb, collapsed) {
     '</div>';
   }
 
-  return '<div class="nblm-pane nblm-pane-sources">' +
+  return '<div class="nblm-pane nblm-pane-sources"' +
+    ' ondragover="_nbSourcesPaneDragOver(event)"' +
+    ' ondragleave="_nbSourcesPaneDragLeave(event)"' +
+    ' ondrop="_nbSourcesPaneDrop(event)">' +
     '<div class="nblm-pane-head">' +
       '<span class="nblm-pane-title">Sources</span>' +
       '<button class="nblm-collapse-btn" onclick="notesToggleSourcesPane()" title="Collapse"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></button>' +
     '</div>' +
+    '<div class="nblm-pane-drag-hint">Drop files here to add as sources</div>' +
     '<div class="nblm-pane-body">' +
       '<button class="nblm-add-sources-btn" onclick="notesOpenAddSourcesModal()">' +
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
@@ -798,41 +886,112 @@ function _nblmEditorToolbar(ed) {
 
 // ── Add sources modal ───────────────────────────────────────
 function _nbAddSourcesModal() {
+  // Subview-aware: when a source-type is selected, show its inline form instead of the type picker
+  var sub = state.notesAddSourcesSubview;
+  var body = sub ? _nbAddSourcesSubview(sub) : _nbAddSourcesPicker();
   return '<div class="nblm-modal-bg" onclick="notesCloseAddSourcesModal()">' +
     '<div class="nblm-modal" onclick="event.stopPropagation()">' +
       '<button class="nblm-modal-close" onclick="notesCloseAddSourcesModal()">✕</button>' +
-      '<div class="nblm-modal-header">' +
-        '<h2>Create audio and video overviews from <span class="nblm-grad-text">websites</span></h2>' +
-      '</div>' +
-      '<div class="nblm-modal-search">' + _nblmWebSearchBox() + '</div>' +
-      '<div class="nblm-dropzone" id="nb-dropzone" ondragover="event.preventDefault();this.classList.add(\'hover\')" ondragleave="this.classList.remove(\'hover\')" ondrop="event.preventDefault();this.classList.remove(\'hover\');_nbHandleDrop(event)">' +
-        '<div class="nblm-dropzone-title">or drop your files</div>' +
-        '<div class="nblm-dropzone-sub">pdf, docx, xlsx, pptx, csv, md, txt, and more</div>' +
-        '<div class="nblm-dropzone-buttons">' +
-          '<button class="nblm-dz-btn" onclick="notesAddSource(\'upload\')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
-            '<span>Upload files</span>' +
-          '</button>' +
-          '<button class="nblm-dz-btn" onclick="notesAddSource(\'paste_url\')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>' +
-            '<span>Websites</span>' +
-          '</button>' +
-          '<button class="nblm-dz-btn" onclick="notesAddSource(\'vault_page\')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
-            '<span>Obsidian</span>' +
-          '</button>' +
-          '<button class="nblm-dz-btn" onclick="notesAddSource(\'paste_text\')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>' +
-            '<span>Copied text</span>' +
-          '</button>' +
-          '<button class="nblm-dz-btn" onclick="notesAddSource(\'dashboard_snapshot\')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>' +
-            '<span>Dashboard</span>' +
-          '</button>' +
-        '</div>' +
-      '</div>' +
+      body +
     '</div>' +
   '</div>';
+}
+
+function _nbAddSourcesPicker() {
+  return '<div class="nblm-modal-header">' +
+      '<h2>Add sources</h2>' +
+    '</div>' +
+    '<div class="nblm-modal-search">' + _nblmWebSearchBox() + '</div>' +
+    '<div class="nblm-dropzone" id="nb-dropzone" ondragover="event.preventDefault();this.classList.add(\'hover\')" ondragleave="this.classList.remove(\'hover\')" ondrop="event.preventDefault();this.classList.remove(\'hover\');_nbHandleDrop(event)">' +
+      '<div class="nblm-dropzone-title">or drop your files</div>' +
+      '<div class="nblm-dropzone-sub">pdf, docx, xlsx, pptx, csv, md, txt, and more</div>' +
+      '<div class="nblm-dropzone-buttons">' +
+        '<button class="nblm-dz-btn" onclick="notesAddSource(\'upload\')">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
+          '<span>Upload files</span>' +
+        '</button>' +
+        '<button class="nblm-dz-btn" onclick="notesAddSource(\'paste_url\')">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>' +
+          '<span>Websites</span>' +
+        '</button>' +
+        '<button class="nblm-dz-btn" onclick="notesAddSource(\'vault_page\')">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
+          '<span>Obsidian</span>' +
+        '</button>' +
+        '<button class="nblm-dz-btn" onclick="notesAddSource(\'paste_text\')">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>' +
+          '<span>Copied text</span>' +
+        '</button>' +
+        '<button class="nblm-dz-btn" onclick="notesAddSource(\'dashboard_snapshot\')">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>' +
+          '<span>Dashboard</span>' +
+        '</button>' +
+      '</div>' +
+    '</div>';
+}
+
+function _nbAddSourcesSubview(kind) {
+  var backBtn = '<button class="nblm-subview-back" onclick="notesBackToAddSources()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back</button>';
+  if (kind === 'paste_url') {
+    return '<div class="nblm-modal-header">' + backBtn + '<h2>Add a website</h2></div>' +
+      '<div class="nblm-subview-body">' +
+        '<label class="nblm-subview-label">URL</label>' +
+        '<input id="nb-paste-url-input" class="nblm-subview-input" type="url" placeholder="https://example.com/article" onkeydown="if(event.key===\'Enter\'){notesSubmitPasteUrl()}" />' +
+        '<div class="nblm-subview-hint">We\'ll fetch the article and chunk it into this notebook.</div>' +
+        '<div class="nblm-subview-actions">' +
+          '<button class="btn btn-g btn-sm" onclick="notesBackToAddSources()">Cancel</button>' +
+          '<button class="btn btn-p btn-sm" onclick="notesSubmitPasteUrl()">Add source</button>' +
+        '</div>' +
+      '</div>';
+  }
+  if (kind === 'paste_text') {
+    return '<div class="nblm-modal-header">' + backBtn + '<h2>Paste text</h2></div>' +
+      '<div class="nblm-subview-body">' +
+        '<label class="nblm-subview-label">Title</label>' +
+        '<input id="nb-paste-text-title" class="nblm-subview-input" type="text" placeholder="Pasted text" />' +
+        '<label class="nblm-subview-label">Content</label>' +
+        '<textarea id="nb-paste-text-body" class="nblm-subview-textarea" rows="10" placeholder="Paste your text here…"></textarea>' +
+        '<div class="nblm-subview-actions">' +
+          '<button class="btn btn-g btn-sm" onclick="notesBackToAddSources()">Cancel</button>' +
+          '<button class="btn btn-p btn-sm" onclick="notesSubmitPasteText()">Add source</button>' +
+        '</div>' +
+      '</div>';
+  }
+  if (kind === 'vault_page') {
+    var results = state.notesVaultResults || [];
+    var loading = !!state.notesVaultLoading;
+    var selected = state.notesVaultSelected || {};
+    var resultsHtml = '';
+    if (loading) {
+      resultsHtml = '<div class="nblm-subview-loading">Searching vault…</div>';
+    } else if (state.notesVaultQuery && !results.length) {
+      resultsHtml = '<div class="nblm-subview-empty">No vault pages matched "' + _nEnc(state.notesVaultQuery) + '"</div>';
+    } else if (results.length) {
+      resultsHtml = '<div class="nblm-vault-results">' + results.slice(0, 20).map(function(r, i){
+        return '<label class="nblm-vault-row' + (selected[i] ? ' selected' : '') + '">' +
+          '<input type="checkbox"' + (selected[i] ? ' checked' : '') + ' onchange="notesToggleVaultPick(' + i + ')" />' +
+          '<div class="nblm-vault-row-body">' +
+            '<div class="nblm-vault-row-title">' + _nEnc(r.title) + '</div>' +
+            '<div class="nblm-vault-row-meta">' + _nEnc(r.relPath) + '</div>' +
+          '</div>' +
+        '</label>';
+      }).join('') + '</div>';
+    }
+    var pickCount = Object.keys(selected).filter(function(k){ return selected[k]; }).length;
+    return '<div class="nblm-modal-header">' + backBtn + '<h2>Pick from Obsidian vault</h2></div>' +
+      '<div class="nblm-subview-body">' +
+        '<div class="nblm-subview-searchrow">' +
+          '<input id="nb-vault-search-input" class="nblm-subview-input" type="text" placeholder="Search vault pages…" value="' + _nEnc(state.notesVaultQuery || '') + '" onkeydown="if(event.key===\'Enter\'){notesSearchVault()}" />' +
+          '<button class="btn btn-p btn-sm" onclick="notesSearchVault()">Search</button>' +
+        '</div>' +
+        resultsHtml +
+        '<div class="nblm-subview-actions">' +
+          '<button class="btn btn-g btn-sm" onclick="notesBackToAddSources()">Cancel</button>' +
+          '<button class="btn btn-p btn-sm" onclick="notesSubmitVaultPicks()"' + (pickCount ? '' : ' disabled') + '>Add ' + (pickCount ? pickCount + ' source' + (pickCount === 1 ? '' : 's') : 'sources') + '</button>' +
+        '</div>' +
+      '</div>';
+  }
+  return '';
 }
 
 function _nbHandleDrop(ev) {
