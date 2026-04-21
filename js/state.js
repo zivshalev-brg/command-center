@@ -19,6 +19,8 @@ const state = {
   threadStatus: {}, // track done/snoozed per thread
   selectedCalEvent: -1,
   // Comms state
+  commsLane: 'inbox',         // 'inbox' | 'sent'
+  commsInboxSegment: 'signal', // 'all' | 'signal' | 'marketing' | 'notifications'
   commsSource: 'all',         // 'all' | 'email' | 'slack'
   commsSlackFilter: 'all',    // 'all' | 'dm' | 'group' | 'channel' | 'private'
   commsCategoryFilter: 'all', // 'all' | category name | 'action' | 'urgent'

@@ -475,6 +475,13 @@ function formatThread(convId, conv, sortedMsgs, config) {
   const lastSenderAddr = (lastMsg.from?.emailAddress?.address || '').toLowerCase();
   const lastSenderName = lastMsg.from?.emailAddress?.name || 'Unknown';
   const lastSender = selfAddresses.has(lastSenderAddr) ? 'You' : lastSenderName;
+  // Sent lane: thread belongs to "Sent" when I wrote the last message AND no unread incoming reply.
+  // Keeps threads in Inbox when someone has replied after me.
+  const hasUnreadIncoming = sortedMsgs.some((m) => {
+    const addr = (m.from?.emailAddress?.address || '').toLowerCase();
+    return !selfAddresses.has(addr) && !m.isRead;
+  });
+  const isOutgoing = selfAddresses.has(lastSenderAddr) && !hasUnreadIncoming;
   const preview = extractPreviewText(lastMsg).slice(0, 120);
 
   const attachmentCount = sortedMsgs.filter((m) => m.hasAttachments).length;
@@ -493,6 +500,7 @@ function formatThread(convId, conv, sortedMsgs, config) {
     source: 'outlook',
     people: [...people],
     lastSender,
+    isOutgoing,
     lastActivity: lastMsg.receivedDateTime,
     preview: preview + (preview.length >= 120 ? '...' : ''),
     threadCount: sortedMsgs.length,

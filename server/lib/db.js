@@ -628,6 +628,9 @@ function initSchema() {
     _db.exec(`ALTER TABLE ai_classifications ADD COLUMN is_marketing INTEGER DEFAULT 0`);
   } catch { /* column already exists */ }
   try {
+    _db.exec(`ALTER TABLE ai_classifications ADD COLUMN is_notification INTEGER DEFAULT 0`);
+  } catch { /* column already exists */ }
+  try {
     _db.exec(`ALTER TABLE ai_classifications ADD COLUMN urgency_reason TEXT`);
   } catch { /* column already exists */ }
 
@@ -1336,8 +1339,8 @@ function upsertClassification(threadId, data) {
   const db = getDb();
   db.prepare(`
     INSERT OR REPLACE INTO ai_classifications
-      (thread_id, category, subcategory, priority, sentiment, action_required, action_type, summary, confidence, message_count, model_used, project_tags, is_marketing, urgency_reason, classified_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      (thread_id, category, subcategory, priority, sentiment, action_required, action_type, summary, confidence, message_count, model_used, project_tags, is_marketing, is_notification, urgency_reason, classified_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
   `).run(
     threadId, data.category, data.subcategory || null, data.priority,
     data.sentiment || null, data.actionRequired ? 1 : 0, data.actionType || null,
@@ -1345,6 +1348,7 @@ function upsertClassification(threadId, data) {
     data.modelUsed || null,
     data.projectTags ? JSON.stringify(data.projectTags) : null,
     data.isMarketing ? 1 : 0,
+    data.isNotification ? 1 : 0,
     data.urgencyReason || null
   );
 }

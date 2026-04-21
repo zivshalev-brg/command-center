@@ -2,6 +2,20 @@
 // COMMS INBOX — Clean Gmail-style thread list (unified email+slack)
 // ===============================================================
 
+// Switch between Inbox and Sent lanes. When entering Sent, inbox-only
+// segmentation is irrelevant; when returning to Inbox, default to Signal
+// so the user sees high-signal threads first (not the full firehose).
+function switchCommsLane(lane) {
+  state.commsLane = lane;
+  if (lane === 'sent') {
+    state.commsInboxSegment = 'all'; // Sent lane ignores segment anyway, but reset for clarity
+  } else if (!state.commsInboxSegment || state.commsInboxSegment === 'all') {
+    state.commsInboxSegment = 'signal';
+  }
+  state.selectedThread = null;
+  renderAll();
+}
+
 // ── 1. getVisibleThreadIds — filter by source, search, status ──
 
 function getVisibleThreadIds() {
@@ -15,6 +29,24 @@ function getVisibleThreadIds() {
       if (state.threadStatus[id] === 'done') return false;
       // Hide snoozed threads
       if (state.commsSnoozed[id]) return false;
+      // Lane filter — Inbox vs Sent
+      var lane = state.commsLane || 'inbox';
+      if (lane === 'sent') {
+        if (!th.isOutgoing) return false;
+      } else {
+        // Inbox — exclude outgoing threads
+        if (th.isOutgoing) return false;
+        // Inbox segmentation (Signal / Marketing / Notifications / All)
+        var seg = state.commsInboxSegment || 'signal';
+        if (seg === 'signal') {
+          if (th.aiIsMarketing || th.aiIsNotification) return false;
+        } else if (seg === 'marketing') {
+          if (!th.aiIsMarketing) return false;
+        } else if (seg === 'notifications') {
+          if (!th.aiIsNotification) return false;
+        }
+        // 'all' — no segment constraint within inbox
+      }
       // Source filter
       if (state.commsSource !== 'all' && !(th.sources || []).includes(state.commsSource)) return false;
       // Slack sub-filter (by conversation type)
@@ -210,6 +242,52 @@ function renderCommsThreadList() {
   html += ' value="' + (state.commsSearch || '').replace(/"/g, '&quot;') + '"';
   html += ' oninput="state.commsSearch=this.value;renderCommsMain()" />';
   html += '</div>';
+
+  // ── Lane tabs (Inbox / Sent) + Inbox segmentation pills ──────
+  // Compute lane counts across all threads (excluding done/snoozed)
+  var laneCounts = { inbox: 0, sent: 0, signal: 0, marketing: 0, notifications: 0 };
+  for (var ltid in threads) {
+    if (state.threadStatus[ltid] === 'done' || state.commsSnoozed[ltid]) continue;
+    var lth = threads[ltid];
+    if (lth.isOutgoing) { laneCounts.sent++; }
+    else {
+      laneCounts.inbox++;
+      if (lth.aiIsMarketing) laneCounts.marketing++;
+      else if (lth.aiIsNotification) laneCounts.notifications++;
+      else laneCounts.signal++;
+    }
+  }
+
+  var curLane = state.commsLane || 'inbox';
+  html += '<div class="comms-lane-tabs">';
+  ['inbox', 'sent'].forEach(function(lk) {
+    var activeL = curLane === lk ? ' active' : '';
+    var lbl = lk === 'inbox' ? 'Inbox' : 'Sent';
+    html += '<div class="comms-lane-tab' + activeL + '" onclick="switchCommsLane(\'' + lk + '\')">';
+    html += lbl + ' <span class="lane-tab-count">' + laneCounts[lk] + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Inbox segmentation pills — only visible in Inbox lane
+  if (curLane === 'inbox') {
+    var curSeg = state.commsInboxSegment || 'signal';
+    var segs = [
+      { k: 'signal',        label: 'Signal',        count: laneCounts.signal },
+      { k: 'marketing',     label: 'Marketing',     count: laneCounts.marketing },
+      { k: 'notifications', label: 'Notifications', count: laneCounts.notifications },
+      { k: 'all',           label: 'All',           count: laneCounts.inbox }
+    ];
+    html += '<div class="comms-segment-pills">';
+    segs.forEach(function(s) {
+      var activeS = curSeg === s.k ? ' active' : '';
+      html += '<div class="comms-segment-pill comms-segment-' + s.k + activeS + '"';
+      html += ' onclick="setState(\'commsInboxSegment\',\'' + s.k + '\')">';
+      html += s.label + ' <span class="segment-pill-count">' + s.count + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
 
   // Project filter banner
   if (state.commsProjectFilter) {
