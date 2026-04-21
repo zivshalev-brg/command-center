@@ -553,6 +553,18 @@ function initSchema() {
       updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    -- Per-event feedback log for brain pages (Phase 1 decay).
+    -- Aggregate table above is retained as a hit counter; scoring now
+    -- queries this event log so weights can decay by age.
+    CREATE TABLE IF NOT EXISTS brain_page_feedback_events (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      rel_path    TEXT NOT NULL,
+      action      TEXT NOT NULL,            -- 'pin' | 'dismiss'
+      created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_bpfe_path_time
+      ON brain_page_feedback_events(rel_path, created_at);
+
     CREATE TABLE IF NOT EXISTS brain_proposals (
       id            INTEGER PRIMARY KEY AUTOINCREMENT,
       created_at    TEXT NOT NULL DEFAULT (datetime('now')),
@@ -580,6 +592,28 @@ function initSchema() {
     CREATE INDEX IF NOT EXISTS idx_genie_cache_type ON genie_cache(query_type);
     CREATE INDEX IF NOT EXISTS idx_genie_cache_date ON genie_cache(cached_at);
   `);
+
+  // Feedback-decay backfill: promote legacy brain_page_feedback counters into
+  // brain_page_feedback_events. One-shot, idempotent — only runs if the event
+  // log is empty. Existing counters are backdated to 30 days ago so an old pin
+  // decays to ~63% on first read, not 100% (which would overstate its weight).
+  try {
+    const events = _db.prepare('SELECT COUNT(*) AS n FROM brain_page_feedback_events').get();
+    if (events && events.n === 0) {
+      const legacy = _db.prepare('SELECT rel_path, pins, dismisses FROM brain_page_feedback').all();
+      const insertEvent = _db.prepare(
+        `INSERT INTO brain_page_feedback_events (rel_path, action, created_at)
+         VALUES (?, ?, datetime('now', '-30 days'))`
+      );
+      const tx = _db.transaction(() => {
+        for (const row of legacy) {
+          for (let i = 0; i < (row.pins || 0); i++) insertEvent.run(row.rel_path, 'pin');
+          for (let i = 0; i < (row.dismisses || 0); i++) insertEvent.run(row.rel_path, 'dismiss');
+        }
+      });
+      tx();
+    }
+  } catch (e) { console.error('[DB] brain_page_feedback_events backfill failed:', e.message); }
 
   // Phase 2 migrations — add columns that don't exist in Phase 1 schema
   try {
@@ -903,15 +937,18 @@ function getFeedbackForTarget(target) {
   ).all(target);
 }
 
-// ─── Learning: Weights (with time-decay) ────────────────────────
+// ─── Learning: Weights (exponential decay) ──────────────────────
 
-const WEIGHT_DECAY_DAYS = 30; // Feedback older than 30 days decays
-const WEIGHT_ADJUSTMENTS = { up: 0.2, down: -0.2, pin: 0.5, dismiss: -0.3 };
+// Phase 1: exponential half-life replaces the old 30-day-cliff decay.
+// Thumbs up/down removed — pin and dismiss are the only signals.
+const { HALF_LIFE_DAYS, decayFactorFromDate } = require('./decay');
+const WEIGHT_ADJUSTMENTS = { pin: 0.5, dismiss: -0.3 };
 
 function recomputeWeight(target) {
   const db = getDb();
   const feedbacks = db.prepare(
-    `SELECT value, created_at FROM learning_feedback WHERE target = ?`
+    `SELECT value, created_at FROM learning_feedback
+     WHERE target = ? AND value IN ('pin', 'dismiss')`
   ).all(target);
 
   let weight = 1.0;
@@ -919,13 +956,7 @@ function recomputeWeight(target) {
 
   for (const fb of feedbacks) {
     const adj = WEIGHT_ADJUSTMENTS[fb.value] || 0;
-    // Apply time-decay: recent feedback counts more
-    const ageMs = now - new Date(fb.created_at).getTime();
-    const ageDays = ageMs / 86400000;
-    const decayFactor = ageDays > WEIGHT_DECAY_DAYS
-      ? Math.max(0.2, 1 - (ageDays - WEIGHT_DECAY_DAYS) / 90)
-      : 1.0;
-    weight += adj * decayFactor;
+    weight += adj * decayFactorFromDate(fb.created_at, now, HALF_LIFE_DAYS);
   }
 
   weight = Math.max(0, Math.min(3, weight)); // Clamp 0-3
@@ -1284,7 +1315,7 @@ function getLearningDashboard() {
 
   const dismissed = db.prepare(
     `SELECT DISTINCT target FROM learning_feedback WHERE value = 'dismiss'
-     AND target NOT IN (SELECT target FROM learning_feedback WHERE value IN ('up','pin') AND created_at > (SELECT MAX(created_at) FROM learning_feedback lf2 WHERE lf2.target = learning_feedback.target AND lf2.value = 'dismiss'))`
+     AND target NOT IN (SELECT target FROM learning_feedback WHERE value = 'pin' AND created_at > (SELECT MAX(created_at) FROM learning_feedback lf2 WHERE lf2.target = learning_feedback.target AND lf2.value = 'dismiss'))`
   ).all().map(r => r.target);
 
   return {
@@ -1707,17 +1738,48 @@ function getRagTraces({ sinceHours = 168, limit = 500 } = {}) {
 
 function recordBrainPageFeedback(relPath, action) {
   const d = getDb();
-  const col = { pin: 'pins', dismiss: 'dismisses', up: 'thumbs_up', down: 'thumbs_down' }[action];
-  if (!col) return;
-  d.prepare(`INSERT INTO brain_page_feedback (rel_path, ${col}) VALUES (?, 1)
-    ON CONFLICT(rel_path) DO UPDATE SET ${col} = ${col} + 1, updated_at = datetime('now')`).run(relPath);
+  // Phase 1: accept only pin/dismiss. Thumbs up/down dropped.
+  if (action !== 'pin' && action !== 'dismiss') return;
+  const col = { pin: 'pins', dismiss: 'dismisses' }[action];
+  // Keep aggregate counter for backwards compat, and append event for decayed scoring.
+  const tx = d.transaction(() => {
+    d.prepare(`INSERT INTO brain_page_feedback (rel_path, ${col}) VALUES (?, 1)
+      ON CONFLICT(rel_path) DO UPDATE SET ${col} = ${col} + 1, updated_at = datetime('now')`).run(relPath);
+    d.prepare(`INSERT INTO brain_page_feedback_events (rel_path, action) VALUES (?, ?)`).run(relPath, action);
+  });
+  tx();
 }
 
+/**
+ * Returns a map: { relPath: { pins_decayed, dismisses_decayed, last_event_at } }.
+ * Decayed counts apply exponential half-life (45 days) across events, so a
+ * 45-day-old pin contributes 0.5 and a fresh pin contributes 1.0. obsidian-rag.js
+ * applies multiplier caps on top (pin ×1.2^min(decayed,3), dismiss ×0.4^min(decayed,3)).
+ */
 function getBrainPageFeedback() {
   const d = getDb();
-  const rows = d.prepare(`SELECT * FROM brain_page_feedback`).all();
+  const { sumDecayed } = require('./decay');
+  const rows = d.prepare(
+    `SELECT rel_path, action, created_at FROM brain_page_feedback_events`
+  ).all();
+  const now = Date.now();
+  const byPath = {};
+  for (const r of rows) {
+    const bucket = byPath[r.rel_path] || (byPath[r.rel_path] = { pins: [], dismisses: [], last_event_at: null });
+    if (r.action === 'pin') bucket.pins.push({ created_at: r.created_at });
+    else if (r.action === 'dismiss') bucket.dismisses.push({ created_at: r.created_at });
+    if (!bucket.last_event_at || r.created_at > bucket.last_event_at) bucket.last_event_at = r.created_at;
+  }
   const map = {};
-  rows.forEach(r => { map[r.rel_path] = r; });
+  for (const relPath of Object.keys(byPath)) {
+    const b = byPath[relPath];
+    map[relPath] = {
+      rel_path: relPath,
+      pins_decayed: sumDecayed(b.pins, 'created_at', now),
+      dismisses_decayed: sumDecayed(b.dismisses, 'created_at', now),
+      last_event_at: b.last_event_at
+    };
+  }
   return map;
 }
 

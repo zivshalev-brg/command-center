@@ -9,7 +9,7 @@ async function sendFeedback(type, target, value, context) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'feedback', type, target, value, context: context || {} })
     });
-    const feedbackMsg = { up: 'Boosted', down: 'Reduced weight', pin: 'Pinned', dismiss: 'Dismissed' }[value] || 'Recorded';
+    const feedbackMsg = { pin: 'Pinned', dismiss: 'Dismissed' }[value] || 'Recorded';
     toast(`${feedbackMsg} — system learning`, 'ok');
   } catch (e) {
     toast('Feedback saved locally', 'ok');
