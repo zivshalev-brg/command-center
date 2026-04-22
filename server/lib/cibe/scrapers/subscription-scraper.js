@@ -8,6 +8,7 @@
 const path = require('path');
 const https = require('https');
 const BaseScraper = require('./base-scraper');
+const MODELS = require('../../ai-models');
 
 class SubscriptionScraper extends BaseScraper {
   constructor(opts = {}) {
@@ -103,7 +104,7 @@ class SubscriptionScraper extends BaseScraper {
     const imageData = fs.readFileSync(screenshotPath).toString('base64');
 
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: MODELS.SONNET,
       max_tokens: 1500,
       messages: [{
         role: 'user',

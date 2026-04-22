@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { logAction } = require('../../db');
+const MODELS = require('../../ai-models');
 
 const EDM_FOLDER_NAME = 'Beanz Intel';
 const EDM_SCREENSHOT_DIR = path.join(process.cwd(), 'cibe-screenshots', 'edms');
@@ -194,7 +195,7 @@ function analyzeEdmContent(apiKey, subject, htmlContent, roasterId) {
     .slice(0, 4000);
 
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-20250514',
+    model: MODELS.SONNET,
     max_tokens: 1000,
     messages: [{
       role: 'user',

@@ -13,8 +13,9 @@ const crypto = require('crypto');
 const { jsonReply, readBody } = require('../lib/helpers');
 const { buildChatSystemPrompt } = require('../lib/chat-context-builder');
 const db = require('../lib/db');
+const MODELS = require('../lib/ai-models');
 
-const MODEL = 'claude-opus-4-20250514';
+const MODEL = MODELS.OPUS;
 const API_HOSTNAME = 'api.anthropic.com';
 const API_PATH = '/v1/messages';
 const API_VERSION = '2023-06-01';

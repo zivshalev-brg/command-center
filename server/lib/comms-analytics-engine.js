@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const MODELS = require('./ai-models');
 
 const SENTIMENT_MAP = { positive: 1, neutral: 0.5, negative: 0, urgent: 0.25 };
 const BEANZ_PROJECTS = [
@@ -302,7 +303,7 @@ async function generateAISummaries(ctx, snapshotDate) {
       summaries = { daily_overview: raw, topic_trends: '', people_activity: '', project_pulse: '' };
     }
 
-    const MODEL = 'claude-opus-4-20250514';
+    const MODEL = MODELS.OPUS;
     const types = ['daily_overview', 'topic_trends', 'people_activity', 'project_pulse'];
     let generated = 0;
     for (const type of types) {

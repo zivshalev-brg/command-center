@@ -162,7 +162,7 @@ function renderTechNewsMain() {
   var html = '<div class="ca-main">';
 
   // Header with view modes
-  html += '<div class="ca-header"><h2>Tech & AI News Feed</h2><div style="display:flex;gap:var(--sp2);align-items:center;flex-wrap:wrap">' +
+  html += '<div class="ca-header"><h2>Tech & AI News Feed ' + (typeof _nwPipelineBadge === 'function' ? _nwPipelineBadge('tech') : '') + '</h2><div style="display:flex;gap:var(--sp2);align-items:center;flex-wrap:wrap">' +
     _tnSortPicker() + _tnViewToggle() + _tnDateFilter() +
     '</div></div>';
 

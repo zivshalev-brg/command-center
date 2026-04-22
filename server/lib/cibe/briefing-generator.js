@@ -7,9 +7,10 @@
  */
 const https = require('https');
 const { logAction } = require('../db');
+const MODELS = require('../ai-models');
 
-const DEFAULT_MODEL_ROUTINE = 'claude-sonnet-4-20250514';
-const DEFAULT_MODEL_SYNTHESIS = 'claude-opus-4-20250514';
+const DEFAULT_MODEL_ROUTINE = MODELS.SONNET;
+const DEFAULT_MODEL_SYNTHESIS = MODELS.OPUS;
 
 /**
  * Generate a briefing from all available CIBE data.

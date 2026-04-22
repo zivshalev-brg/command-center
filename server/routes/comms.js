@@ -12,6 +12,7 @@ const path = require('path');
 const { jsonReply, readBody } = require('../lib/helpers');
 const { fetchSlackChannels, buildSlackThreads } = require('../lib/slack-api');
 const db = require('../lib/db');
+const MODELS = require('../lib/ai-models');
 
 // ─── Shared Helpers ──────────────────────────────────────────────
 
@@ -422,7 +423,7 @@ module.exports = async function handleComms(req, res, parts, url, ctx) {
           summaryJson: summary,
           messageCount: msgCount,
           attachmentHash: attHash,
-          modelUsed: 'claude-opus-4-20250514'
+          modelUsed: MODELS.OPUS
         });
       }
 
@@ -431,7 +432,7 @@ module.exports = async function handleComms(req, res, parts, url, ctx) {
         db.upsertClassification(threadId, {
           ...cls,
           messageCount: msgCount,
-          modelUsed: 'claude-opus-4-20250514'
+          modelUsed: MODELS.OPUS
         });
       }
 
@@ -482,7 +483,7 @@ module.exports = async function handleComms(req, res, parts, url, ctx) {
       const dataWithMeta = {
         ...result,
         messageCount: (th.messages || []).length,
-        modelUsed: 'claude-opus-4-20250514'
+        modelUsed: MODELS.OPUS
       };
       db.upsertClassification(threadId, dataWithMeta);
       db.logAction('classify', threadId, 'thread', { category: result.category, priority: result.priority });
@@ -526,7 +527,7 @@ module.exports = async function handleComms(req, res, parts, url, ctx) {
         draftHtml: result.draftHtml,
         tone: replyType || 'standard',
         customInstructions: customInstructions || null,
-        modelUsed: 'claude-opus-4-20250514'
+        modelUsed: MODELS.OPUS
       });
 
       db.logAction('draft_generated', threadId, 'thread', { draftId, replyType });

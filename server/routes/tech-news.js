@@ -3,6 +3,8 @@ const path = require('path');
 const { jsonReply, readBody } = require('../lib/helpers');
 const newsEngine = require('../lib/news-engine');
 const db = require('../lib/db');
+const MODELS = require('../lib/ai-models');
+const { buildPipelineHealth } = require('../lib/pipeline-health');
 const {
   summariseArticle, batchSummariseTopArticles, enrichArticle, batchEnrichArticles,
   generateDigest, extractAndTrackTopics, getTrendingTopics, detectCompetitorAlerts
@@ -55,6 +57,16 @@ const TECH_CONTEXT = 'Beanz is a coffee subscription platform leveraging AI. ' +
   'e-commerce AI, and emerging tech that could impact DTC subscription models.';
 
 module.exports = async function handleTechNews(req, res, parts, url, ctx) {
+  // GET /api/tech-news/pipeline/health — newsletter pipeline status
+  if (parts[1] === 'pipeline' && parts[2] === 'health' && req.method === 'GET') {
+    try {
+      const health = buildPipelineHealth({ storePath: ctx.techNewsStore, digestPrefix: 'tech_research_' });
+      return jsonReply(res, 200, health);
+    } catch (e) {
+      return jsonReply(res, 500, { ok: false, error: e.message });
+    }
+  }
+
   // GET /api/tech-news/refresh
   if (parts[1] === 'refresh') {
     try {
@@ -211,7 +223,7 @@ module.exports = async function handleTechNews(req, res, parts, url, ctx) {
       const https = require('https');
       const aiResult = await new Promise((resolve, reject) => {
         const body = JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
+          model: MODELS.HAIKU,
           max_tokens: 1024,
           messages: [{
             role: 'user',
@@ -417,7 +429,7 @@ ${textForAI}`
       const https = require('https');
       var aiResponse = await new Promise(function(resolve, reject) {
         var apiBody = JSON.stringify({
-          model: 'claude-sonnet-4-20250514', max_tokens: 2048, system: systemPrompt, messages
+          model: MODELS.SONNET, max_tokens: 2048, system: systemPrompt, messages
         });
         var req = https.request({
           hostname: 'api.anthropic.com', port: 443, path: '/v1/messages', method: 'POST',
@@ -481,12 +493,27 @@ ${textForAI}`
       const cacheDir = path.join(__dirname, '..', '..', 'news-transcripts');
       if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true });
 
+      const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
       for (const a of ytArticles) {
         const cachePath = path.join(cacheDir, a.videoId + '.json');
         if (fs.existsSync(cachePath)) {
-          _researchState.transcribeSkipped++;
-          _researchState.transcribeDone++;
-          continue;
+          let isFreshNegative = false;
+          try {
+            const data = JSON.parse(fs.readFileSync(cachePath, 'utf-8'));
+            if (data.segments && data.segments.length > 0) {
+              _researchState.transcribeSkipped++;
+              _researchState.transcribeDone++;
+              continue;
+            }
+            if (data.failedAt && (Date.now() - new Date(data.failedAt).getTime()) < SEVEN_DAYS) {
+              isFreshNegative = true;
+            }
+          } catch (_) { /* corrupt file — retry */ }
+          if (isFreshNegative) {
+            _researchState.transcribeSkipped++;
+            _researchState.transcribeDone++;
+            continue;
+          }
         }
         _researchState.transcribeCurrent = a.title || a.videoId;
         try {
@@ -693,7 +720,7 @@ ${textForAI}`
   }
 };
 
-/** Load transcripts map */
+/** Load transcripts map — only includes transcripts with enough signal to help the prompt. */
 function _loadTranscriptsMap() {
   var cacheDir = path.join(__dirname, '..', '..', 'news-transcripts');
   var map = {};
@@ -702,7 +729,7 @@ function _loadTranscriptsMap() {
     fs.readdirSync(cacheDir).filter(f => f.endsWith('.json')).forEach(f => {
       try {
         var data = JSON.parse(fs.readFileSync(path.join(cacheDir, f), 'utf-8'));
-        if (data.videoId && data.text) map[data.videoId] = data;
+        if (data.videoId && newsEngine.isTranscriptUsable(data)) map[data.videoId] = data;
       } catch (_) {}
     });
   } catch (_) {}
@@ -992,14 +1019,14 @@ Return valid JSON matching this exact schema:
   "bottom_line": "string — 3-4 sentence closing, the one big takeaway from this week in AI"
 }
 
-IMPORTANT: Include at least 8-12 trends, 3-5 deep dives, 10+ tools, 3-5 debates, and 10+ reading list items. Be EXHAUSTIVE. This should take 10+ minutes to read.`;
+IMPORTANT: Include 6-8 trends, 2-3 deep dives, 8-10 tools, 2-3 debates, and 8-10 reading list items. Depth over breadth — rich analysis on the most important items beats thin coverage of many. Target 8-10 min read time. CRITICAL: the response MUST be complete valid JSON — if you sense you're approaching your token limit, trim scope and close the object cleanly rather than truncate mid-field.`;
 
   var periodLabel = period === 'weekly' ? 'WEEKLY' : 'DAILY';
   var userMsg = 'Generate the comprehensive ' + periodLabel + ' AI & Productivity Research Brief based on the following data. Today is ' + new Date().toISOString().slice(0, 10) + '. Period: ' + period + '.\n\n' + fullContext;
 
   var apiBody = JSON.stringify({
-    model: 'claude-opus-4-20250514',
-    max_tokens: 16000,
+    model: MODELS.OPUS,
+    max_tokens: 40000, // Rich research reports with full JSON schema need headroom; prompt trimmed to 8-10 min read
     system: systemPrompt,
     messages: [{ role: 'user', content: userMsg }]
   });
@@ -1031,19 +1058,27 @@ IMPORTANT: Include at least 8-12 trends, 3-5 deep dives, 10+ tools, 3-5 debates,
       });
     });
     req.on('error', reject);
-    req.setTimeout(600000, function() { req.destroy(); reject(new Error('AI request timed out (10 min)')); }); // 10 min timeout
+    req.setTimeout(900000, function() { req.destroy(); reject(new Error('AI request timed out (15 min)')); }); // 15 min timeout — Opus on 24K output can run 8-12 min
     req.write(apiBody);
     req.end();
   });
 
-  // Parse the JSON from the response
-  var jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('Failed to parse JSON from Opus response');
-  var report = JSON.parse(jsonMatch[0]);
+  // Parse the JSON from the response (balanced-brace extraction — greedy regex
+  // breaks when the model appends prose after the closing brace)
+  var extract = _extractJsonObject(aiResponse);
+  if (!extract.ok) {
+    try {
+      var dumpPath = path.join(__dirname, '..', '..', 'kb-data', 'intelligence', 'last-opus-failure.txt');
+      fs.writeFileSync(dumpPath, '# ' + new Date().toISOString() + '\n# ' + extract.error + '\n\n' + aiResponse, 'utf-8');
+      console.error('[Research] Opus JSON parse failed:', extract.error, '— raw dump at', dumpPath);
+    } catch (_) {}
+    throw new Error('Failed to parse JSON from Opus response: ' + extract.error);
+  }
+  var report = extract.value;
 
   // Cache in DB
   try {
-    db.upsertNewsDigest('tech_research_' + period + '-' + new Date().toISOString().slice(0,10), 'tech_research_' + period, JSON.stringify(report), ytArticles.length + rssArticles.length + redditPosts.length, 'claude-opus-4-20250514');
+    db.upsertNewsDigest('tech_research_' + period + '-' + new Date().toISOString().slice(0,10), 'tech_research_' + period, JSON.stringify(report), ytArticles.length + rssArticles.length + redditPosts.length, MODELS.OPUS);
   } catch (e) {
     console.error('[Research] Failed to cache report:', e.message);
   }
@@ -1052,14 +1087,57 @@ IMPORTANT: Include at least 8-12 trends, 3-5 deep dives, 10+ tools, 3-5 debates,
   return report;
 }
 
+/**
+ * Extract the first top-level JSON object from text. Walks the string tracking
+ * brace depth while respecting string literals and escapes, so a trailing prose
+ * paragraph or stray `}` inside a quoted string cannot break parsing.
+ */
+function _extractJsonObject(text) {
+  if (!text) return { ok: false, error: 'empty response' };
+  var start = text.indexOf('{');
+  if (start < 0) return { ok: false, error: 'no { in response' };
+  var depth = 0, inStr = false, esc = false;
+  for (var i = start; i < text.length; i++) {
+    var c = text[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === '{') depth++;
+    else if (c === '}') {
+      depth--;
+      if (depth === 0) {
+        var slice = text.slice(start, i + 1);
+        try { return { ok: true, value: JSON.parse(slice) }; }
+        catch (e) { return { ok: false, error: e.message, slice: slice }; }
+      }
+    }
+  }
+  return { ok: false, error: 'unterminated object (depth=' + depth + ' at end, likely truncated at max_tokens)' };
+}
+
 /** Auto-transcribe all YouTube videos that aren't already cached (fire-and-forget) */
 function _autoTranscribeAll(articles) {
   var cacheDir = path.join(__dirname, '..', '..', 'news-transcripts');
   if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true });
 
+  var SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
   var ytArticles = (articles || []).filter(function(a) { return a.videoId; });
   var uncached = ytArticles.filter(function(a) {
-    return !fs.existsSync(path.join(cacheDir, a.videoId + '.json'));
+    var cachePath = path.join(cacheDir, a.videoId + '.json');
+    if (!fs.existsSync(cachePath)) return true;
+    try {
+      var data = JSON.parse(fs.readFileSync(cachePath, 'utf-8'));
+      if (data.segments && data.segments.length > 0) return false; // real transcript, skip
+      if (data.failedAt) {
+        var age = Date.now() - new Date(data.failedAt).getTime();
+        return age >= SEVEN_DAYS; // retry only if negative cache is stale
+      }
+      return true; // unknown shape, retry
+    } catch (_) { return true; }
   });
 
   if (uncached.length === 0) return;

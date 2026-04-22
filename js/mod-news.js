@@ -19,6 +19,32 @@ function _nEnc(s) { return typeof s !== 'string' ? '' : s.replace(/&/g,'&amp;').
 function _nTimeAgo(d) { var diff=Date.now()-new Date(d).getTime(); var m=Math.floor(diff/60000); if(m<1)return'just now'; if(m<60)return m+'m ago'; var h=Math.floor(m/60); if(h<24)return h+'h ago'; var dy=Math.floor(h/24); if(dy<7)return dy+'d ago'; if(dy<30)return Math.floor(dy/7)+'w ago'; return new Date(d).toLocaleDateString(); }
 function _nFmt(n) { return n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(1)+'K' : ''+n; }
 
+// ── Pipeline health badge ────────────────────────────────────
+// Shows OK / stale / error based on the latest /pipeline/health response.
+// `kind` is 'coffee' or 'tech' — determines which endpoint to call.
+window._nwPipelineHealth = window._nwPipelineHealth || {};
+function _nwPipelineBadge(kind) {
+  var h = window._nwPipelineHealth[kind];
+  if (!h) { _nwLoadPipelineHealth(kind); return '<span class="nw-pipe-badge nw-pipe-loading" title="Checking pipeline...">&#9679;</span>'; }
+  var cls = h.ok ? 'nw-pipe-ok' : 'nw-pipe-warn';
+  var tip = 'Articles: ' + (h.store && h.store.articleCount || 0) +
+    ' • Transcripts usable: ' + (h.transcripts && h.transcripts.usable || 0) + '/' + (h.transcripts && h.transcripts.total || 0) +
+    (h.digest && h.digest.daily && h.digest.daily.ageHours != null ? ' • Digest: ' + Math.round(h.digest.daily.ageHours) + 'h old' : ' • No digest') +
+    (h.warnings && h.warnings.length ? '\n⚠ ' + h.warnings.join('\n⚠ ') : '');
+  return '<span class="nw-pipe-badge ' + cls + '" title="' + _nEnc(tip) + '" onclick="_nwLoadPipelineHealth(\'' + kind + '\', true)">&#9679;</span>';
+}
+function _nwLoadPipelineHealth(kind, force) {
+  if (window._nwPipelineHealth[kind] && !force) return;
+  var endpoint = kind === 'tech' ? '/api/tech-news/pipeline/health' : '/api/news/pipeline/health';
+  fetch(endpoint).then(function(r) { return r.json(); }).then(function(h) {
+    window._nwPipelineHealth[kind] = h;
+    if (kind === 'tech' && typeof renderTechNewsMain === 'function') renderTechNewsMain();
+    else if (typeof renderNewsMain === 'function') renderNewsMain();
+  }).catch(function() {
+    window._nwPipelineHealth[kind] = { ok: false, warnings: ['health endpoint unreachable'] };
+  });
+}
+
 // ── Data loading ─────────────────────────────────────────────
 function loadNewsData() {
   DATA.newsLoading = true;
@@ -164,7 +190,7 @@ function renderNewsMain() {
   var html = '<div class="ca-main">';
 
   // Header with view modes
-  html += '<div class="ca-header"><h2>News Feed</h2><div style="display:flex;gap:var(--sp2);align-items:center;flex-wrap:wrap">' +
+  html += '<div class="ca-header"><h2>News Feed ' + _nwPipelineBadge('coffee') + '</h2><div style="display:flex;gap:var(--sp2);align-items:center;flex-wrap:wrap">' +
     _nSortPicker() + _nViewToggle() + _nDateFilter() +
     '</div></div>';
 

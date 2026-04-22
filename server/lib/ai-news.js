@@ -6,6 +6,7 @@
 'use strict';
 
 const db = require('./db');
+const MODELS = require('./ai-models');
 
 const COMPETITORS = ['Trade Drink', 'TradeD rink', 'Ninja', "De'Longhi", 'DeLonghi', 'Nespresso', 'Keurig', 'Lavazza', 'Illy', 'Starbucks At Home'];
 const COMPETITOR_RE = new RegExp(COMPETITORS.map(c => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
@@ -46,7 +47,7 @@ async function summariseArticle(apiKey, article) {
       beanzImpact: parsed.beanz_impact || '',
       aiRelevance: typeof parsed.ai_relevance === 'number' ? parsed.ai_relevance : 0.5,
       topics: JSON.stringify(parsed.topics || []),
-      modelUsed: 'claude-opus-4-20250514'
+      modelUsed: MODELS.OPUS
     };
 
     db.upsertNewsAiCache(article.id, result);
@@ -149,7 +150,7 @@ async function enrichArticle(apiKey, article, transcript) {
 
   try {
     var body = JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: MODELS.HAIKU,
       max_tokens: 600,
       system: systemPrompt,
       messages: [{ role: 'user', content: contentText }]
@@ -208,7 +209,7 @@ async function enrichArticle(apiKey, article, transcript) {
       categoryClassification: result.category_classification,
       sentiment: result.sentiment,
       sentimentScore: result.sentiment_score,
-      modelUsed: 'claude-haiku-4-5-20251001'
+      modelUsed: MODELS.HAIKU
     });
 
     return result;
@@ -271,22 +272,23 @@ async function batchEnrichArticles(apiKey, articles, transcripts, limit) {
 function _loadTranscriptTexts() {
   const fs = require('fs');
   const path = require('path');
+  const { isTranscriptUsable } = require('./news-engine');
   const cacheDir = path.join(__dirname, '..', '..', 'news-transcripts');
   const results = [];
   try {
     if (!fs.existsSync(cacheDir)) return results;
     const files = fs.readdirSync(cacheDir).filter(f => f.endsWith('.json'));
-    for (const f of files.slice(0, 15)) {
+    for (const f of files) {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(cacheDir, f), 'utf-8'));
-        if (data.text && data.text.length > 50) {
-          results.push({
-            videoId: data.videoId,
-            text: data.text.slice(0, 3000),
-            summary: data.aiSummary ? data.aiSummary.headline : (data.summary || '').slice(0, 300),
-            duration: data.duration || 0
-          });
-        }
+        if (!isTranscriptUsable(data)) continue;
+        results.push({
+          videoId: data.videoId,
+          text: data.text.slice(0, 3000),
+          summary: data.aiSummary ? data.aiSummary.headline : (data.summary || '').slice(0, 300),
+          duration: data.duration || 0
+        });
+        if (results.length >= 15) break;
       } catch { /* skip corrupt files */ }
     }
   } catch { /* ignore */ }
@@ -456,7 +458,7 @@ async function generateDigest(apiKey, articles, period, forceNew, opts) {
 
     if (!digest) return null;
 
-    db.upsertNewsDigest(digestId, storedPeriod, JSON.stringify(digest), recent.length, 'claude-opus-4-20250514');
+    db.upsertNewsDigest(digestId, storedPeriod, JSON.stringify(digest), recent.length, MODELS.OPUS);
     console.log(`[AI-News] Digest generated: ${digestId}`);
     return digest;
   } catch (e) {

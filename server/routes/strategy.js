@@ -2,6 +2,7 @@ const { jsonReply } = require('../lib/helpers');
 const { buildStrategyPayload } = require('../lib/strategy-engine');
 const db = require('../lib/db');
 const { buildLiveMetrics, readPBILiveData, buildLiveMetricsFromAPI } = require('../lib/digest-bridge');
+const MODELS = require('../lib/ai-models');
 const path = require('path');
 const fs = require('fs');
 
@@ -223,7 +224,7 @@ module.exports.handleStrategyChat = async function(req, res, parts, url, ctx) {
 
       var https = require('https');
       var apiBody = JSON.stringify({
-        model: 'claude-opus-4-20250514',
+        model: MODELS.OPUS,
         max_tokens: 4096,
         system: systemPrompt,
         messages: messages

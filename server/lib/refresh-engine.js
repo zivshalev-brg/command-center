@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildSlackThreads } = require('./slack-api');
 const { logAction } = require('./db');
+const MODELS = require('./ai-models');
 
 // ─── Comms Refresh Engine ─────────────────────────────────────
 // Server-side scheduled refresh for Slack and Outlook.
@@ -363,7 +364,7 @@ async function summariseNewThreads(ctx) {
             summaryJson: summary,
             messageCount: (thread.messages || []).length,
             attachmentHash: null,
-            modelUsed: 'claude-opus-4-20250514'
+            modelUsed: MODELS.OPUS
           });
           return summary;
         })

@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const db = require('./db');
 const { buildStrategyPayload } = require('./strategy-engine');
 const { searchIssues, searchIssuesRich, getFullProjectDashboard } = require('./jira-api');
+const MODELS = require('./ai-models');
 
 // ─── Project-to-Data Mapping ─────────────────────────────────
 // Maps each project ID (from DATA.projects in data.js) to its
@@ -520,7 +521,7 @@ function synthesizeProjectHealth(apiKey, projectId, aggregated) {
     'Be specific and actionable. Reference actual data from the context.';
 
   var body = JSON.stringify({
-    model: 'claude-sonnet-4-20250514',
+    model: MODELS.SONNET,
     max_tokens: 1000,
     system: systemPrompt,
     messages: [{ role: 'user', content: 'Assess this project:\n\n' + context.slice(0, 4000) }]
@@ -547,7 +548,7 @@ function synthesizeProjectHealth(apiKey, projectId, aggregated) {
                 opportunityFlags: synthesis.opportunityFlags || [],
                 nextActions: synthesis.nextActions || [],
                 dataHash: aggregated.dataHash,
-                modelUsed: 'claude-sonnet-4-20250514',
+                modelUsed: MODELS.SONNET,
                 generatedAt: new Date().toISOString()
               };
               db.upsertProjectIntelligence(projectId, result);

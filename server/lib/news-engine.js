@@ -59,6 +59,14 @@ let NEWS_SOURCES = loadSourcesConfig();
 // Transcript cache directory
 const TRANSCRIPT_CACHE = path.join(__dirname, '..', '..', 'news-transcripts');
 
+// Transcript quality thresholds — thin transcripts (e.g. music-only Shorts, intro-only videos)
+// add noise without signal to digest prompts, so filter them out at read time.
+const TRANSCRIPT_MIN_SEGMENTS = 10;
+const TRANSCRIPT_MIN_TEXT_CHARS = 500;
+
+// Negative cache for failed transcripts — avoid re-polling dead videos every refresh.
+const TRANSCRIPT_NEGATIVE_CACHE_MS = 7 * 24 * 60 * 60 * 1000;
+
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 }
@@ -352,37 +360,100 @@ async function fetchAllYouTubeFeeds(sources) {
   const results = [];
   const entries = Object.entries((sources || NEWS_SOURCES).youtube);
   const settled = await Promise.allSettled(entries.map(async ([key, src]) => {
+    // Try RSS feed first — cheap and works when YouTube's /feeds/videos.xml is reachable
     try {
       const xml = await httpGet(`https://www.youtube.com/feeds/videos.xml?channel_id=${src.channelId}`);
-      if (!xml) return [];
-      // Extract yt:videoId tags from XML entries for reliable ID mapping
-      const ytVideoIds = {};
-      const entries = xml.match(/<entry[\s>][\s\S]*?<\/entry>/gi) || [];
-      entries.forEach(entry => {
-        const vidIdMatch = entry.match(/<yt:videoId>([a-zA-Z0-9_-]{11})<\/yt:videoId>/);
-        const titleMatch = entry.match(/<title>([^<]+)<\/title>/);
-        if (vidIdMatch && titleMatch) ytVideoIds[titleMatch[1].trim()] = vidIdMatch[1];
-      });
-
-      const articles = parseRSSXml(xml, key, src.name);
-      return articles.map(a => {
-        const vidId = extractVideoId(a.url) || ytVideoIds[a.title] || null;
-        return {
-          ...a,
-          category: 'youtube',
-          tags: ['youtube', key],
-          url: vidId ? `https://www.youtube.com/watch?v=${vidId}` : a.url,
-          image: youtubeThumb(vidId),
-          videoId: vidId
-        };
-      });
+      if (xml) {
+        const ytVideoIds = {};
+        const xmlEntries = xml.match(/<entry[\s>][\s\S]*?<\/entry>/gi) || [];
+        xmlEntries.forEach(entry => {
+          const vidIdMatch = entry.match(/<yt:videoId>([a-zA-Z0-9_-]{11})<\/yt:videoId>/);
+          const titleMatch = entry.match(/<title>([^<]+)<\/title>/);
+          if (vidIdMatch && titleMatch) ytVideoIds[titleMatch[1].trim()] = vidIdMatch[1];
+        });
+        const articles = parseRSSXml(xml, key, src.name);
+        if (articles.length) {
+          return articles.map(a => {
+            const vidId = extractVideoId(a.url) || ytVideoIds[a.title] || null;
+            return { ...a, category: 'youtube', tags: ['youtube', key],
+              url: vidId ? `https://www.youtube.com/watch?v=${vidId}` : a.url,
+              image: youtubeThumb(vidId), videoId: vidId };
+          });
+        }
+      }
     } catch (e) {
-      console.error(`YouTube fetch failed [${key}]:`, e.message);
+      // RSS failed (typically HTTP 404 on corp networks) — fall through to yt-dlp
+      if (!/HTTP 404/.test(e.message)) console.error(`YouTube RSS failed [${key}]:`, e.message);
+    }
+    // Fallback: yt-dlp flat-playlist scrape — more robust, handles SSL via --no-check-certificates
+    try {
+      const videos = await _fetchChannelViaYtDlp(src.channelId);
+      if (!videos.length) return [];
+      console.log(`[YouTube] yt-dlp fallback [${key}]: ${videos.length} videos`);
+      return videos.map((v, i) => _buildArticleFromYtDlpEntry({ ...v, __index: i }, key, src.name, 'youtube'));
+    } catch (e) {
+      console.error(`YouTube yt-dlp fallback failed [${key}]:`, e.message);
       return [];
     }
   }));
   settled.forEach(r => { if (r.status === 'fulfilled') results.push(...r.value); });
   return results;
+}
+
+/**
+ * Enumerate recent videos from a channel using yt-dlp.
+ * --no-check-certificates sidesteps the corporate SSL interception that breaks the RSS endpoint.
+ * Returns an array of { id, title, description, duration, view_count }.
+ */
+function _fetchChannelViaYtDlp(channelId, limit) {
+  const { execFile } = require('child_process');
+  const playlistEnd = limit || 10;
+  return new Promise((resolve, reject) => {
+    execFile('yt-dlp', [
+      '--flat-playlist', '--dump-single-json', '--no-check-certificates',
+      '--playlist-end', String(playlistEnd),
+      '--extractor-args', 'youtubetab:approximate_date',
+      `https://www.youtube.com/channel/${channelId}/videos`
+    ], { timeout: 30000, maxBuffer: 20 * 1024 * 1024 }, (err, stdout, stderr) => {
+      if (err) return reject(new Error(stderr?.split('\n').filter(l => l.trim()).pop() || err.message));
+      try {
+        const data = JSON.parse(stdout);
+        resolve((data.entries || []).filter(e => e.id && /^[a-zA-Z0-9_-]{11}$/.test(e.id)));
+      } catch (e) { reject(new Error('Failed to parse yt-dlp output: ' + e.message)); }
+    });
+  });
+}
+
+/**
+ * Shape a yt-dlp playlist entry like the RSS parser would.
+ * yt-dlp flat-playlist omits publishedAt, so we synthesize from list order.
+ */
+function _buildArticleFromYtDlpEntry(entry, key, sourceName, category) {
+  const vidId = entry.id;
+  const now = Date.now();
+  // yt-dlp flat-playlist returns entries in reverse chronological order — index 0 is newest
+  // Synthesize a publishedAt: assume latest is now, each older one is 2 days back
+  const index = entry.__index || 0;
+  const synthDate = new Date(now - index * 2 * 86400000).toISOString();
+  const title = entry.title || '';
+  const descRaw = entry.description || '';
+  const article = {
+    id: slugify(sourceName + '-' + title + '-' + vidId),
+    title: title,
+    summary: descRaw.replace(/\s+/g, ' ').trim().slice(0, 500),
+    url: `https://www.youtube.com/watch?v=${vidId}`,
+    source: key,
+    sourceName: sourceName,
+    publishedAt: synthDate,
+    fetchedAt: new Date().toISOString(),
+    category: category,
+    tags: [category, key],
+    image: youtubeThumb(vidId),
+    videoId: vidId,
+    engagement: { views: entry.view_count || 0 }
+  };
+  if (category === 'podcast') article.podcastName = sourceName;
+  return article;
 }
 
 // ─── Podcast fetcher (YouTube-based, tagged as podcast) ─────
@@ -395,29 +466,35 @@ async function fetchAllPodcastFeeds(sources) {
   const settled = await Promise.allSettled(entries.map(async ([key, src]) => {
     try {
       const xml = await httpGet(`https://www.youtube.com/feeds/videos.xml?channel_id=${src.channelId}`);
-      if (!xml) return [];
-      const ytVideoIds = {};
-      const xmlEntries = xml.match(/<entry[\s>][\s\S]*?<\/entry>/gi) || [];
-      xmlEntries.forEach(entry => {
-        const vidIdMatch = entry.match(/<yt:videoId>([a-zA-Z0-9_-]{11})<\/yt:videoId>/);
-        const titleMatch = entry.match(/<title>([^<]+)<\/title>/);
-        if (vidIdMatch && titleMatch) ytVideoIds[titleMatch[1].trim()] = vidIdMatch[1];
-      });
-      const articles = parseRSSXml(xml, key, src.name);
-      return articles.map(a => {
-        const vidId = extractVideoId(a.url) || ytVideoIds[a.title] || null;
-        return {
-          ...a,
-          category: 'podcast',
-          tags: ['podcast', key],
-          url: vidId ? `https://www.youtube.com/watch?v=${vidId}` : a.url,
-          image: youtubeThumb(vidId),
-          videoId: vidId,
-          podcastName: src.name
-        };
-      });
+      if (xml) {
+        const ytVideoIds = {};
+        const xmlEntries = xml.match(/<entry[\s>][\s\S]*?<\/entry>/gi) || [];
+        xmlEntries.forEach(entry => {
+          const vidIdMatch = entry.match(/<yt:videoId>([a-zA-Z0-9_-]{11})<\/yt:videoId>/);
+          const titleMatch = entry.match(/<title>([^<]+)<\/title>/);
+          if (vidIdMatch && titleMatch) ytVideoIds[titleMatch[1].trim()] = vidIdMatch[1];
+        });
+        const articles = parseRSSXml(xml, key, src.name);
+        if (articles.length) {
+          return articles.map(a => {
+            const vidId = extractVideoId(a.url) || ytVideoIds[a.title] || null;
+            return { ...a, category: 'podcast', tags: ['podcast', key],
+              url: vidId ? `https://www.youtube.com/watch?v=${vidId}` : a.url,
+              image: youtubeThumb(vidId), videoId: vidId, podcastName: src.name };
+          });
+        }
+      }
     } catch (e) {
-      console.error(`Podcast fetch failed [${key}]:`, e.message);
+      if (!/HTTP 404/.test(e.message)) console.error(`Podcast RSS failed [${key}]:`, e.message);
+    }
+    // yt-dlp fallback (identical to YouTube path, different category tag)
+    try {
+      const videos = await _fetchChannelViaYtDlp(src.channelId);
+      if (!videos.length) return [];
+      console.log(`[Podcast] yt-dlp fallback [${key}]: ${videos.length} episodes`);
+      return videos.map((v, i) => _buildArticleFromYtDlpEntry({ ...v, __index: i }, key, src.name, 'podcast'));
+    } catch (e) {
+      console.error(`Podcast yt-dlp fallback failed [${key}]:`, e.message);
       return [];
     }
   }));
@@ -443,7 +520,14 @@ async function fetchYouTubeTranscript(videoId) {
   try {
     const cached = JSON.parse(fs.readFileSync(cachePath, 'utf-8'));
     if (cached && cached.segments?.length) return cached;
+    // Negative cache: respect 7-day TTL on recorded failures so we stop re-polling dead videos
+    if (cached && cached.failedAt) {
+      const age = Date.now() - new Date(cached.failedAt).getTime();
+      if (age < TRANSCRIPT_NEGATIVE_CACHE_MS) return cached;
+    }
   } catch { /* not cached */ }
+
+  const errors = [];
 
   // Strategy 1 (PRIMARY): Python youtube-transcript-api — most reliable, handles corporate proxies
   try {
@@ -454,6 +538,7 @@ async function fetchYouTubeTranscript(videoId) {
       return result;
     }
   } catch (e) {
+    errors.push('python: ' + e.message);
     console.error(`[Transcript] Python strategy failed [${videoId}]:`, e.message);
   }
 
@@ -466,6 +551,7 @@ async function fetchYouTubeTranscript(videoId) {
       return result;
     }
   } catch (e) {
+    errors.push('watch-page: ' + e.message);
     console.error(`[Transcript] Watch page strategy failed [${videoId}]:`, e.message);
   }
 
@@ -478,10 +564,31 @@ async function fetchYouTubeTranscript(videoId) {
       return result;
     }
   } catch (e) {
+    errors.push('playwright: ' + e.message);
     console.error(`[Transcript] Playwright strategy failed [${videoId}]:`, e.message);
   }
 
-  return { videoId, error: 'No captions available — video may lack captions or the network may block YouTube caption APIs', segments: [], text: '' };
+  // All strategies failed — write negative-cache stub so we don't retry for 7 days.
+  const failure = {
+    videoId,
+    error: 'No captions available — video may lack captions or the network may block YouTube caption APIs',
+    errors,
+    segments: [],
+    text: '',
+    failedAt: new Date().toISOString()
+  };
+  try { fs.writeFileSync(cachePath, JSON.stringify(failure, null, 2), 'utf-8'); } catch (_) {}
+  return failure;
+}
+
+/** True if a cached transcript has enough signal to include in digest prompts. */
+function isTranscriptUsable(transcript) {
+  if (!transcript) return false;
+  if (transcript.failedAt || transcript.error) return false;
+  if (!Array.isArray(transcript.segments)) return false;
+  if (transcript.segments.length < TRANSCRIPT_MIN_SEGMENTS) return false;
+  if (!transcript.text || transcript.text.length < TRANSCRIPT_MIN_TEXT_CHARS) return false;
+  return true;
 }
 
 /** Use Python youtube-transcript-api to fetch transcript (bypasses corporate proxy SSL issues) */
@@ -808,7 +915,22 @@ async function refreshNewsData(storePath, forceRefresh, opts) {
   });
 
   store.articles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-  if (store.articles.length > 500) store.articles = store.articles.slice(0, 500);
+  // Per-category quotas — without these, the RSS/Reddit firehose crowds out the
+  // less-frequent YouTube and podcast streams over a 3-day window.
+  if (store.articles.length > 500) {
+    const quotas = { industry: 220, reddit: 200, youtube: 60, podcast: 20 };
+    const buckets = { industry: [], reddit: [], youtube: [], podcast: [] };
+    const overflow = [];
+    for (const a of store.articles) {
+      const cat = a.category;
+      if (buckets[cat] && buckets[cat].length < quotas[cat]) buckets[cat].push(a);
+      else overflow.push(a);
+    }
+    const filled = buckets.industry.concat(buckets.reddit, buckets.youtube, buckets.podcast);
+    const remaining = Math.max(0, 500 - filled.length);
+    store.articles = filled.concat(overflow.slice(0, remaining))
+      .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  }
 
   store.stats = computeNewsStats(store.articles);
   saveNewsStore(storePath, store);
@@ -822,7 +944,8 @@ module.exports = {
   loadSourcesConfig, saveSourcesConfig, reloadSources,
   loadNewsStore, saveNewsStore,
   refreshNewsData, scoreRelevance, computeNewsStats,
-  fetchYouTubeTranscript, httpGet, extractVideoId,
+  fetchYouTubeTranscript, isTranscriptUsable, httpGet, extractVideoId,
   fetchAllRSSFeeds, fetchAllRedditPosts, fetchAllYouTubeFeeds, fetchAllPodcastFeeds,
-  parseRSSXml, slugify
+  parseRSSXml, slugify,
+  TRANSCRIPT_CACHE, TRANSCRIPT_MIN_SEGMENTS, TRANSCRIPT_MIN_TEXT_CHARS
 };

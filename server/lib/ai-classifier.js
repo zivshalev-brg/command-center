@@ -8,10 +8,11 @@
 'use strict';
 
 const https = require('https');
+const MODELS = require('./ai-models');
 
 // ─── Constants ──────────────────────────────────────────────────
 
-const MODEL = 'claude-opus-4-20250514';
+const MODEL = MODELS.OPUS;
 const API_HOSTNAME = 'api.anthropic.com';
 const API_PATH = '/v1/messages';
 const API_VERSION = '2023-06-01';

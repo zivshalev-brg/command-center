@@ -2,12 +2,24 @@ const { jsonReply, readBody } = require('../lib/helpers');
 const newsEngine = require('../lib/news-engine');
 const { loadLearningStore } = require('../lib/learning');
 const db = require('../lib/db');
+const MODELS = require('../lib/ai-models');
+const { buildPipelineHealth } = require('../lib/pipeline-health');
 const {
   summariseArticle, batchSummariseTopArticles, enrichArticle, batchEnrichArticles,
   generateDigest, extractAndTrackTopics, getTrendingTopics, detectCompetitorAlerts
 } = require('../lib/ai-news');
 
 module.exports = async function handleNews(req, res, parts, url, ctx) {
+  // GET /api/news/pipeline/health — newsletter pipeline status (store, transcripts, digest freshness)
+  if (parts[1] === 'pipeline' && parts[2] === 'health' && req.method === 'GET') {
+    try {
+      const health = buildPipelineHealth({ storePath: ctx.newsStore, digestPrefix: 'coffee_research_' });
+      return jsonReply(res, 200, health);
+    } catch (e) {
+      return jsonReply(res, 500, { ok: false, error: e.message });
+    }
+  }
+
   // GET /api/news/refresh
   if (parts[1] === 'refresh') {
     try {
@@ -267,7 +279,7 @@ module.exports = async function handleNews(req, res, parts, url, ctx) {
       const https = require('https');
       const aiResult = await new Promise((resolve, reject) => {
         const body = JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
+          model: MODELS.HAIKU,
           max_tokens: 1024,
           messages: [{
             role: 'user',
@@ -528,7 +540,7 @@ ${textForAI}`
       const articles = newsStore.articles || [];
       const aiCache = db.getAllNewsAiCache();
 
-      // Load YouTube transcripts
+      // Load YouTube transcripts (only those with enough signal to help the chat context)
       var transcriptsDir = path.join(__dirname, '..', '..', 'news-transcripts');
       var transcripts = {};
       try {
@@ -536,7 +548,7 @@ ${textForAI}`
         tFiles.forEach(function(f) {
           try {
             var t = JSON.parse(fs.readFileSync(path.join(transcriptsDir, f), 'utf-8'));
-            if (t.videoId && t.text) transcripts[t.videoId] = t;
+            if (t.videoId && newsEngine.isTranscriptUsable(t)) transcripts[t.videoId] = t;
           } catch (_) { /* skip bad files */ }
         });
       } catch (_) { /* transcripts dir may not exist */ }
@@ -631,7 +643,7 @@ ${textForAI}`
       // Call Anthropic API
       var https = require('https');
       var apiBody = JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: MODELS.SONNET,
         max_tokens: 2048,
         system: systemPrompt,
         messages: messages
@@ -888,7 +900,7 @@ ${textForAI}`
   }
 };
 
-/** Load transcripts from news-transcripts directory into a map keyed by videoId */
+/** Load usable transcripts (keyed by videoId) — negative/thin entries are excluded. */
 function _loadTranscriptsMap() {
   var fs = require('fs');
   var path = require('path');
@@ -900,7 +912,7 @@ function _loadTranscriptsMap() {
     files.forEach(function(f) {
       try {
         var data = JSON.parse(fs.readFileSync(path.join(cacheDir, f), 'utf-8'));
-        if (data.videoId && data.text) map[data.videoId] = data;
+        if (data.videoId && newsEngine.isTranscriptUsable(data)) map[data.videoId] = data;
       } catch (_) { /* skip corrupt files */ }
     });
   } catch (_) { /* dir may not exist */ }
@@ -1078,12 +1090,12 @@ async function _generateCoffeeResearch(ctx, period) {
     '"predictions_and_debates":[{"topic":"question","positions":[{"position":"","advocate":"","quote":"","videoId":"","timestamp":0}]}],' +
     '"reddit_intelligence":{"hot_debates":[{"title":"","subreddit":"","url":"","upvotes":0,"key_insight":""}],"community_sentiment":"3-4 sentences","emerging_tools":[{"name":"","context":"","url":""}]},' +
     '"reading_list":[{"title":"","type":"video|article|reddit","url":"","why":"","duration":""}],' +
-    '"bottom_line":"3-4 sentences"}\n\nThe brand_sentiment section is CRITICAL. Search through ALL Reddit posts, comments, YouTube transcripts, and articles for ANY mention of Breville, Sage, Lelit, Baratza, or Beanz. Include the actual number of mentions found. Even if sentiment_score is 0 for a brand with no mentions, include it. Include 8+ trends, 3+ deep dives, 10+ products, 10+ reading list items.';
+    '"bottom_line":"3-4 sentences"}\n\nThe brand_sentiment section is CRITICAL. Search through ALL Reddit posts, comments, YouTube transcripts, and articles for ANY mention of Breville, Sage, Lelit, Baratza, or Beanz. Include the actual number of mentions found. Even if sentiment_score is 0 for a brand with no mentions, include it. Include 6-8 trends, 2-3 deep dives, 8-10 products, 8-10 reading list items. Depth over breadth. CRITICAL: response MUST be complete valid JSON — if approaching token limit, trim scope and close the object cleanly rather than truncate mid-field.';
 
   var periodLabel = period === 'weekly' ? 'WEEKLY' : 'DAILY';
   var userMsg = 'Generate the ' + periodLabel + ' Coffee Industry Research Brief. Today: ' + new Date().toISOString().slice(0, 10) + '.\n\n' + fullContext;
 
-  var apiBody = JSON.stringify({ model: 'claude-opus-4-20250514', max_tokens: 16000, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] });
+  var apiBody = JSON.stringify({ model: MODELS.OPUS, max_tokens: 40000, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] });
 
   var aiResponse = await new Promise(function(resolve, reject) {
     var chunks = [];
@@ -1100,16 +1112,54 @@ async function _generateCoffeeResearch(ctx, period) {
       });
     });
     req.on('error', reject);
-    req.setTimeout(600000, function() { req.destroy(); reject(new Error('Timeout 10min')); });
+    req.setTimeout(900000, function() { req.destroy(); reject(new Error('Timeout 15min')); });
     req.write(apiBody); req.end();
   });
 
-  var jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('Failed to parse JSON');
-  var report = JSON.parse(jsonMatch[0]);
-  try { db.upsertNewsDigest('coffee_research_' + period + '-' + new Date().toISOString().slice(0,10), 'coffee_research_' + period, JSON.stringify(report), ytArticles.length + rssArticles.length + redditPosts.length, 'claude-opus-4-20250514'); } catch (e) { console.error('[CoffeeResearch] Cache failed:', e.message); }
+  var extract = _extractJsonObject(aiResponse);
+  if (!extract.ok) {
+    try {
+      var fsNode = require('fs'); var pathNode = require('path');
+      var dumpPath = pathNode.join(__dirname, '..', '..', 'kb-data', 'intelligence', 'last-opus-failure-coffee.txt');
+      fsNode.writeFileSync(dumpPath, '# ' + new Date().toISOString() + '\n# ' + extract.error + '\n\n' + aiResponse, 'utf-8');
+      console.error('[CoffeeResearch] Opus JSON parse failed:', extract.error, '— raw dump at', dumpPath);
+    } catch (_) {}
+    throw new Error('Failed to parse JSON from Opus response: ' + extract.error);
+  }
+  var report = extract.value;
+  try { db.upsertNewsDigest('coffee_research_' + period + '-' + new Date().toISOString().slice(0,10), 'coffee_research_' + period, JSON.stringify(report), ytArticles.length + rssArticles.length + redditPosts.length, MODELS.OPUS); } catch (e) { console.error('[CoffeeResearch] Cache failed:', e.message); }
   console.log('[CoffeeResearch] Report complete: ' + (report.trends||[]).length + ' trends');
   return report;
+}
+
+/**
+ * Balanced-brace JSON extractor. Handles prose appended after the object
+ * by walking depth with string-literal awareness.
+ */
+function _extractJsonObject(text) {
+  if (!text) return { ok: false, error: 'empty response' };
+  var start = text.indexOf('{');
+  if (start < 0) return { ok: false, error: 'no { in response' };
+  var depth = 0, inStr = false, esc = false;
+  for (var i = start; i < text.length; i++) {
+    var c = text[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === '{') depth++;
+    else if (c === '}') {
+      depth--;
+      if (depth === 0) {
+        try { return { ok: true, value: JSON.parse(text.slice(start, i + 1)) }; }
+        catch (e) { return { ok: false, error: e.message }; }
+      }
+    }
+  }
+  return { ok: false, error: 'unterminated object (depth=' + depth + ', likely truncated at max_tokens)' };
 }
 
 module.exports.generateCoffeeResearch = _generateCoffeeResearch;

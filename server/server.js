@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { MIME, jsonReply, readBody } = require('./lib/helpers');
-const { refreshNewsData, loadNewsStore } = require('./lib/news-engine');
+const { refreshNewsData, loadNewsStore, isTranscriptUsable } = require('./lib/news-engine');
 const { batchEnrichArticles, batchSummariseTopArticles: _batchSumm, extractAndTrackTopics: _extractTopics, detectCompetitorAlerts: _detectAlerts } = require('./lib/ai-news');
 const { startRefreshScheduler, getRefreshStatus, refreshAll } = require('./lib/refresh-engine');
 const { buildFreshnessReport, listExtractions: listDigestExtractions } = require('./lib/digest-bridge');
@@ -447,7 +447,7 @@ function _postRefreshEnrich(ctx, storePath) {
     try {
       if (fs.existsSync(tDir)) {
         fs.readdirSync(tDir).filter(f => f.endsWith('.json')).forEach(f => {
-          try { var d = JSON.parse(fs.readFileSync(path.join(tDir, f), 'utf-8')); if (d.videoId && d.text) transcripts[d.videoId] = d; } catch (_) {}
+          try { var d = JSON.parse(fs.readFileSync(path.join(tDir, f), 'utf-8')); if (d.videoId && isTranscriptUsable(d)) transcripts[d.videoId] = d; } catch (_) {}
         });
       }
     } catch (_) {}

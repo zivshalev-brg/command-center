@@ -7,6 +7,7 @@
  */
 const https = require('https');
 const { logAction } = require('../db');
+const MODELS = require('../ai-models');
 
 /**
  * Generate a comprehensive dossier for a specific roaster.
@@ -30,7 +31,7 @@ async function generateDossier(db, ctx, roasterId) {
   const prompt = buildDossierPrompt(roaster, data);
 
   // ── Call Claude Opus for deep analysis ────────────────────
-  const model = process.env.CIBE_MODEL_SYNTHESIS || 'claude-opus-4-20250514';
+  const model = process.env.CIBE_MODEL_SYNTHESIS || MODELS.OPUS;
   const contentMd = await callClaude(apiKey, model, prompt);
   const contentHtml = basicMdToHtml(contentMd);
 

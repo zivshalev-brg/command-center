@@ -5,9 +5,10 @@ var path = require('path');
 var https = require('https');
 var { jsonReply, readBody, readJSON } = require('../lib/helpers');
 var { getDb, logAction } = require('../lib/db');
+var MODELS = require('../lib/ai-models');
 
 // ─── Constants ───────────────────────────────────────────────
-var MODEL = 'claude-sonnet-4-20250514';
+var MODEL = MODELS.SONNET;
 var API_HOSTNAME = 'api.anthropic.com';
 var API_PATH = '/v1/messages';
 var API_VERSION = '2023-06-01';

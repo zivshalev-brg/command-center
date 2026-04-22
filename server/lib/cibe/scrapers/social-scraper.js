@@ -8,6 +8,7 @@
 const path = require('path');
 const https = require('https');
 const BaseScraper = require('./base-scraper');
+const MODELS = require('../../ai-models');
 
 class SocialScraper extends BaseScraper {
   constructor(opts = {}) {
@@ -96,7 +97,7 @@ class SocialScraper extends BaseScraper {
     const imageData = fs.readFileSync(screenshotPath).toString('base64');
 
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: MODELS.SONNET,
       max_tokens: 1000,
       messages: [{
         role: 'user',

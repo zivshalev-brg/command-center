@@ -1461,6 +1461,12 @@ body.light .theme-icon-light { display:flex; }
 .nw-detail-enrich { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp2); margin: var(--sp2) 0; padding: var(--sp2); background: var(--s1); border-radius: var(--r2); }
 .nw-detail-sent { font-size: var(--f-sm); font-weight: var(--fw-sb); text-transform: capitalize; }
 
+/* Pipeline health badge — shown next to section title */
+.nw-pipe-badge { display: inline-block; margin-left: 8px; font-size: 12px; line-height: 1; cursor: pointer; vertical-align: middle; }
+.nw-pipe-badge.nw-pipe-ok { color: var(--gn, #6c6); }
+.nw-pipe-badge.nw-pipe-warn { color: var(--or, #e80); }
+.nw-pipe-badge.nw-pipe-loading { color: var(--tx3, #888); opacity: 0.6; }
+
 /* Brand filter buttons */
 .nw-brand-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-bottom: var(--sp3); }
 .nw-brand-fbtn { font-size: 11px; padding: 2px 8px; border-radius: 12px; border: 1px solid var(--bd); background: transparent; color: var(--tx2); cursor: pointer; transition: all var(--dur-f); }
