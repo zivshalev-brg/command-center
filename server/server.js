@@ -38,6 +38,7 @@ const handleNotebook = require('./routes/notebook');
 const handleEmailPerf = require('./routes/email-perf');
 const handleEmailMarketing = require('./routes/email-marketing');
 const handleGenie = require('./routes/genie');
+const handleDatabricks = require('./routes/databricks');
 const handleDailyDigest = require('./routes/daily-digest');
 const { generateDailySnapshot, generateAISummaries } = require('./lib/comms-analytics-engine');
 
@@ -160,6 +161,17 @@ const ctx = {
     token: process.env.DATABRICKS_TOKEN || _env.DATABRICKS_TOKEN || '',
     spaceId: process.env.DATABRICKS_GENIE_SPACE_ID || _env.DATABRICKS_GENIE_SPACE_ID || ''
   },
+  // Databricks SQL Warehouse — OAuth2 service principal (or PAT fallback)
+  databricks: {
+    host: process.env.DATABRICKS_HOST || _env.DATABRICKS_HOST || '',
+    warehouseId: process.env.DATABRICKS_WAREHOUSE_ID || _env.DATABRICKS_WAREHOUSE_ID || '',
+    httpPath: process.env.DATABRICKS_HTTP_PATH || _env.DATABRICKS_HTTP_PATH || '',
+    spaceId: process.env.DATABRICKS_GENIE_SPACE_ID || _env.DATABRICKS_GENIE_SPACE_ID || '',
+    token: process.env.DATABRICKS_TOKEN || _env.DATABRICKS_TOKEN || '',
+    clientId: process.env.DATABRICKS_CLIENT_ID || _env.DATABRICKS_CLIENT_ID || '',
+    clientSecret: process.env.DATABRICKS_CLIENT_SECRET || _env.DATABRICKS_CLIENT_SECRET || '',
+    tenantId: process.env.DATABRICKS_TENANT_ID || _env.DATABRICKS_TENANT_ID || ''
+  },
   // Anthropic API (for CIBE briefing/dossier generation)
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || _env.ANTHROPIC_API_KEY || '',
   // Power BI Live API (uses SSO token captured by beanz-digest)
@@ -209,6 +221,7 @@ async function handleAPI(req, res) {
   if (parts[0] === 'projects' && parts[1] === 'enriched') return handleProjectsEnriched(req, res, parts, url, ctx);
   if (parts[0] === 'feedback') return handleFeedback(req, res, parts, url, ctx);
   if (parts[0] === 'genie') return handleGenie(req, res, parts.slice(1), url, ctx);
+  if (parts[0] === 'databricks') return handleDatabricks(req, res, parts.slice(1), url, ctx);
   if (parts[0] === 'metrics') return handleMetrics(req, res, parts, url, ctx);
   if (parts[0] === 'correlations') return handleCorrelations(req, res, parts, url, ctx);
   if (parts[0] === 'tech-news') return handleTechNews(req, res, parts, url, ctx);

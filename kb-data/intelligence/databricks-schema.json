@@ -1,0 +1,2630 @@
+{
+  "generatedAt": "2026-04-22T05:53:32.389Z",
+  "schema": "ana_prd_gold.edw",
+  "tables": {
+    "factbeanzorder": {
+      "fqn": "ana_prd_gold.edw.factbeanzorder",
+      "columnCount": 58,
+      "columns": [
+        {
+          "name": "OrderNoSKUCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionUniqueKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerEmail",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "NextDropDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "SKUCODE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "StoreCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionId",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "BeanzSkuFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DiscoverySkuFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "PromotionFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "OrderStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Currency",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Quantity",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "UnitPrice",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "Discount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "SkuAmount",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "SkuTaxAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "OrderLineTotalAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ShippingCharge",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ShippingTax",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ShippingCost",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ItemPurchasePrice",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRateKey",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Fusion_EntryChannel",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Fusion_OrderType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FirstFTBPOrder",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "isLoyaltyCardActivated",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RetailerKey",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "ftbp_Flag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FreeBag_Voucher_Flg",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FirstOrder_Flg",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "IslatestestOrder_Flg",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Subscription_First_Order_Flg",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FreeUnits",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RRP_Per_KG",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Bags_Per_KG",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "_Orderrevenueamount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Average_Selling_Price",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Average_Selling_Price_incl_Shipping_Cost",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Gross_Sales",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Is_Promotion_Order?",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Is_Subscription_Order?",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Net_Sales",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Net_Amount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Order_Margin",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Order_Margin_incl_Shipping_Cost",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "SKUCost",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Quantity_by_KG",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "actual_orderdate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "OrderNoSKUCodeSubscriptionKey",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzorderdailysummary": {
+      "fqn": "ana_prd_gold.edw.factbeanzorderdailysummary",
+      "columnCount": 13,
+      "columns": [
+        {
+          "name": "Week_Of_Year",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Week_Start_dt",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Week_Ending",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "FactDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "StoreCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BAGSIZE_in_Grams",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "OrderedQty",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "OrderedWeight",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "BC_OrderedWeight",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "NonBC_OrderedWeight",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "FreeOrder_OrderedWeight",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "PaidOrder_OrderedWeight",
+          "type": "DOUBLE",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzmborders": {
+      "fqn": "ana_prd_gold.edw.factbeanzmborders",
+      "columnCount": 19,
+      "columns": [
+        {
+          "name": "BusinessUnit",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "StoreCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Country",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ItemNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Quantity",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "CurrencyCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "UnitPrice",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "SKUAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "CustomerId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RoasterName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RoasterFlg",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "orderdate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRateKey",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "Is_Drop_Ship_Order",
+          "type": "BOOLEAN",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        }
+      ]
+    },
+    "dimbeanzsubscription": {
+      "fqn": "ana_prd_gold.edw.dimbeanzsubscription",
+      "columnCount": 12,
+      "columns": [
+        {
+          "name": "SubscriptionId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionCreationDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionCancelDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "CohortMonth",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "BeanzSkuFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DiscoverySkuFlag",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionDurationDays",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionDurationWeeks",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionDurationMonth",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzsubscription": {
+      "fqn": "ana_prd_gold.edw.factbeanzsubscription",
+      "columnCount": 21,
+      "columns": [
+        {
+          "name": "SubscriptionID",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionFactKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrdertoSkuKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerEmail",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SKUCODE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "storecode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BeanzSkuFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DiscoverySkuFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Quantity",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DropIteration",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "Plan_Id",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "EventName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "EventStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "EventDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "CumulativeQuantitySum",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "OrderNoSKUCodeSubscriptionKey",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzftbpprodregistration": {
+      "fqn": "ana_prd_gold.edw.factbeanzftbpprodregistration",
+      "columnCount": 81,
+      "columns": [
+        {
+          "name": "fiscalyearnumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SuccessfulProdRegistrationRank",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "ProductRegistrationID",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SFAccountID",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "PurchaseDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "ProductRegistrationDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "RetailerName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ItemCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CampaignId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Status",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ApprovalStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DetailRejectionReason",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RejectionReason",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ProductKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BusinessUnit",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "StoreCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Email",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DaysToRegistration",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "registrationType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CampaignName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "LoyaltyRecordID",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "LoyaltyCard",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "LoyaltyCardStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "IsLoyaltyCardActive",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "LoyaltyCardStartDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "LoyaltyCardEndDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "TotalCashbackAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "CashbackAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "CarryOverPoints",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "TotalMileStone",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FustionJorneyEntry",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RetailerKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RetailerInfo",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TotalCashBackEarnedAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "IsLastMileStone",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Milestone1",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone2",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone3",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone4",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone5",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone6",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone7",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone8",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone9",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone10",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone11",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone12",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone13",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone14",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone15",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "Milestone16",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "HW_AccountActivated",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TransferMethod",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CompletedPaymentCount",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "PaymentAmount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "CustomerOrderType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FirstOrderDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "FirstPaidOrderDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "FirstPaidOrderValue",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "PaidOrders",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FreeOrders",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SubscritpionStartOrderNumbere",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DurationTakenForFirstPaidOrdere",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Has_PaidOrdere",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TotalOrderCounte",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "RecurringOrderCounte",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "RecurringOrderedQuantitye",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "RecurringPaidOrderValuee",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "OnDemandOrderCounte",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "OnDemandOrderedQuantitye",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "OnDemandPaidOrderValue",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "SignUpOrderType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CurrentMilestoneLevel",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "IsFTBPRegistration",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TotalQuantityPaidOrders",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "TotalQuantityFreeOrders",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FTBPV2_RewardEarned",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "FTBPV2_PointsConsumed",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "FTBP_Release",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WebOrderNumber",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzshipment": {
+      "fqn": "ana_prd_gold.edw.factbeanzshipment",
+      "columnCount": 39,
+      "columns": [
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "COUNTRY",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionFactKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DATAAREAID",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEBORDERNUMBER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ITEMNUMBER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "VENDORNUMBER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ORDERDATE",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "ORDERCREATIONDATE",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "ACTUALROASTERDATE",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "SHIPPINGDATE",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "CARRIERSCANDATE",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "OrderSLAFlg",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DELIVERYSTATUS",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ORDERSTATUS",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DeliveryDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "LeadTime",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "ORDERSLA",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "VENDORSYSTEM",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "GRIND",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "VENDORORGANIZATIONNAME",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "LINEAMOUNT",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "CURRENCYCODE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "LABELGENERATEDDATE",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "PURCHASEORDERNUMBER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SALESORDERNUMBER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CUSTOMERNAME",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CARRIER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ShippingFee",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "TRACKINGNUMBER",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TRACKINGURL",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ORDERCHANNEL",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SFOrderNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ErrorMessage",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TRANSITITME",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "LineErrorMessage",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Quantity",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SHIPPINGAMOUNT",
+          "type": "DOUBLE",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzroastermotskudata": {
+      "fqn": "ana_prd_gold.edw.factbeanzroastermotskudata",
+      "columnCount": 16,
+      "columns": [
+        {
+          "name": "WeekNum",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Week_Start_Date",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "BusinessUnit",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Country",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SKUCODE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Flavor",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BagSize_KG",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "MOT_QTY_SKU",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "is_bc",
+          "type": "BOOLEAN",
+          "nullable": true
+        },
+        {
+          "name": "is_free_trial",
+          "type": "BOOLEAN",
+          "nullable": true
+        },
+        {
+          "name": "BC_QTY",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "NonBC_QTY",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "Free_QTY",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "Tier",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "StoreCode",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzroastermotsummary": {
+      "fqn": "ana_prd_gold.edw.factbeanzroastermotsummary",
+      "columnCount": 6,
+      "columns": [
+        {
+          "name": "Week_Start_Date",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "WeekNum",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "WEB_STORE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "VENDOR_NAME",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Tier",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "MOT_QTY",
+          "type": "DOUBLE",
+          "nullable": true
+        }
+      ]
+    },
+    "factbeanzcancellationsurvey": {
+      "fqn": "ana_prd_gold.edw.factbeanzcancellationsurvey",
+      "columnCount": 12,
+      "columns": [
+        {
+          "name": "Id",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Question",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Question_ls",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerComments",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SkuCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SurveyorAccountId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerEmail",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SurveyTakenByCallCenter",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SurveyDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        }
+      ]
+    },
+    "dimbeanzcustomeremail": {
+      "fqn": "ana_prd_gold.edw.dimbeanzcustomeremail",
+      "columnCount": 13,
+      "columns": [
+        {
+          "name": "CustomerEmail",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "TotalAmountSpent",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "FirstOrderDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "FirstPaidOrderDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "LastOrderDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "NumberOfSubscription",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "CustomerSubscriptionStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FirstFTBPOrderDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "CreateDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "DaysActive",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Days_Since_Last_Order",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Entered_through_FTBP",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Last_Order_Bracket",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "dimbeanzpromotion": {
+      "fqn": "ana_prd_gold.edw.dimbeanzpromotion",
+      "columnCount": 27,
+      "columns": [
+        {
+          "name": "OrderNoSKUCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "PromotionName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CouponCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SKUCODE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CustomerId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DiscoveryFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Category",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CreatedDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "CartDiscount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "LineItemDiscount",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ItemSubTotal",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_Description",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_Category",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_CategoryDescription",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_Discount",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_LimitValue",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_PromotionLevel",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_LimitText",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_SubscriptionOnly",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Vofy_ModelNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "vofy_ReportingCategory",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FreeUnits",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CountofRedeemedPromotionalUnits",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "OrderNoSKUCodeSubscriptionKey",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "dimbeanzproduct": {
+      "fqn": "ana_prd_gold.edw.dimbeanzproduct",
+      "columnCount": 68,
+      "columns": [
+        {
+          "name": "ProductCodeKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Id",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "PimCoreId",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Country",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "_BU",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ItemNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ItemStatusLink",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ParentItemID",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ProductName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "VendorNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "VendorName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CoffeeIdentifieR",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_BAGSIZE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_TYPE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_COFFEE_STYLE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ROASTLEVEL",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_TERM",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_SECONDARY_FLAVOUR_CATEGORY",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_FLAVOURCATEGORY",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_REGION_OPTION",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_COUNTRY",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_VARIETAL",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_PROCESS_OPTION",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ADDITIONALFLAVOURNOTE",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WebStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_BEST",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_CERTIFICATION",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_DECAF",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ELEVATION",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_GRIND",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ROASTDAY",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_TASTING_NOTES",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ROASTERNOTES",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_BREWMETHOD",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ELEVATION_TO",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "WEB_ELEVATION_FROM",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Currency",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RRP",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ItemPurchasePrice",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "InvAPI_VENDOR_ID",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Flavour_Fruit_Espresso",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Flavour_Choclate_Espresso",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Flavour_Caramely_Espresso",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Flavour_Fruit_Filter",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Flavour_Choclate_Filter",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Flavour_Caramely_Filter",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SkuRank_FlavourEs_Fruit",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "SkuRank_FlavourEs_Choclate",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "SkuRank_FlavourEs_Caramely",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "SkuRank_FlavourFltr_Fruit",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "SkuRank_FlavourFltr_Choclate",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "SkuRank_FlavourFltr_Caramely",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "BAGSIZE_UNITLESS",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ItemGroup",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ftbp_flg",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "HierarchyBrand",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BAGSIZE_in_Grams",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "BAGSIZE_in_KG",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "RRP_Per_KG",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "RRP_Price_Bracket",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RRP_Price_Bracket_Order",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Product_Margin",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "Is_a_BC_SKU",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BAGS_PER_KG",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "AVAILABLE_INVENTORY",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "INVENTORY_LEVEL",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "RESERVED_INVENTORY",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "RRP_for_BC",
+          "type": "DECIMAL",
+          "nullable": true
+        }
+      ]
+    },
+    "dimbeanzstore": {
+      "fqn": "ana_prd_gold.edw.dimbeanzstore",
+      "columnCount": 4,
+      "columns": [
+        {
+          "name": "StoreCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BusinessUnit",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Country",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Region",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "dimexchangerate": {
+      "fqn": "ana_prd_gold.edw.dimexchangerate",
+      "columnCount": 7,
+      "columns": [
+        {
+          "name": "ExchangeRateKey",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRateDateBUKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRateCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BusinessUnit",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ExchangeRateDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "RateType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Rate",
+          "type": "DECIMAL",
+          "nullable": true
+        }
+      ]
+    },
+    "dimdate": {
+      "fqn": "ana_prd_gold.edw.dimdate",
+      "columnCount": 57,
+      "columns": [
+        {
+          "name": "FactDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "Date_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Year",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "Year_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Quarter",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "Quarter_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Month",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "Month_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Week",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "Week_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Year",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Year_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Quarter",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Quarter_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Month",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Month_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Week",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Day_Of_Week_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Week_Of_Year",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Week_Of_Year_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Month_Of_Year",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Month_Of_Year_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Month_Of_Quarter",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Month_Of_Quarter_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Quarter_Of_Year",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Quarter_Of_Year_Name",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "YearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "Calendar_Month",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Month_Of_FiscalYear",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FY",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Week_Ending",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "PY_WeekEnding",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "PPY_WeekEnding",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "IsCurrentFY",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "IsLastFY",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "IsCurrentMonth",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "RunningQuarter",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RunningHalf",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RunningAnnual",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "RollingWeekEndingMap_LY_to_TY",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "RollingYearFlag",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FiscalHalf",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FiscalQuarter",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "IsNextFY",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DateOrder",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "IsLast12Months",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "IsLast6AndNext6Months",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "RollingWeek",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "PK_Date",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "Sales PPY Week Ending",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "KrchBox_WeekEnding",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "KrchBox_PY_WeekEnding",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "KrchBox_PPY_WeekEnding",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "RollingMonth",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "RollingCalendarYearFlag",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FYLastMonthsFullYearRolling",
+          "type": "INT",
+          "nullable": true
+        }
+      ]
+    },
+    "dimbeanzorder": {
+      "fqn": "ana_prd_gold.edw.dimbeanzorder",
+      "columnCount": 23,
+      "columns": [
+        {
+          "name": "SubscriptionUniqueKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionFactKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionId",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "PlanId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "PlanQuantity",
+          "type": "DOUBLE",
+          "nullable": true
+        },
+        {
+          "name": "OrderDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "OrderNumber",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderStatus",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SkuCode",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "OrderType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "GrindType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BrewingMethod",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FlavourNotes",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "DiscoverySkuFlag",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "BeanzSkuFlag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "subscriptionVariant",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FiscalYearNumber",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SFAssetId",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "CampaignName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Retailer",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriptionPrice",
+          "type": "DECIMAL",
+          "nullable": true
+        },
+        {
+          "name": "ftbp_Flag",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FreeUnits",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    },
+    "factemailevents": {
+      "fqn": "ana_prd_gold.edw.factemailevents",
+      "columnCount": 14,
+      "columns": [
+        {
+          "name": "SendID",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "YearPartition",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "MonthPartition",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "DayPartition",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "BrandRegionPartition",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ClientID",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "SubscriberKey",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SubscriberID",
+          "type": "LONG",
+          "nullable": true
+        },
+        {
+          "name": "EventDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "EventType",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "ClickURL",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SendDate",
+          "type": "TIMESTAMP",
+          "nullable": true
+        },
+        {
+          "name": "EmailAddress",
+          "type": "STRING",
+          "nullable": false
+        },
+        {
+          "name": "Conv_7Day_Beanz_FTBPv2",
+          "type": "STRING",
+          "nullable": false
+        }
+      ]
+    },
+    "dimsendjobs": {
+      "fqn": "ana_prd_gold.edw.dimsendjobs",
+      "columnCount": 12,
+      "columns": [
+        {
+          "name": "ClientID",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "SendID",
+          "type": "INT",
+          "nullable": true
+        },
+        {
+          "name": "FromName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "FromEmail",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "Subject",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "EmailName",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "SchedDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "SentDate",
+          "type": "DATE",
+          "nullable": true
+        },
+        {
+          "name": "IsBIEDM",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "IsWelcomeJourney",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "EmailRegion",
+          "type": "STRING",
+          "nullable": true
+        },
+        {
+          "name": "EmailBrand",
+          "type": "STRING",
+          "nullable": true
+        }
+      ]
+    }
+  }
+}
