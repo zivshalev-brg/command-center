@@ -163,15 +163,33 @@ function renderNewsMain() {
   if (state.newsCategory === 'research') { el.innerHTML = renderCoffeeResearch(); return; }
 
   if (DATA.newsLoading || (!DATA.news && !DATA.newsError)) {
-    el.innerHTML = '<div class="ca-loading"><div class="ca-spinner"></div><p>Loading news...</p></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-grid-auto">'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:30%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:85%"></div><div class="c-skel c-skel-line" style="width:70%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:40%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:75%"></div><div class="c-skel c-skel-line" style="width:80%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:35%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:90%"></div><div class="c-skel c-skel-line" style="width:60%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:30%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:70%"></div><div class="c-skel c-skel-line" style="width:75%"></div></div>'
+      + '</div></div>';
     return;
   }
   if (DATA.newsError) {
-    el.innerHTML = '<div class="ca-loading"><p>Failed to load news: ' + _nEnc(DATA.newsError) + '</p><button class="btn btn-sm" onclick="loadNewsData()" style="margin-top:12px">Retry</button></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+      +   '<div class="c-empty-icon">\u26A0</div>'
+      +   '<div class="c-empty-title" style="color:var(--rd)">Failed to load news</div>'
+      +   '<div class="c-empty-body">' + _nEnc(DATA.newsError) + '</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="loadNewsData()">Retry</button>'
+      + '</div></div>';
     return;
   }
   if (!DATA.news || !DATA.news.articles) {
-    el.innerHTML = '<div class="ca-loading"><p>No news data. Click Refresh to fetch.</p></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty">'
+      +   '<div class="c-empty-icon">\u2615</div>'
+      +   '<div class="c-empty-title">No coffee news yet</div>'
+      +   '<div class="c-empty-body">Click Refresh to pull from coffee industry sources.</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="loadNewsData()">Refresh feed</button>'
+      + '</div></div>';
     return;
   }
 
@@ -222,7 +240,11 @@ function renderNewsMain() {
   html += '<div class="nw-section-label">Articles (' + totalCount + ')</div>';
 
   if (!pageArticles.length) {
-    html += '<div class="ca-loading" style="padding:var(--sp6)"><p>No articles match your filters.</p></div>';
+    html += '<div class="c-empty" style="padding:var(--sp6)">'
+      + '<div class="c-empty-icon">\uD83D\uDD0D</div>'
+      + '<div class="c-empty-title">No articles match your filters</div>'
+      + '<div class="c-empty-body">Try clearing search or switching sort/date filters.</div>'
+      + '</div>';
   } else {
     html += '<div class="nw-list nw-' + (state.newsViewMode || 'cards') + '">';
     pageArticles.forEach(function(a) { html += _nRenderArticle(a); });
@@ -411,8 +433,22 @@ function _nCatLabel(cat) {
 // ── Briefing View ────────────────────────────────────────────
 function renderNewsBriefing() {
   var d = state.newsDigest;
-  if (!d || d.loading) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div><div class="ca-loading"><div class="ca-spinner"></div><p>Generating your briefing... this takes about 30 seconds</p></div></div>';
-  if (d.error || !d.digest) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div><div class="ca-loading"><p>Could not generate briefing.</p><button class="btn btn-sm" style="margin-top:8px" onclick="loadNewsDigest(\'daily\')">Retry</button></div></div>';
+  if (!d || d.loading) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div>'
+    + '<div style="padding:var(--sp4) 0">'
+    + '<div class="c-flex-between" style="margin-bottom:var(--sp3)"><span style="font-size:var(--f-sm);color:var(--tx3);font-weight:var(--fw-sb)">Generating your briefing\u2026</span><span style="font-size:var(--f-xs);color:var(--tx3)">~30s</span></div>'
+    + '<div class="c-progress c-progress-indeterminate"><div class="c-progress-fill"></div></div>'
+    + '<div class="c-stack" style="margin-top:var(--sp4)">'
+    +   '<div class="c-skel c-skel-line-lg" style="width:40%"></div>'
+    +   '<div class="c-skel c-skel-line" style="width:95%"></div>'
+    +   '<div class="c-skel c-skel-line" style="width:88%"></div>'
+    +   '<div class="c-skel c-skel-line" style="width:72%"></div>'
+    + '</div></div></div>';
+  if (d.error || !d.digest) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div>'
+    + '<div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+    +   '<div class="c-empty-icon">\u26A0</div>'
+    +   '<div class="c-empty-title" style="color:var(--rd)">Could not generate briefing</div>'
+    +   '<button class="c-btn c-btn-primary c-empty-action" onclick="loadNewsDigest(\'daily\')">Retry</button>'
+    + '</div></div>';
 
   var dig = d.digest;
   var html = '<div class="ca-main" style="max-width:800px">';
@@ -670,7 +706,12 @@ function postBriefingToSlack() {
 // ── Trends View ──────────────────────────────────────────────
 function renderNewsTrends() {
   var t = state.newsTrends;
-  if (!t) return '<div class="ca-main"><div class="ca-header"><h2>Trending Topics</h2></div><div class="ca-loading"><div class="ca-spinner"></div><p>Loading trends...</p></div></div>';
+  if (!t) return '<div class="ca-main"><div class="ca-header"><h2>Trending Topics</h2></div>'
+    + '<div class="c-stack" style="padding:var(--sp4) 0">'
+    +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:60%"></div><div class="c-skel c-skel-line-sm" style="width:30%;margin-top:8px"></div></div>'
+    +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:55%"></div><div class="c-skel c-skel-line-sm" style="width:25%;margin-top:8px"></div></div>'
+    +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:70%"></div><div class="c-skel c-skel-line-sm" style="width:35%;margin-top:8px"></div></div>'
+    + '</div></div>';
 
   var html = '<div class="ca-main"><div class="ca-header"><h2>Trending Topics</h2></div>';
 
@@ -725,7 +766,11 @@ function renderNewsCompetitors() {
   var html = '<div class="ca-main"><div class="ca-header"><h2>Competitor Intelligence</h2></div>';
 
   if (!alerts.length) {
-    html += '<div class="ca-loading"><p>No competitor alerts detected yet. Run a refresh to scan articles.</p></div>';
+    html += '<div class="c-empty" style="padding:var(--sp6)">'
+      + '<div class="c-empty-icon">\u2705</div>'
+      + '<div class="c-empty-title">No competitor alerts</div>'
+      + '<div class="c-empty-body">Run a refresh to scan latest articles for competitor movement.</div>'
+      + '</div>';
     html += '</div>';
     return html;
   }

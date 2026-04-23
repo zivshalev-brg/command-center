@@ -299,14 +299,26 @@ function renderEmailMarketingMain() {
 // ─── Performance grid ────────────────────────────────────────
 function _emRenderPerf() {
   if (_emPerfLoading && !_emPerfData) {
-    return '<div class="ca-loading"><div class="ca-spinner"></div><p>Loading email performance from Databricks... first query takes ~20s</p></div>';
+    return '<div style="padding:var(--sp4)">'
+      + '<div class="c-flex-between" style="margin-bottom:var(--sp3)"><span style="font-size:var(--f-sm);color:var(--tx3);font-weight:var(--fw-sb)">Loading email performance from Databricks\u2026</span><span style="font-size:var(--f-xs);color:var(--tx3)">first query ~20s</span></div>'
+      + '<div class="c-progress c-progress-indeterminate"><div class="c-progress-fill"></div></div>'
+      + '<div class="c-grid-kpi" style="margin-top:var(--sp4);gap:var(--sp3)">'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:26px;width:60%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:26px;width:55%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:26px;width:65%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:26px;width:50%"></div></div>'
+      + '</div></div>';
   }
   if (_emPerfError) {
-    return '<div class="ca-main"><div class="ca-narrative" style="border-left-color:var(--rd);background:var(--rdbg)">' +
-      '<div class="ca-narrative-label" style="color:var(--rd)">Email perf error</div><p>' + _emEnc(_emPerfError) + '</p>' +
-      '<button class="btn btn-sm" style="margin-top:var(--sp2)" onclick="_emPerfError=null;loadEmailPerfData(true)">Retry</button></div></div>';
+    return '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+      +   '<div class="c-empty-icon">\u26A0</div>'
+      +   '<div class="c-empty-title" style="color:var(--rd)">Email perf error</div>'
+      +   '<div class="c-empty-body">' + _emEnc(_emPerfError) + '</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="_emPerfError=null;loadEmailPerfData(true)">Retry</button>'
+      + '</div></div>';
   }
-  if (!_emPerfData) return '<div class="ca-loading"><p>No email data.</p></div>';
+  if (!_emPerfData) return '<div style="padding:var(--sp4)"><div class="c-empty"><div class="c-empty-icon">\uD83D\uDCE7</div><div class="c-empty-title">No email data</div><div class="c-empty-body">Click Refresh to fetch the latest email performance snapshot.</div></div></div>';
 
   var rows = _emFilteredPerf();
 
@@ -674,13 +686,22 @@ function _emGetEmails() {
 
 function _emRenderTemplates() {
   if (DATA.emLoading || (!DATA.emailMarketing && !DATA.emError)) {
-    return '<div class="ca-loading"><div class="ca-spinner"></div><p>Loading email templates from SFMC...</p></div>';
+    return '<div style="padding:var(--sp4)">'
+      + '<div class="c-stack">'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-title" style="width:50%"></div><div class="c-skel c-skel-line" style="width:75%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-title" style="width:60%"></div><div class="c-skel c-skel-line" style="width:80%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-title" style="width:45%"></div><div class="c-skel c-skel-line" style="width:70%"></div></div>'
+      + '</div></div>';
   }
   if (DATA.emError) {
-    return '<div class="ca-loading"><p style="color:var(--rd)">Failed: ' + _emEnc(DATA.emError) + '</p><button class="btn btn-sm" onclick="DATA.emError=null;loadEmailMarketingData()" style="margin-top:12px">Retry</button></div>';
+    return '<div style="padding:var(--sp4)"><div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+      + '<div class="c-empty-icon">\u26A0</div><div class="c-empty-title" style="color:var(--rd)">Failed to load email templates</div>'
+      + '<div class="c-empty-body">' + _emEnc(DATA.emError) + '</div>'
+      + '<button class="c-btn c-btn-primary c-empty-action" onclick="DATA.emError=null;loadEmailMarketingData()">Retry</button>'
+      + '</div></div>';
   }
   if (!DATA.emailMarketing || !DATA.emailMarketing.emails || !DATA.emailMarketing.emails.length) {
-    return '<div class="ca-loading"><p>No email templates found in SFMC.</p></div>';
+    return '<div style="padding:var(--sp4)"><div class="c-empty"><div class="c-empty-icon">\uD83D\uDCE8</div><div class="c-empty-title">No email templates found in SFMC</div><div class="c-empty-body">Connect SFMC or trigger a sync to see campaigns.</div></div></div>';
   }
 
   // Kick off perf overlay load if not done

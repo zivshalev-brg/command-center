@@ -176,20 +176,27 @@ function renderDigestMain() {
 
   // Loading state
   if (state.digestLoading) {
-    el.innerHTML = '<div class="ca-loading">' +
-      '<div class="ca-spinner"></div>' +
-      '<p style="font-size:var(--f-lg);margin-top:var(--sp3)">Generating digest...</p>' +
-      '<p style="color:var(--tx3);font-size:var(--f-sm)">Scanning sources: Outlook, Slack, Jira, News, BeanzGenie</p>' +
-    '</div>';
+    el.innerHTML = '<div style="padding:var(--sp4)">'
+      + '<div class="c-flex-between" style="margin-bottom:var(--sp3)"><span style="font-size:var(--f-sm);color:var(--tx3);font-weight:var(--fw-sb)">Generating digest\u2026</span><span style="font-size:var(--f-xs);color:var(--tx3)">Scanning Outlook, Slack, Jira, News, BeanzGenie</span></div>'
+      + '<div class="c-progress c-progress-indeterminate"><div class="c-progress-fill"></div></div>'
+      + '<div class="c-stack" style="margin-top:var(--sp4)">'
+      +   '<div class="c-skel c-skel-title" style="width:40%"></div>'
+      +   '<div class="c-skel c-skel-line" style="width:95%"></div>'
+      +   '<div class="c-skel c-skel-line" style="width:88%"></div>'
+      +   '<div class="c-skel c-skel-line" style="width:72%"></div>'
+      +   '<div class="c-skel c-skel-line" style="width:85%"></div>'
+      + '</div></div>';
     return;
   }
 
   // Error state
   if (state.digestError) {
-    el.innerHTML = '<div class="ca-loading">' +
-      '<p style="color:var(--rd)">Error: ' + _dgEnc(state.digestError) + '</p>' +
-      '<button class="btn btn-sm" onclick="generateDigest()" style="margin-top:12px">Retry</button>' +
-    '</div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)"><div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+      + '<div class="c-empty-icon">\u26A0</div>'
+      + '<div class="c-empty-title" style="color:var(--rd)">Digest generation failed</div>'
+      + '<div class="c-empty-body">' + _dgEnc(state.digestError) + '</div>'
+      + '<button class="c-btn c-btn-primary c-empty-action" onclick="generateDigest()">Retry</button>'
+      + '</div></div>';
     return;
   }
 

@@ -555,8 +555,10 @@ a { color: var(--ac); text-decoration: none; } a:hover { text-decoration: underl
 /* ===== KEYBOARD HELP MODAL ===== */
 .kb-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:var(--z-modal); align-items:center; justify-content:center; }
 .kb-modal.show { display:flex; }
-.kb-box { background:var(--s1); border:1px solid var(--bd); border-radius:12px; width:420px; padding:var(--sp5); box-shadow:var(--elev3); }
+.kb-box { background:var(--s1); border:1px solid var(--bd); border-radius:12px; width:460px; max-width:92vw; max-height:85vh; overflow-y:auto; padding:var(--sp5); box-shadow:var(--elev3); }
 .kb-box h2 { font-size:var(--f-xl); margin-bottom:var(--sp4); }
+.kb-section-label { font-size:var(--f-xs); font-weight:var(--fw-b); color:var(--ac); text-transform:uppercase; letter-spacing:0.6px; margin-top:var(--sp4); margin-bottom:var(--sp1); padding-bottom:4px; border-bottom:1px solid var(--bd); }
+.kb-section-label:first-of-type { margin-top:0; }
 .kb-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--bd); font-size:var(--f-md); }
 .kb-row:last-child { border:none; }
 .kb-row .k { background:var(--s3); padding:2px 8px; border-radius:4px; font-size:var(--f-sm); color:var(--tx2); font-weight:var(--fw-sb); min-width:40px; text-align:center; }

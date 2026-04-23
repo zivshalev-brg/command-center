@@ -151,13 +151,28 @@ function renderCommsAnalyticsMain() {
   var d = state.commsAnalyticsData;
 
   if (state.commsAnalyticsLoading && !d) {
-    main.innerHTML = '<div class="ca-loading"><div class="ca-spinner"></div><p>Loading analytics...</p></div>';
+    main.innerHTML = '<div style="padding:var(--sp4)">'
+      + '<div class="c-grid-kpi" style="margin-bottom:var(--sp4)">'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:28px;width:55%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:28px;width:60%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:28px;width:70%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:50%;margin-bottom:10px"></div><div class="c-skel" style="height:28px;width:45%"></div></div>'
+      + '</div>'
+      + '<div class="c-skel c-skel-chart" style="margin-bottom:var(--sp4)"></div>'
+      + '<div class="c-grid-2">'
+      +   '<div class="c-skel c-skel-chart" style="height:180px"></div>'
+      +   '<div class="c-skel c-skel-chart" style="height:180px"></div>'
+      + '</div></div>';
     return;
   }
 
   if (!d || d.error) {
-    main.innerHTML = '<div class="ca-loading"><p style="color:var(--tx3)">No analytics data yet.</p>' +
-      '<button class="btn btn-sm" style="margin-top:12px" onclick="caRefresh()">Generate First Snapshot</button></div>';
+    main.innerHTML = '<div style="padding:var(--sp4)"><div class="c-empty">'
+      + '<div class="c-empty-icon">\uD83D\uDCCA</div>'
+      + '<div class="c-empty-title">No analytics data yet</div>'
+      + '<div class="c-empty-body">Snapshots are generated every 4 hours automatically. Generate the first one now to see topic trends, person activity, and category mix.</div>'
+      + '<button class="c-btn c-btn-primary c-empty-action" onclick="caRefresh()">Generate First Snapshot</button>'
+      + '</div></div>';
     return;
   }
 

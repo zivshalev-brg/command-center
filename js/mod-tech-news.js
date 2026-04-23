@@ -136,15 +136,33 @@ function renderTechNewsMain() {
   if (state.techNewsCategory === 'research') { el.innerHTML = renderTechNewsResearch(); return; }
 
   if (DATA.techNewsLoading || (!DATA.techNews && !DATA.techNewsError)) {
-    el.innerHTML = '<div class="ca-loading"><div class="ca-spinner"></div><p>Loading tech news...</p></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-grid-auto">'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:30%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:85%"></div><div class="c-skel c-skel-line" style="width:70%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:40%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:75%"></div><div class="c-skel c-skel-line" style="width:80%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:35%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:90%"></div><div class="c-skel c-skel-line" style="width:60%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:30%;margin-bottom:10px"></div><div class="c-skel c-skel-title" style="width:70%"></div><div class="c-skel c-skel-line" style="width:75%"></div></div>'
+      + '</div></div>';
     return;
   }
   if (DATA.techNewsError) {
-    el.innerHTML = '<div class="ca-loading"><p>Failed to load tech news: ' + _tnEnc(DATA.techNewsError) + '</p><button class="btn btn-sm" onclick="loadTechNewsData()" style="margin-top:12px">Retry</button></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+      +   '<div class="c-empty-icon">\u26A0</div>'
+      +   '<div class="c-empty-title" style="color:var(--rd)">Failed to load tech news</div>'
+      +   '<div class="c-empty-body">' + _tnEnc(DATA.techNewsError) + '</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="loadTechNewsData()">Retry</button>'
+      + '</div></div>';
     return;
   }
   if (!DATA.techNews || !DATA.techNews.articles) {
-    el.innerHTML = '<div class="ca-loading"><p>No tech news data. Click Refresh to fetch.</p></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty">'
+      +   '<div class="c-empty-icon">\uD83D\uDCF0</div>'
+      +   '<div class="c-empty-title">No tech news yet</div>'
+      +   '<div class="c-empty-body">Click Refresh to pull from YouTube, Reddit, industry press and podcasts.</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="loadTechNewsData()">Refresh feed</button>'
+      + '</div></div>';
     return;
   }
 
@@ -183,7 +201,11 @@ function renderTechNewsMain() {
   html += '<div class="nw-section-label">Articles (' + totalCount + ')</div>';
 
   if (!pageArticles.length) {
-    html += '<div class="ca-loading" style="padding:var(--sp6)"><p>No articles match your filters.</p></div>';
+    html += '<div class="c-empty" style="padding:var(--sp6)">'
+      + '<div class="c-empty-icon">\uD83D\uDD0D</div>'
+      + '<div class="c-empty-title">No articles match your filters</div>'
+      + '<div class="c-empty-body">Try clearing search or switching sort/date filters.</div>'
+      + '</div>';
   } else {
     html += '<div class="nw-list nw-' + (state.techNewsViewMode || 'cards') + '">';
     pageArticles.forEach(function(a) { html += _tnRenderArticle(a); });
@@ -354,8 +376,22 @@ function _tnCatLabel(cat) {
 // ── Briefing View ────────────────────────────────────────────
 function renderTechNewsBriefing() {
   var d = state.techNewsDigest;
-  if (!d || d.loading) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div><div class="ca-loading"><div class="ca-spinner"></div><p>Generating your briefing... this takes about 30 seconds</p></div></div>';
-  if (d.error || !d.digest) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div><div class="ca-loading"><p>Could not generate briefing.</p><button class="btn btn-sm" style="margin-top:8px" onclick="loadTechNewsDigest(\'daily\')">Retry</button></div></div>';
+  if (!d || d.loading) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div>'
+    + '<div style="padding:var(--sp4) 0">'
+    + '<div class="c-flex-between" style="margin-bottom:var(--sp3)"><span style="font-size:var(--f-sm);color:var(--tx3);font-weight:var(--fw-sb)">Generating your briefing\u2026</span><span style="font-size:var(--f-xs);color:var(--tx3)">~30s</span></div>'
+    + '<div class="c-progress c-progress-indeterminate"><div class="c-progress-fill"></div></div>'
+    + '<div class="c-stack" style="margin-top:var(--sp4)">'
+    +   '<div class="c-skel c-skel-line-lg" style="width:40%"></div>'
+    +   '<div class="c-skel c-skel-line" style="width:95%"></div>'
+    +   '<div class="c-skel c-skel-line" style="width:88%"></div>'
+    +   '<div class="c-skel c-skel-line" style="width:72%"></div>'
+    + '</div></div></div>';
+  if (d.error || !d.digest) return '<div class="ca-main"><div class="ca-header"><h2>Daily Briefing</h2></div>'
+    + '<div class="c-empty c-card-danger" style="align-items:flex-start;text-align:left">'
+    +   '<div class="c-empty-icon">\u26A0</div>'
+    +   '<div class="c-empty-title" style="color:var(--rd)">Could not generate briefing</div>'
+    +   '<button class="c-btn c-btn-primary c-empty-action" onclick="loadTechNewsDigest(\'daily\')">Retry</button>'
+    + '</div></div>';
 
   var dig = d.digest;
   var html = '<div class="ca-main" style="max-width:800px">';
@@ -551,7 +587,12 @@ function renderTechNewsBriefing() {
 // ── Trends View ──────────────────────────────────────────────
 function renderTechNewsTrends() {
   var t = state.techNewsTrends;
-  if (!t) return '<div class="ca-main"><div class="ca-header"><h2>Trending Topics</h2></div><div class="ca-loading"><div class="ca-spinner"></div><p>Loading trends...</p></div></div>';
+  if (!t) return '<div class="ca-main"><div class="ca-header"><h2>Trending Topics</h2></div>'
+    + '<div class="c-stack" style="padding:var(--sp4) 0">'
+    +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:60%"></div><div class="c-skel c-skel-line-sm" style="width:30%;margin-top:8px"></div></div>'
+    +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:55%"></div><div class="c-skel c-skel-line-sm" style="width:25%;margin-top:8px"></div></div>'
+    +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:70%"></div><div class="c-skel c-skel-line-sm" style="width:35%;margin-top:8px"></div></div>'
+    + '</div></div>';
 
   var html = '<div class="ca-main"><div class="ca-header"><h2>Trending Topics</h2></div>';
 

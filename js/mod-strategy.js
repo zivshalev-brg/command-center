@@ -441,7 +441,16 @@ function sendKBChat() {
 function _renderKBLibrary() {
   if (!state.kbLibrary) {
     _loadKBLibrary();
-    return '<div class="ca-main"><div class="ca-loading"><div class="ca-spinner"></div><p>Loading knowledge library...</p></div></div>';
+    return '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-stack">'
+      +   '<div class="c-skel c-skel-title" style="width:40%"></div>'
+      +   '<div class="c-grid-auto">'
+      +     '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:60%"></div><div class="c-skel c-skel-line-sm" style="width:30%;margin-top:8px"></div></div>'
+      +     '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:70%"></div><div class="c-skel c-skel-line-sm" style="width:35%;margin-top:8px"></div></div>'
+      +     '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:55%"></div><div class="c-skel c-skel-line-sm" style="width:25%;margin-top:8px"></div></div>'
+      +     '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:65%"></div><div class="c-skel c-skel-line-sm" style="width:40%;margin-top:8px"></div></div>'
+      +   '</div>'
+      + '</div></div>';
   }
 
   // Viewing a specific doc

@@ -587,7 +587,14 @@ function renderNotesMain() {
   }
 
   if (!state.selectedNotebook) {
-    main.innerHTML = '<div class="ca-loading"><div class="ca-spinner"></div><p>Loading notebook…</p></div>';
+    main.innerHTML = '<div style="padding:var(--sp4)"><div class="c-stack">'
+      + '<div class="c-skel c-skel-title" style="width:40%"></div>'
+      + '<div class="c-skel c-skel-line" style="width:90%"></div>'
+      + '<div class="c-skel c-skel-line" style="width:75%"></div>'
+      + '<div class="c-grid-2" style="margin-top:var(--sp3)">'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:60%"></div></div>'
+      +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:70%"></div></div>'
+      + '</div></div></div>';
     return;
   }
 
