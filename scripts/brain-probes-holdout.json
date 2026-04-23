@@ -1,0 +1,15 @@
+{
+  "description": "10 HOLDOUT probe queries. These must never be referenced during optimization. Used only at phase checkpoints to detect overfitting.",
+  "queries": [
+    "What's the gross margin impact of the roaster mix shift?",
+    "Which FTBP cohort had the best 12-week retention?",
+    "Who are the top 3 people mentioned across critical Slack threads this month?",
+    "What meeting decisions from 2026-02 are still un-actioned?",
+    "What's the PBB pilot scorecard versus the control group?",
+    "Which vault pages show conflicting answers on DHL DE capacity?",
+    "What did we learn from the Oracle Series 21x over-index that's applied elsewhere?",
+    "Which competitor roaster most frequently appears in news with price changes?",
+    "Who owns the decision on NL logistics carrier selection?",
+    "What's the current open action from the last weekly regional managers sync?"
+  ]
+}

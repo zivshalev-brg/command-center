@@ -1,0 +1,25 @@
+{
+  "description": "20 exec-facing probe queries used by brain-quality.js to measure Score-R retrieval. Any changes to the brain must improve average hit count on this probe set without regressing Score-H or Score-U.",
+  "queries": [
+    "What are the FY27 priorities and why do they matter?",
+    "Which markets did the DE delivery SLA regression hit?",
+    "What is Project Feral and what workstreams does it cover?",
+    "Who owns the FTBP conversion target?",
+    "What are the top cancellation reasons from SIOO tagging?",
+    "Which Platinum Roasters are below MOT and why?",
+    "How did Oracle series machines over-index on FTBP revenue?",
+    "What is the current state of the Pay-By-Bag pilot?",
+    "When is the NL market launching and what's the dependency list?",
+    "Summarise the Breville Board summit materials for FY27",
+    "What critical correlations are flagged in the strategy tab?",
+    "Which BIEDM emails underperform on CTR in the UK market?",
+    "What's the LTV trend versus subscriber growth?",
+    "Who is the Global Ops Lead for carrier escalations?",
+    "What's the status of the Project Feral cancellation flow experiment?",
+    "How does the FTBP v2 pack differ from v1?",
+    "What are the latest competitive moves from specialty roasters?",
+    "Summarise the latest AI/Tech research relevant to retention",
+    "What KPIs are we missing that the strategy team flagged?",
+    "Who has been most active in Slack on operations this week?"
+  ]
+}
