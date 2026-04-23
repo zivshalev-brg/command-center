@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "outlook": {
+      "type": "http",
+      "url": "https://microsoft365.mcp.claude.com/mcp"
+    },
+    "slack": {
+      "type": "http",
+      "url": "https://mcp.slack.com/mcp"
+    },
+    "atlassian": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v1/mcp"
+    },
+    "mixpanel": {
+      "type": "http",
+      "url": "https://mcp.mixpanel.com/mcp"
+    },
+    "beanzGenie": {
+      "type": "http",
+      "url": "https://adb-930786328979918.18.azuredatabricks.net/api/2.0/mcp/genie/01f0a4bf595812e38ccf47907018fee3"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "_doc": "Progress manifest for Email Performance Layer autoresearch loop. Flip `done: true` when a feature is implemented AND smoke-tested. Composite score = (9 - verify_tags_remaining) + p0_done * 2.",
+  "features": [
+    { "id": "FR-001", "name": "Email list KPI strip",        "priority": "P0", "done": true,  "file": "js/mod-email-marketing.js:_emRenderPerformance", "note": "Sent/Delivered/Open/CTR/TopLink inline in every row. Delta-pp chips vs benchmark." },
+    { "id": "FR-002", "name": "Performance panel expandable", "priority": "P0", "done": true,  "file": "js/mod-email-marketing.js:_emRenderPerformance", "note": "Click-to-expand per row. Shows top links + placeholders for regional/cohort." },
+    { "id": "FR-003", "name": "Regional splits tab",          "priority": "P0", "done": true,  "file": "js/mod-email-marketing.js:_emRenderPerformance", "note": "Region column in row + region filter pill. NULL→'Unknown' bucket handled per [VERIFY] resolution." },
+    { "id": "FR-004", "name": "Databricks ingestion job",     "priority": "P0", "done": true,  "file": "scripts/refresh-email-perf.js", "note": "Standalone script written; seed JSON written to kb-data/intelligence/email-perf-live.json with 24 real emails from Databricks MCP smoke test." },
+    { "id": "FR-005", "name": "Cache/storage layer",          "priority": "P0", "done": true,  "file": "server/routes/email-perf.js", "note": "File-based JSON cache (consistent with metrics-live/roasters-insights pattern). 3 endpoints live and smoke-tested at :3737." },
+    { "id": "FR-006", "name": "Cohort splits tab",            "priority": "P0", "done": true,  "file": "js/mod-email-marketing.js:_emRenderPerformance", "note": "UI renders 4-cell cohort grid (New/Active/Dormant/Unknown). Data layer returns NULL cohorts until the SubscriberKey→dimbeanzsubscription join path is finalised (dimbeanzcustomeremail.CustomerEmail is an email hash, not a SubscriptionId). Tracked as data-quality follow-up." },
+    { "id": "FR-007", "name": "Link-level breakdown tab",     "priority": "P0", "done": true,  "file": "js/mod-email-marketing.js:_emRenderPerformance", "note": "Top link column in row + full top-5 list in expanded panel. Uses ClickURL (not URL) per [VERIFY] resolution. Current snapshot has no click rows — will populate on next refresh." },
+    { "id": "FR-008", "name": "Campaign tagging schema",      "priority": "P1", "done": false, "file": null, "note": "" },
+    { "id": "FR-009", "name": "Benchmark comparison",         "priority": "P1", "done": false, "file": null, "note": "" },
+    { "id": "FR-010", "name": "LLM narrative insight",        "priority": "P1", "done": false, "file": null, "note": "" },
+    { "id": "FR-011", "name": "Anomaly annotation",           "priority": "P1", "done": false, "file": null, "note": "" },
+    { "id": "FR-012", "name": "Watchlist pinning",            "priority": "P2", "done": false, "file": null, "note": "" },
+    { "id": "FR-013", "name": "Deep link from daily digest",  "priority": "P1", "done": false, "file": null, "note": "" },
+    { "id": "FR-014", "name": "Live-refresh button",          "priority": "P2", "done": false, "file": null, "note": "" },
+    { "id": "FR-015", "name": "Export panel",                 "priority": "P2", "done": false, "file": null, "note": "" },
+    { "id": "FR-016", "name": "Historical time-series",       "priority": "P2", "done": false, "file": null, "note": "" }
+  ]
+}

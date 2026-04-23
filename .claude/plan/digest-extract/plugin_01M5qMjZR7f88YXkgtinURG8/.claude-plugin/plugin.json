@@ -1,0 +1,8 @@
+{
+  "name": "beanz-daily-digest",
+  "version": "2.0.0",
+  "description": "Daily, weekly, and monthly intelligence digest for beanz.com — Breville Group's specialty coffee subscription marketplace. Pulls from 7 sources: Outlook, Teams, SharePoint, Slack, Jira, Mixpanel (with 17 exact query schemas), and BeanzGenie (Databricks). Includes cross-source intelligence synthesis, full email/doc content extraction, and meeting transcript support.",
+  "author": {
+    "name": "Ziv Shalev"
+  }
+}
