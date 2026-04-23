@@ -224,6 +224,28 @@ async function handleAPI(req, res) {
   if (parts[0] === 'projects-daily') return handleProjectsDaily(req, res, parts, url, ctx);
   if (parts[0] === 'projects-candidates') return handleProjectsCandidates(req, res, parts, url, ctx);
   if (parts[0] === 'integrations' && parts[1] === 'health') return handleIntegrationsHealth(req, res, parts, url, ctx);
+
+  // Manual trigger for scheduled research emails (use when scheduler missed)
+  // POST /api/schedule/run?job=tech_daily|coffee_daily|tech_weekly|coffee_weekly|all_daily
+  if (parts[0] === 'schedule' && parts[1] === 'run' && req.method === 'POST') {
+    const job = (url.searchParams && url.searchParams.get('job')) || 'all_daily';
+    const _runner = global.__scheduledRunners;
+    if (!_runner) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'scheduler runners not initialized' }));
+    }
+    try {
+      if (job === 'tech_daily' || job === 'all_daily') _runner.tech('daily');
+      if (job === 'coffee_daily' || job === 'all_daily') _runner.coffee('daily');
+      if (job === 'tech_weekly') _runner.tech('weekly');
+      if (job === 'coffee_weekly') _runner.coffee('weekly');
+      res.writeHead(202, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ ok: true, job: job, state: 'running' }));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: e.message }));
+    }
+  }
   if (parts[0] === 'projects' && parts[1] === 'intelligence') return handleProjectIntelligence(req, res, parts, url, ctx);
   if (parts[0] === 'projects' && parts[1] === 'enriched') return handleProjectsEnriched(req, res, parts, url, ctx);
   if (parts[0] === 'projects') return handleProjectsCrud(req, res, parts, url, ctx);
@@ -609,43 +631,88 @@ server.listen(PORT, () => {
     }).catch(function(e) { console.error('[Research] Scheduled ' + period + ' failed:', e.message); });
   }
 
-  // ── Clock-based scheduling: check every minute for scheduled times ──
+  // ── Clock-based scheduling (Australia/Sydney timezone) ──
   const { generateCoffeeResearch } = require('./routes/news');
   var _lastScheduleRun = {};
+  var SCHEDULE_TZ = 'Australia/Sydney';
+
+  /**
+   * Get the current time in the configured timezone (Sydney/AEST/AEDT).
+   * Returns { hh, mm, day (0=Sun..6=Sat), dateKey: YYYY-MM-DD, minutesOfDay }.
+   * Relying on getHours()/getMinutes() is fragile because they follow the
+   * OS timezone which may be UTC in many hosting environments.
+   */
+  function _nowInSydney() {
+    var parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: SCHEDULE_TZ,
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+      weekday: 'short'
+    }).formatToParts(new Date());
+    var map = {};
+    parts.forEach(function(p) { map[p.type] = p.value; });
+    var hh = parseInt(map.hour === '24' ? '0' : map.hour, 10);
+    var mm = parseInt(map.minute, 10);
+    var wdMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    var day = wdMap[map.weekday] != null ? wdMap[map.weekday] : 0;
+    var dateKey = map.year + '-' + map.month + '-' + map.day;
+    return { hh: hh, mm: mm, day: day, dateKey: dateKey, minutesOfDay: hh * 60 + mm };
+  }
+
+  /**
+   * "Catch-up" check: if the scheduled time for today has already passed
+   * in the target timezone and we haven't run the job yet today, fire it.
+   * This prevents silent misses after restarts or brief downtime.
+   */
+  function _shouldFire(jobKey, targetHH, targetMM, now, dayFilter) {
+    if (_lastScheduleRun[jobKey] === now.dateKey) return false;
+    if (dayFilter != null && dayFilter !== now.day) return false;
+    var targetMin = targetHH * 60 + targetMM;
+    // Fire if we're past the scheduled time (up to 4 hours after — avoids
+    // next-day firing on a server that started very late)
+    if (now.minutesOfDay >= targetMin && now.minutesOfDay < targetMin + 240) return true;
+    return false;
+  }
 
   function _checkSchedule() {
-    var now = new Date();
-    var hh = now.getHours();
-    var mm = now.getMinutes();
-    var day = now.getDay(); // 0=Sun, 1=Mon
-    var dateKey = now.toISOString().slice(0, 10);
+    var now = _nowInSydney();
 
-    // 7:30 AM — Generate & email AI & Tech daily research
-    if (hh === 7 && mm === 30 && _lastScheduleRun['tech_daily'] !== dateKey) {
-      _lastScheduleRun['tech_daily'] = dateKey;
-      console.log('[Schedule] 7:30 AM — Generating AI & Tech daily research...');
+    // 7:30 AM AEST — Generate & email AI & Tech daily research
+    if (_shouldFire('tech_daily', 7, 30, now)) {
+      _lastScheduleRun['tech_daily'] = now.dateKey;
+      console.log('[Schedule] ' + now.dateKey + ' ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating AI & Tech daily research...');
       _generateAndEmail('daily');
     }
 
-    // 7:30 AM — Generate & email Coffee daily research (runs alongside tech)
-    if (hh === 7 && mm === 30 && _lastScheduleRun['coffee_daily'] !== dateKey) {
-      _lastScheduleRun['coffee_daily'] = dateKey;
-      console.log('[Schedule] 7:30 AM — Generating Coffee daily research...');
+    // 7:30 AM AEST — Generate & email Coffee daily research (runs alongside tech)
+    if (_shouldFire('coffee_daily', 7, 30, now)) {
+      _lastScheduleRun['coffee_daily'] = now.dateKey;
+      console.log('[Schedule] ' + now.dateKey + ' ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating Coffee daily research...');
       _generateCoffeeAndEmail('daily');
     }
 
-    // Monday 7:00 AM — Generate weekly reports
-    if (day === 1 && hh === 7 && mm === 0 && _lastScheduleRun['weekly'] !== dateKey) {
-      _lastScheduleRun['weekly'] = dateKey;
-      console.log('[Schedule] Monday 7:00 AM — Generating weekly reports...');
+    // Monday 7:00 AM AEST — Generate weekly reports
+    if (_shouldFire('weekly', 7, 0, now, 1)) {
+      _lastScheduleRun['weekly'] = now.dateKey;
+      console.log('[Schedule] Monday ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating weekly reports...');
       _generateAndEmail('weekly');
-      setTimeout(function() { _generateCoffeeAndEmail('weekly'); }, 10 * 60 * 1000); // coffee 10 min later
+      setTimeout(function() { _generateCoffeeAndEmail('weekly'); }, 10 * 60 * 1000);
     }
   }
 
+  // Expose runners for manual trigger via /api/schedule/run
+  global.__scheduledRunners = {
+    tech: _generateAndEmail,
+    coffee: _generateCoffeeAndEmail
+  };
+
+  // Run once at startup (covers case where server starts after the scheduled time)
+  setTimeout(_checkSchedule, 30 * 1000);
   // Check schedule every 60 seconds
   setInterval(_checkSchedule, 60 * 1000);
-  console.log('[Schedule] Research reports scheduled: AI & Tech + Coffee at 7:30 AM daily');
+  // Log startup time in Sydney
+  var _startNow = _nowInSydney();
+  console.log('[Schedule] Research reports scheduled (AEST/Sydney): AI & Tech + Coffee at 7:30 AM daily. Startup: ' + _startNow.dateKey + ' ' + _startNow.hh + ':' + String(_startNow.mm).padStart(2, '0'));
 
   function _generateCoffeeAndEmail(period) {
     if (!ctx.anthropicApiKey) return;

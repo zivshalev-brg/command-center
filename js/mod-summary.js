@@ -186,8 +186,16 @@ function _renderSummaryMainInner(el) {
       if (c.recommendation) html += '<div style="font-size:var(--f-xs);color:var(--ac);margin-top:4px">→ ' + _sEnc(c.recommendation).slice(0, 150) + '</div>';
       html += '</div>';
     });
+  } else if (DATA.strategyLoading) {
+    html += '<div class="c-stack" style="padding:4px 0">'
+         +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:70%"></div><div class="c-skel c-skel-line" style="width:85%"></div></div>'
+         +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:60%"></div><div class="c-skel c-skel-line" style="width:80%"></div></div>'
+         + '</div>';
   } else {
-    html += '<div style="font-size:var(--f-sm);color:var(--tx3);padding:8px">Loading strategy data...</div>';
+    html += '<div class="c-empty" style="padding:var(--sp5)"><div class="c-empty-icon">\uD83D\uDD17</div>'
+         +   '<div class="c-empty-title">Strategy data not loaded</div>'
+         +   '<div class="c-empty-body">Correlations surface here when strategy signals are synthesized.</div>'
+         + '</div>';
   }
   html += '</div>';
 
@@ -239,9 +247,15 @@ function _renderSummaryMainInner(el) {
       html += '</div>';
     }
   } else if (_projectJiraLoading) {
-    html += '<div style="font-size:var(--f-sm);color:var(--tx3);padding:8px"><div class="ca-spinner" style="width:16px;height:16px;display:inline-block"></div> Loading Jira...</div>';
+    html += '<div class="c-stack" style="padding:4px 0">'
+         +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:55%;margin-bottom:8px"></div><div class="c-skel" style="height:3px;width:40%"></div></div>'
+         +   '<div class="c-skel-card"><div class="c-skel c-skel-line" style="width:65%;margin-bottom:8px"></div><div class="c-skel" style="height:3px;width:70%"></div></div>'
+         + '</div>';
   } else {
-    html += '<div style="font-size:var(--f-sm);color:var(--tx3);padding:8px">No active sprints</div>';
+    html += '<div class="c-empty" style="padding:var(--sp5)"><div class="c-empty-icon">\uD83C\uDFAF</div>'
+         +   '<div class="c-empty-title">No active sprints</div>'
+         +   '<div class="c-empty-body">Sprint status shows here once Jira has active sprints.</div>'
+         + '</div>';
   }
   html += '</div>';
 
@@ -298,7 +312,10 @@ function _renderSummaryMainInner(el) {
       html += '</div>';
     });
   } else {
-    html += '<div style="font-size:var(--f-sm);color:var(--tx3);padding:8px">News loading on next refresh...</div>';
+    html += '<div class="c-stack" style="padding:4px 0">'
+         +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:25%;margin-bottom:8px"></div><div class="c-skel c-skel-line" style="width:90%"></div></div>'
+         +   '<div class="c-skel-card"><div class="c-skel c-skel-line-sm" style="width:25%;margin-bottom:8px"></div><div class="c-skel c-skel-line" style="width:80%"></div></div>'
+         + '</div>';
   }
   html += '</div>';
 

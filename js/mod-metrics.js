@@ -176,16 +176,42 @@ function renderMetricsSidebar() {
 function renderMetricsMain() {
   var el = $('main');
   if (_metricsError) {
-    el.innerHTML = '<div class="ca-main"><div class="ca-narrative" style="border-left-color:var(--rd);background:var(--rdbg)">' +
-      '<div class="ca-narrative-label" style="color:var(--rd)">Databricks error</div><p>' + _mEnc(_metricsError) + '</p></div></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty c-card-danger" style="padding:var(--sp6);text-align:left;align-items:flex-start">'
+      +   '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">\u26A0</span>'
+      +     '<div class="c-empty-title" style="color:var(--rd);text-align:left">Databricks error</div></div>'
+      +   '<div class="c-empty-body" style="text-align:left">' + _mEnc(_metricsError) + '</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="refreshMetrics && refreshMetrics()">Retry</button>'
+      + '</div></div>';
     return;
   }
   if (_metricsLoading && !_metricsSnap) {
-    el.innerHTML = '<div class="ca-loading"><div class="ca-spinner"></div><p>Warming Databricks warehouse and running 14 queries... first load takes ~20s</p></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div style="padding:var(--sp3) 0 var(--sp4)">'
+      +   '<div id="metricsInitProgress"></div>'
+      + '</div>'
+      + '<div class="c-grid-kpi" style="margin-bottom:var(--sp4)">'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:55%;margin-bottom:12px"></div><div class="c-skel" style="height:28px;width:65%;margin-bottom:6px"></div><div class="c-skel c-skel-line-sm" style="width:35%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:55%;margin-bottom:12px"></div><div class="c-skel" style="height:28px;width:70%;margin-bottom:6px"></div><div class="c-skel c-skel-line-sm" style="width:35%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:55%;margin-bottom:12px"></div><div class="c-skel" style="height:28px;width:60%;margin-bottom:6px"></div><div class="c-skel c-skel-line-sm" style="width:35%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:55%;margin-bottom:12px"></div><div class="c-skel" style="height:28px;width:55%;margin-bottom:6px"></div><div class="c-skel c-skel-line-sm" style="width:35%"></div></div>'
+      + '</div>'
+      + '<div class="c-skel c-skel-chart"></div>'
+      + '</div>';
+    setTimeout(function() {
+      if (typeof showProgress === 'function') {
+        showProgress('#metricsInitProgress', { label: 'Warming Databricks warehouse \u00B7 running 14 queries\u2026', indeterminate: true });
+      }
+    }, 0);
     return;
   }
   if (!_metricsSnap) {
-    el.innerHTML = '<div class="ca-loading"><p>No metrics data. Click refresh.</p></div>';
+    el.innerHTML = '<div class="ca-main" style="padding:var(--sp4)">'
+      + '<div class="c-empty"><div class="c-empty-icon">\uD83D\uDCC8</div>'
+      +   '<div class="c-empty-title">No metrics data loaded</div>'
+      +   '<div class="c-empty-body">Click Refresh to fetch a live snapshot from Databricks.</div>'
+      +   '<button class="c-btn c-btn-primary c-empty-action" onclick="refreshMetrics && refreshMetrics()">Fetch snapshot</button>'
+      + '</div></div>';
     return;
   }
 
@@ -628,7 +654,10 @@ function _mExplore() {
 
   var results = '';
   if (_sliceLoading) {
-    results = '<div class="ca-loading"><div class="ca-spinner"></div><p>Querying Databricks...</p></div>';
+    results = '<div style="padding:var(--sp4) 0">'
+      + '<div class="c-flex-between" style="margin-bottom:var(--sp3)"><span style="font-size:var(--f-sm);color:var(--tx3);font-weight:var(--fw-sb)">Querying Databricks\u2026</span></div>'
+      + '<div class="c-progress c-progress-indeterminate"><div class="c-progress-fill"></div></div>'
+      + '<div class="c-skel c-skel-chart" style="margin-top:var(--sp4)"></div></div>';
   } else if (_sliceData && _sliceData.error) {
     results = '<div class="ca-narrative" style="border-left-color:var(--rd);background:var(--rdbg)">' +
       '<div class="ca-narrative-label" style="color:var(--rd)">Query Error</div><p>' + _mEnc(_sliceData.error) + '</p>' +
@@ -773,7 +802,15 @@ function _mDigest() {
   }
   if (_digestLoading && !_digestSnap) {
     return '<div class="ca-main">' + bar +
-      '<div class="ca-loading" style="margin-top:var(--sp4)"><div class="ca-spinner"></div><p>Assembling ' + _mEnc(state._digestKind) + ' digest... 18 queries in parallel, first load ~25s</p></div></div>';
+      '<div style="margin-top:var(--sp4)">'
+      + '<div class="c-flex-between" style="margin-bottom:var(--sp3)"><span style="font-size:var(--f-sm);color:var(--tx3);font-weight:var(--fw-sb)">Assembling ' + _mEnc(state._digestKind) + ' digest \u00B7 18 parallel queries</span><span style="font-size:var(--f-xs);color:var(--tx3)">first load ~25s</span></div>'
+      + '<div class="c-progress c-progress-indeterminate"><div class="c-progress-fill"></div></div>'
+      + '<div class="c-grid-kpi" style="margin-top:var(--sp4);gap:var(--sp3)">'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:45%;margin-bottom:10px"></div><div class="c-skel" style="height:24px;width:65%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:45%;margin-bottom:10px"></div><div class="c-skel" style="height:24px;width:60%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:45%;margin-bottom:10px"></div><div class="c-skel" style="height:24px;width:55%"></div></div>'
+      +   '<div class="c-skel-kpi"><div class="c-skel c-skel-line-sm" style="width:45%;margin-bottom:10px"></div><div class="c-skel" style="height:24px;width:70%"></div></div>'
+      + '</div></div></div>';
   }
   if (!_digestSnap) return '<div class="ca-main">' + bar + '</div>';
 
