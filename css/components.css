@@ -1,0 +1,290 @@
+/* ===================================================================
+ * Beanz OS Command Center — Shared Component Library
+ * -------------------------------------------------------------------
+ * Additive CSS layer. Nothing here uses !important or overrides
+ * existing selectors. Tabs opt in by adopting classes one at a time.
+ * All tokens from css/styles.css — no hardcoded colours.
+ * ================================================================= */
+
+/* ===== CARD ================================================= */
+.c-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: var(--sp4) var(--sp5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+}
+.c-card-sm { padding: var(--sp3); border-radius: 8px; }
+.c-card-lg { padding: var(--sp5) var(--sp6); border-radius: 12px; }
+.c-card-accent { border-left: 3px solid var(--ac); }
+.c-card-warn { border-left: 3px solid var(--or); }
+.c-card-danger { border-left: 3px solid var(--rd); }
+.c-card-success { border-left: 3px solid var(--gn); }
+.c-card-interactive {
+  cursor: pointer;
+  transition: transform var(--dur-f) var(--ease), box-shadow var(--dur-f) var(--ease), border-color var(--dur-f);
+}
+.c-card-interactive:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--elev2);
+  border-color: var(--bd2);
+}
+.c-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--sp2); margin-bottom: var(--sp1); }
+.c-card-title { font-size: var(--f-lg); font-weight: var(--fw-sb); color: var(--tx); letter-spacing: -0.1px; }
+.c-card-meta { font-size: var(--f-sm); color: var(--tx3); font-weight: var(--fw-m); }
+.c-card-body { font-size: var(--f-md); color: var(--tx2); line-height: var(--lh); }
+.c-card-footer { padding-top: var(--sp3); border-top: 1px solid var(--bd); margin-top: var(--sp2); display: flex; gap: var(--sp2); align-items: center; }
+
+/* ===== BUTTONS =============================================== */
+.c-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp2);
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: var(--f-md);
+  font-weight: var(--fw-sb);
+  cursor: pointer;
+  transition: background var(--dur-f) var(--ease), border-color var(--dur-f), color var(--dur-f), transform var(--dur-f);
+  font-family: inherit;
+  line-height: 1;
+  white-space: nowrap;
+}
+.c-btn:active { transform: translateY(1px); }
+.c-btn:disabled, .c-btn[disabled] { opacity: 0.5; cursor: not-allowed; transform: none; }
+.c-btn-primary { background: var(--ac); color: #fff; border-color: var(--ac); }
+.c-btn-primary:hover { background: var(--ac2); border-color: var(--ac2); }
+.c-btn-secondary { background: transparent; color: var(--tx); border-color: var(--bd); }
+.c-btn-secondary:hover { background: var(--s2); border-color: var(--bd2); }
+.c-btn-ghost { background: transparent; color: var(--tx2); border-color: transparent; }
+.c-btn-ghost:hover { background: var(--s2); color: var(--tx); }
+.c-btn-danger { background: transparent; color: var(--rd); border-color: var(--rd); }
+.c-btn-danger:hover { background: var(--rdbg); }
+.c-btn-success { background: var(--gn); color: #0b1e13; border-color: var(--gn); }
+.c-btn-success:hover { filter: brightness(1.05); }
+.c-btn-sm { padding: 4px 10px; font-size: var(--f-sm); }
+.c-btn-lg { padding: 10px 18px; font-size: var(--f-lg); }
+.c-btn-icon { padding: 6px; width: 32px; height: 32px; }
+.c-btn-block { width: 100%; }
+
+/* Keyboard shortcut hint inside button */
+.c-btn .c-kbd {
+  margin-left: var(--sp2);
+  padding: 1px 5px;
+  font-size: var(--f-xs);
+  font-weight: var(--fw-b);
+  border-radius: 3px;
+  background: rgba(255,255,255,0.18);
+  color: inherit;
+  opacity: 0.85;
+}
+.c-btn-secondary .c-kbd, .c-btn-ghost .c-kbd { background: var(--s3); color: var(--tx3); }
+
+/* ===== EMPTY STATE =========================================== */
+.c-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp10) var(--sp6);
+  text-align: center;
+  color: var(--tx3);
+  background: var(--s1);
+  border: 1px dashed var(--bd);
+  border-radius: 12px;
+  gap: var(--sp3);
+}
+.c-empty-icon {
+  font-size: 32px;
+  opacity: 0.55;
+  line-height: 1;
+}
+.c-empty-title {
+  font-size: var(--f-xl);
+  font-weight: var(--fw-sb);
+  color: var(--tx);
+  letter-spacing: -0.1px;
+}
+.c-empty-body {
+  font-size: var(--f-md);
+  color: var(--tx3);
+  max-width: 380px;
+  line-height: var(--lh);
+}
+.c-empty-action { margin-top: var(--sp3); }
+
+/* ===== SKELETON ============================================== */
+@keyframes c-skeleton-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+.c-skel {
+  background: var(--s2);
+  background-image: linear-gradient(90deg, var(--s2) 0px, var(--s3) 40px, var(--s2) 80px);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: c-skeleton-shimmer 1.3s linear infinite;
+  border-radius: 6px;
+  color: transparent;
+}
+.c-skel-line { height: 12px; margin-bottom: 8px; }
+.c-skel-line-lg { height: 16px; margin-bottom: 10px; }
+.c-skel-line-sm { height: 8px; margin-bottom: 6px; }
+.c-skel-title { height: 18px; width: 60%; margin-bottom: 12px; }
+.c-skel-circle { border-radius: 50%; width: 32px; height: 32px; }
+.c-skel-card {
+  padding: var(--sp4);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--s1);
+  margin-bottom: var(--sp3);
+}
+.c-skel-chart { height: 220px; border-radius: 10px; }
+.c-skel-kpi {
+  padding: var(--sp4);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--s1);
+}
+
+/* ===== CHIPS / TAGS ========================================== */
+.c-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: var(--f-xs);
+  font-weight: var(--fw-sb);
+  background: var(--s2);
+  color: var(--tx2);
+  border: 1px solid var(--bd);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.c-chip-primary { background: var(--acbg); color: var(--ac); border-color: var(--ac); }
+.c-chip-success { background: var(--gnbg); color: var(--gn); border-color: var(--gn); }
+.c-chip-warning { background: var(--orbg); color: var(--or); border-color: var(--or); }
+.c-chip-danger { background: var(--rdbg); color: var(--rd); border-color: var(--rd); }
+.c-chip-info { background: var(--blbg); color: var(--bl); border-color: var(--bl); }
+.c-chip-purple { background: var(--pubg); color: var(--pu); border-color: var(--pu); }
+.c-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
+.c-chip-sm { font-size: var(--f-xs); padding: 1px 6px; }
+.c-chip-lg { font-size: var(--f-sm); padding: 3px 10px; }
+
+/* Brand chips (per integration) */
+.c-chip-slack { background: var(--slackbg); color: var(--slack); border-color: var(--slack); }
+.c-chip-outlook { background: var(--outlookbg); color: var(--outlook); border-color: var(--outlook); }
+.c-chip-teams { background: var(--teamsbg); color: var(--teams); border-color: var(--teams); }
+.c-chip-jira { background: var(--jirabg); color: var(--jira); border-color: var(--jira); }
+.c-chip-confluence { background: var(--confluencebg); color: var(--confluence); border-color: var(--confluence); }
+
+/* ===== LAYOUT HELPERS ======================================== */
+.c-stack { display: flex; flex-direction: column; gap: var(--sp3); }
+.c-stack-sm { display: flex; flex-direction: column; gap: var(--sp2); }
+.c-stack-lg { display: flex; flex-direction: column; gap: var(--sp5); }
+.c-row { display: flex; align-items: center; gap: var(--sp3); }
+.c-row-sm { display: flex; align-items: center; gap: var(--sp2); }
+.c-flex-between { display: flex; align-items: center; justify-content: space-between; gap: var(--sp3); }
+.c-flex-center { display: flex; align-items: center; justify-content: center; }
+.c-flex-1 { flex: 1; min-width: 0; }
+.c-grid { display: grid; gap: var(--sp3); }
+.c-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp3); }
+.c-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp3); }
+.c-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp3); }
+.c-grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sp3); }
+.c-grid-kpi { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp3); }
+
+/* ===== KEYBOARD HINT ========================================= */
+.c-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  color: var(--tx3);
+  font-size: var(--f-xs);
+  font-weight: var(--fw-sb);
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  line-height: 1;
+}
+
+/* ===== PROGRESS ============================================== */
+.c-progress {
+  width: 100%;
+  height: 4px;
+  background: var(--s2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.c-progress-fill {
+  height: 100%;
+  background: var(--ac);
+  transition: width var(--dur) var(--ease);
+  border-radius: 2px;
+}
+@keyframes c-progress-indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+.c-progress-indeterminate .c-progress-fill {
+  width: 30%;
+  animation: c-progress-indeterminate 1.5s var(--ease) infinite;
+}
+
+/* ===== DIVIDER =============================================== */
+.c-divider { height: 1px; background: var(--bd); margin: var(--sp3) 0; width: 100%; }
+.c-divider-v { width: 1px; background: var(--bd); margin: 0 var(--sp3); align-self: stretch; }
+
+/* ===== SECTION HEADER (small-caps label) ===================== */
+.c-section-label {
+  font-size: var(--f-xs);
+  font-weight: var(--fw-b);
+  color: var(--tx3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: var(--sp2);
+}
+
+/* ===== PILL (toggle-style) =================================== */
+.c-pill-group {
+  display: inline-flex;
+  padding: 2px;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  gap: 2px;
+}
+.c-pill-group .c-pill {
+  padding: 5px 12px;
+  background: transparent;
+  border: none;
+  color: var(--tx3);
+  font-size: var(--f-md);
+  font-weight: var(--fw-sb);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background var(--dur-f), color var(--dur-f);
+}
+.c-pill-group .c-pill:hover { color: var(--tx); background: var(--s2); }
+.c-pill-group .c-pill.active { background: var(--ac); color: #fff; }
+
+/* ===== LIGHT THEME OVERRIDES ================================= */
+body.light .c-btn .c-kbd { background: rgba(0,0,0,0.1); }
+body.light .c-skel {
+  background-image: linear-gradient(90deg, var(--s2) 0px, #f0f2f5 40px, var(--s2) 80px);
+}
+body.light .c-chip-slack { background: rgba(224,30,90,.08); }
+body.light .c-chip-outlook { background: rgba(0,120,212,.08); }
+body.light .c-chip-teams { background: rgba(98,100,167,.08); }
+body.light .c-chip-jira { background: rgba(0,82,204,.08); }
+body.light .c-chip-confluence { background: rgba(35,128,251,.08); }

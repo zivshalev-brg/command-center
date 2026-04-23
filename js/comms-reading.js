@@ -63,96 +63,130 @@ function renderCommsReadingPane() {
       + '</div></div>';
   }
 
-  var html = '<div class="comms-reading">';
-  html += '<div class="comms-reading-scroll">';
-
-  // ── Thread header ──
   var isSlackThread = th.sources && th.sources.includes('slack');
   var sourceType = th.sourceType || '';
-  html += '<div class="comms-thread-header">';
 
-  // Slack conversation context bar (compact, clean)
-  if (isSlackThread && sourceType) {
-    var ctxLabels = { channel: 'Public Channel', 'private': 'Private Channel', group: 'Group DM', dm: 'Direct Message' };
-    var ctxPrefix = { channel: '# ', 'private': '\uD83D\uDD12 ', group: '', dm: '' };
-    var ctxName = '';
-    if (sourceType === 'channel' || sourceType === 'private') {
-      ctxName = th.slackChannelName || sourceType;
-    } else if (sourceType === 'group') {
-      var gNames = (th.people || []).filter(function(p) { return p !== 'Ziv Shalev' && p !== 'You'; });
-      ctxName = gNames.length ? gNames.map(function(n) { return n.split(' ')[0]; }).join(', ') : (th.slackChannelName || 'Group');
-    } else if (sourceType === 'dm') {
-      ctxName = (th.people && th.people.find(function(p) { return p !== 'Ziv Shalev' && p !== 'You'; })) || th.slackChannelName || 'Direct Message';
-    }
-    html += '<div class="slack-context-bar context-' + sourceType + '">';
-    html += '<span class="slack-ctx-name">' + (ctxPrefix[sourceType] || '') + encodeHtml(ctxName) + '</span>';
-    html += '<span class="slack-ctx-label">' + (ctxLabels[sourceType] || 'Slack') + '</span>';
-    html += '</div>';
-  }
+  var html = '<div class="comms-reading reading-v2">';
 
-  html += '<h2 class="thread-title">' + encodeHtml(th.subject) + '</h2>';
+  // ── [1] STICKY COMPACT HEADER ────────────────────────────────
+  html += '<div class="c-reading-head">';
 
-  // AI classification badges row (visible before opening)
-  if (th.aiCategory || th.aiPriority || (th.aiProjectTags && th.aiProjectTags.length)) {
-    html += '<div class="thread-ai-badges">';
-    if (th.aiPriority === 'critical') html += '<span class="ai-badge priority-critical">\u26A0 Critical</span>';
-    else if (th.aiPriority === 'high') html += '<span class="ai-badge priority-high">High Priority</span>';
-    if (th.aiCategory && th.aiCategory !== 'FYI') html += '<span class="ai-badge cat-badge cat-' + th.aiCategory.toLowerCase() + '">' + encodeHtml(th.aiCategory) + '</span>';
-    // Project tags — deduplicate against category name and marketing flag
-    if (th.aiProjectTags && th.aiProjectTags.length) {
-      var catLower = (th.aiCategory || '').toLowerCase();
-      var seen = {};
-      th.aiProjectTags.forEach(function(tag) {
-        var tagLower = tag.toLowerCase();
-        if (tagLower === catLower || tagLower === 'marketing' || seen[tagLower]) return;
-        seen[tagLower] = true;
-        html += '<span class="ai-badge project-badge">' + encodeHtml(tag) + '</span>';
-      });
-    }
-    if (th.aiIsMarketing && (th.aiCategory || '').toLowerCase() !== 'marketing') {
-      html += '<span class="ai-badge mkt-badge">Marketing</span>';
-    }
-    if (th.aiActionRequired) html += '<span class="ai-badge action-badge">\u2757 Action Required: ' + encodeHtml(th.aiActionType || 'review') + '</span>';
-    html += '</div>';
-  }
-
-  html += '<div class="thread-header-meta">';
-
-  // Source label in meta line
+  // Line 1: source badge + title + compact action buttons
+  html += '<div class="c-reading-head-row1">';
+  // Source mini-badge
   if (isSlackThread) {
-    html += '<span class="thread-src-label src-slack">Slack</span>';
-    html += '<span>\u00B7</span>';
+    var ctxPrefix = { channel: '#', 'private': '\uD83D\uDD12', group: '\uD83D\uDC65', dm: '\uD83D\uDCAC' };
+    var ctxName = '';
+    if (sourceType === 'channel' || sourceType === 'private') ctxName = th.slackChannelName || 'Slack';
+    else if (sourceType === 'group') {
+      var gNames = (th.people || []).filter(function(p) { return p !== 'Ziv Shalev' && p !== 'You'; });
+      ctxName = gNames.length ? gNames.map(function(n) { return n.split(' ')[0]; }).join(', ') : 'Group';
+    } else if (sourceType === 'dm') {
+      ctxName = (th.people && th.people.find(function(p) { return p !== 'Ziv Shalev' && p !== 'You'; })) || 'DM';
+    } else ctxName = 'Slack';
+    html += '<span class="c-src-tag src-slack" title="Slack">' + (ctxPrefix[sourceType] || '') + ' ' + encodeHtml(ctxName) + '</span>';
   } else {
-    html += '<span class="thread-src-label src-email">Email</span>';
-    html += '<span>\u00B7</span>';
+    html += '<span class="c-src-tag src-email" title="Email">\u2709 Email</span>';
   }
 
-  html += '<span>' + (th.threadCount || 1) + ' message' + ((th.threadCount || 1) !== 1 ? 's' : '') + '</span>';
-  html += '<span>\u00B7</span>';
+  // Title
+  html += '<h2 class="c-reading-title">' + encodeHtml(th.subject) + '</h2>';
 
-  // ── Participant chips ──
+  // Priority + action-required as first-class signals
+  if (th.aiPriority === 'critical') html += '<span class="c-chip c-chip-danger" style="flex-shrink:0">\u26A0 Critical</span>';
+  else if (th.aiPriority === 'high') html += '<span class="c-chip c-chip-warning" style="flex-shrink:0">High</span>';
+  if (th.aiActionRequired) html += '<span class="c-chip c-chip-primary" style="flex-shrink:0" title="' + encodeHtml(th.aiActionType || 'review') + '">\u2757 Action</span>';
+
+  // Action buttons row (labelled shortcuts)
+  html += '<div class="c-reading-actions">';
+
+  html += '<button class="c-rb" onclick="markThreadDone(\'' + id + '\')" title="Archive (E)" data-kbd="E">';
+  html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+  html += '</button>';
+
+  html += '<button class="c-rb" onclick="toggleSnoozePicker(\'' + id + '\')" title="Snooze (S)" data-kbd="S" style="position:relative">';
+  html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+  if (state.commsSnoozePickerOpen === id) {
+    html += '<div class="snooze-picker">';
+    html += '<div class="snooze-option" onclick="event.stopPropagation();snoozeThreadUntil(\'' + id + '\',\'3h\')">\u23F0 Later Today <span class="snooze-time">3 hours</span></div>';
+    html += '<div class="snooze-option" onclick="event.stopPropagation();snoozeThreadUntil(\'' + id + '\',\'tomorrow\')">\uD83C\uDF05 Tomorrow <span class="snooze-time">9:00 AM</span></div>';
+    html += '<div class="snooze-option" onclick="event.stopPropagation();snoozeThreadUntil(\'' + id + '\',\'nextweek\')">\uD83D\uDCC5 Next Week <span class="snooze-time">Mon 9 AM</span></div>';
+    html += '<div class="snooze-option" style="border-top:1px solid var(--bd);margin-top:4px;padding-top:8px" onclick="event.stopPropagation()">';
+    html += '<input type="date" style="background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:4px 8px;border-radius:4px;font-size:12px;width:100%" onchange="snoozeThreadUntil(\'' + id + '\',\'custom\',this.value)"/>';
+    html += '</div></div>';
+  }
+  html += '</button>';
+
+  var isUnread = th.unread;
+  html += '<button class="c-rb' + (isUnread ? ' active' : '') + '" onclick="toggleReadStatus(\'' + id + '\')" title="' + (isUnread ? 'Mark read' : 'Mark unread') + ' (U)" data-kbd="U">';
+  html += isUnread
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>';
+  html += '</button>';
+
+  html += '<button class="c-rb" onclick="openEmailComposer({mode:\'forward\',threadId:\'' + id + '\',messageId:\'' + (th.messages && th.messages.length ? encodeHtml(th.messages[th.messages.length-1].messageId || th.messages[th.messages.length-1].emailMessageId || th.messages[th.messages.length-1].graphId || '') : '') + '\'})" title="Forward (F)" data-kbd="F">';
+  html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></svg>';
+  html += '</button>';
+
+  var isPinned = state.commsPinned[id];
+  html += '<button class="c-rb' + (isPinned ? ' active' : '') + '" onclick="togglePin(\'' + id + '\')" title="Pin (P)" data-kbd="P">';
+  html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+  html += '</button>';
+
+  var nbSourceType = isSlackThread ? 'slack_thread' : 'email_thread';
+  html += saveToNotebookButton({
+    sourceType: nbSourceType,
+    ref: { threadId: id },
+    title: th.subject || '(no subject)',
+    summary: th.preview || ''
+  });
+
+  html += '</div>'; // end .c-reading-actions
+  html += '</div>'; // end .c-reading-head-row1
+
+  // Line 2: compact meta (participants + time + project tags)
+  html += '<div class="c-reading-head-row2">';
   var people = th.people || [];
   if (people.length > 0) {
     html += '<div class="participant-chips">';
-    var maxChips = 4;
+    var maxChips = 3;
     people.slice(0, maxChips).forEach(function(name) {
       var pi = getPersonInfo(name);
-      html += '<span class="participant-chip" title="' + encodeHtml(name) + (pi.role ? ' \u2014 ' + encodeHtml(pi.role) : '') + '" style="background:' + pi.colour + '22;color:' + pi.colour + '">'
-        + pi.initials + '</span>';
+      html += '<span class="participant-chip" title="' + encodeHtml(name) + (pi.role ? ' \u2014 ' + encodeHtml(pi.role) : '') + '" style="background:' + pi.colour + '22;color:' + pi.colour + '">' + pi.initials + '</span>';
     });
-    if (people.length > maxChips) {
-      html += '<span class="participant-chip participant-more">+' + (people.length - maxChips) + '</span>';
-    }
+    if (people.length > maxChips) html += '<span class="participant-chip participant-more">+' + (people.length - maxChips) + '</span>';
     html += '</div>';
-  } else {
-    html += '<span>0 participants</span>';
+  }
+  html += '<span class="c-reading-meta-sep">\u00B7</span>';
+  html += '<span class="c-reading-meta-txt">' + (th.threadCount || 1) + ' msg' + ((th.threadCount || 1) !== 1 ? 's' : '') + '</span>';
+  html += '<span class="c-reading-meta-sep">\u00B7</span>';
+  html += '<span class="c-reading-meta-txt">' + relativeTime(th.lastActivity) + '</span>';
+
+  // Category + project tags (subordinate)
+  if (th.aiCategory && th.aiCategory !== 'FYI') {
+    html += '<span class="c-reading-meta-sep">\u00B7</span>';
+    html += '<span class="c-chip c-chip-sm" style="flex-shrink:0">' + encodeHtml(th.aiCategory) + '</span>';
+  }
+  if (th.aiProjectTags && th.aiProjectTags.length) {
+    var catLower = (th.aiCategory || '').toLowerCase();
+    var seen = {};
+    th.aiProjectTags.slice(0, 3).forEach(function(tag) {
+      var tagLower = tag.toLowerCase();
+      if (tagLower === catLower || seen[tagLower]) return;
+      seen[tagLower] = true;
+      html += '<span class="c-chip c-chip-sm c-chip-primary" style="flex-shrink:0">' + encodeHtml(tag) + '</span>';
+    });
   }
 
-  html += '<span>\u00B7</span>';
-  html += '<span>' + relativeTime(th.lastActivity) + '</span>';
-  html += '</div>';
+  html += '</div>'; // end .c-reading-head-row2
+  html += '</div>'; // end .c-reading-head
 
-  // Action buttons: Archive, Snooze, Pin
+  // ── [2] SCROLLABLE MIDDLE: in-thread search + messages (primary) + collapsed AI below ──
+  html += '<div class="comms-reading-scroll">';
+
+  // LEGACY BLOCK (hidden) — preserved so any CSS/JS referencing these classes still works.
+  // Real content renders in the new reading-v2 structure above/below.
+  html += '<div class="comms-thread-header" style="display:none;position:absolute;pointer-events:none">';
   html += '<div class="thread-actions">';
 
   // Archive
@@ -203,7 +237,7 @@ function renderCommsReadingPane() {
   });
 
   html += '</div>'; // end thread-actions
-  html += '</div>'; // end comms-thread-header
+  html += '</div>'; // end comms-thread-header (hidden legacy block)
 
   // ── In-thread search bar ──
   html += '<div class="thread-search-bar">';
@@ -216,10 +250,7 @@ function renderCommsReadingPane() {
   }
   html += '</div>';
 
-  // ── AI Summary card ──
-  html += renderAISummaryCard(id, th);
-
-  // ── Messages ──
+  // ── Messages (PRIMARY — rendered first, above AI summary) ──
   if (th.messages && th.messages.length) {
     html += '<div class="thread-messages">';
     var msgs = th.messages;
@@ -333,6 +364,9 @@ function renderCommsReadingPane() {
     html += '</div>';
   }
 
+  // ── AI Summary card (rendered BELOW messages, collapsed by default) ──
+  html += renderAISummaryCard(id, th);
+
   html += '</div>'; // end comms-reading-scroll
 
   // ── Suggested reply chips ──
@@ -357,6 +391,22 @@ function renderCommsReadingPane() {
 // 2. renderAISummaryCard — Rich structured AI summary (Phase 6)
 // ===============================================================
 
+function _aiSummaryCollapsedPref() {
+  try {
+    var v = localStorage.getItem('ai_summary_collapsed');
+    if (v == null) return true; // default: collapsed
+    return v === '1' || v === 'true';
+  } catch { return true; }
+}
+
+function toggleAISummaryCollapsed() {
+  try {
+    var next = !_aiSummaryCollapsedPref();
+    localStorage.setItem('ai_summary_collapsed', next ? '1' : '0');
+  } catch {}
+  renderCommsMain();
+}
+
 function renderAISummaryCard(id, th) {
   // Auto-fetch if not cached
   if (!state.threadSummaries[id]) {
@@ -367,18 +417,34 @@ function renderAISummaryCard(id, th) {
   if (!s || s.loading) {
     return '<div class="ai-summary-card loading">'
       + '<div class="ai-summary-h">\uD83E\uDD16 AI Summary <span class="ai-loading">generating\u2026</span></div>'
-      + '<div class="skel" style="height:40px;border-radius:6px"></div>'
+      + '<div class="skel" style="height:30px;border-radius:6px"></div>'
       + '</div>';
   }
   if (s.error) return '';
 
-  var html = '<div class="ai-summary-card">';
+  var collapsed = _aiSummaryCollapsedPref();
+  var teaser = (s.summary || '').slice(0, 160);
+  if ((s.summary || '').length > 160) teaser += '\u2026';
+
+  // Collapsed view — one-liner with expand button
+  if (collapsed) {
+    return '<div class="ai-summary-card ai-summary-collapsed">' +
+      '<button class="ai-summary-expand" onclick="toggleAISummaryCollapsed()" title="Expand AI insights">' +
+        '<span class="ai-summary-icon">\uD83E\uDD16</span>' +
+        '<span class="ai-summary-teaser">' + encodeHtml(teaser || 'AI summary ready') + '</span>' +
+        '<span class="ai-summary-chev">\u25B8 Expand</span>' +
+      '</button>' +
+    '</div>';
+  }
+
+  var html = '<div class="ai-summary-card ai-summary-expanded">';
   html += '<div class="ai-summary-h">';
   html += '<span>\uD83E\uDD16</span> AI Summary';
   if (s.source === 'ai-cached') html += '<span class="ai-cached-badge">cached</span>';
   html += '<span style="flex:1"></span>';
   html += '<button class="btn-refresh-summary" onclick="delete state.threadSummaries[\'' + id + '\'];fetchThreadSummary(\'' + id + '\')" title="Regenerate summary">\uD83D\uDD04</button>';
   html += '<button class="btn-generate-draft" onclick="requestAIDraft(\'' + id + '\')">\u2728 Generate Draft</button>';
+  html += '<button class="btn-refresh-summary" onclick="toggleAISummaryCollapsed()" title="Collapse" style="margin-left:4px">\u25BE</button>';
   html += '</div>';
 
   // Summary text
@@ -464,17 +530,7 @@ function renderAISummaryCard(id, th) {
     html += '<div class="ai-suggested">\uD83D\uDCA1 ' + encodeHtml(s.suggestedAction) + '</div>';
   }
 
-  // Quick reply chips from AI
-  if (s.quickReplies && s.quickReplies.length) {
-    html += '<div class="ai-quick-replies">';
-    html += '<div class="ai-quick-label">Suggested replies</div>';
-    s.quickReplies.forEach(function(qr) {
-      var escaped = qr.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-      html += '<button class="reply-chip" onclick="var ta=document.getElementById(\'commsQuickReply\');if(ta){ta.value=\'' + escaped + '\';ta.focus();ta.style.height=\'auto\';ta.style.height=ta.scrollHeight+\'px\'}">';
-      html += encodeHtml(qr) + '</button>';
-    });
-    html += '</div>';
-  }
+  // Quick reply chips — moved to reply bar suggestions, dedup'd away from here.
 
   // ── Inline draft display (if one exists) ──
   var draft = (state.commsDrafts && state.commsDrafts[id]) || null;

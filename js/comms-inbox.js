@@ -146,13 +146,19 @@ function buildInboxRow(id, th) {
     avatarColor = pi.colour || 'var(--tx3)';
   }
 
-  var h = '<div class="comms-thread-row' + selected + unread + '" onclick="selectThread(\'' + id + '\')">';
+  var actionReq = !!th.aiActionRequired;
+  var priority = th.aiPriority || '';
+  var h = '<div class="comms-thread-row' + selected + unread +
+    (actionReq ? ' row-action-req' : '') +
+    (priority === 'critical' ? ' row-critical' : priority === 'high' ? ' row-high' : '') +
+    '" onclick="selectThread(\'' + id + '\')">';
 
-  // Col 1: Urgency dot (AI priority overrides unread dot when available)
+  // Col 1: Urgency dot + optional mini action-required marker (paired visual)
   h += '<div class="thread-dot-col">';
-  if (th.aiPriority === 'critical') h += '<div class="urgency-dot critical"></div>';
-  else if (th.aiPriority === 'high') h += '<div class="urgency-dot high"></div>';
+  if (priority === 'critical') h += '<div class="urgency-dot critical" title="Critical"></div>';
+  else if (priority === 'high') h += '<div class="urgency-dot high" title="High priority"></div>';
   else if (th.unread) h += '<div class="unread-dot"></div>';
+  if (actionReq) h += '<div class="action-req-mark" title="Action required">!</div>';
   h += '</div>';
 
   // Col 2: Avatar (always initials or # — no SVGs)
@@ -163,66 +169,52 @@ function buildInboxRow(id, th) {
   // Col 3: Content
   h += '<div class="thread-content">';
 
-  // Line 1: Display name + source label + time
+  // Line 1 — DE-CLUTTERED: sender + tiny source + pin + time only
   h += '<div class="thread-line1">';
   h += '<span class="thread-sender">' + encodeHtml(displayName) + '</span>';
-
-  // Tiny source label (no SVGs — just text)
   var srcLabel = isSlack ? 'Slack' : 'Email';
   h += '<span class="thread-src-label src-' + (isSlack ? 'slack' : 'email') + '">' + srcLabel + '</span>';
-
-  // AI category pill
-  if (th.aiCategory && th.aiCategory !== 'FYI') {
-    h += '<span class="ai-tag cat-' + th.aiCategory.toLowerCase() + '">' + encodeHtml(th.aiCategory) + '</span>';
-  }
-  // Project tag pills (max 2, deduplicated against category)
-  if (th.aiProjectTags && th.aiProjectTags.length) {
-    var catL = (th.aiCategory || '').toLowerCase();
-    var seenTags = {};
-    th.aiProjectTags.slice(0, 3).forEach(function(tag) {
-      var tl = tag.toLowerCase();
-      if (tl === catL || tl === 'marketing' || seenTags[tl]) return;
-      seenTags[tl] = true;
-      h += '<span class="ai-tag project-tag">' + encodeHtml(tag) + '</span>';
-    });
-  }
-  // Marketing indicator (only if not already the category)
-  if (th.aiIsMarketing && (th.aiCategory || '').toLowerCase() !== 'marketing') h += '<span class="ai-tag mkt-tag">MKT</span>';
-
   if (state.commsPinned[id]) h += '<span class="thread-pin" title="Pinned">\u2605</span>';
   h += '<span class="thread-time">' + relativeTime(th.lastActivity) + '</span>';
   h += '</div>';
 
-  // Line 2: Subject — for Slack channels show last sender + message, for email show subject
+  // Line 2: Subject
   var subject = th.subject || 'No subject';
   if (isSlack && (sourceType === 'channel' || sourceType === 'private') && th.lastSender) {
-    // Channel: show "LastSender: message preview" as subject line
     var chanPreview = (th.lastSender || '') + ': ' + (th.preview || '').substring(0, 60);
     h += '<div class="thread-subject">' + encodeHtml(chanPreview) + '</div>';
   } else {
     h += '<div class="thread-subject">' + encodeHtml(subject) + '</div>';
   }
 
-  // Line 3: Preview (prefer AI summary) + meta counts
+  // Line 3: AI preview + all tags + counts (consolidated meta)
   h += '<div class="thread-preview">';
   if (isSlack && (sourceType === 'channel' || sourceType === 'private')) {
     if (th.threadCount > 1) h += '<span class="thread-meta-count">' + th.threadCount + ' msgs</span>';
     if (th.hasThreads || th.totalThreadReplies > 0) h += '<span class="thread-meta-count">\uD83D\uDDE8 threads</span>';
   } else {
-    // Prefer AI summary over raw preview
     var previewText = th.aiFullSummary || th.aiSummary || th.preview || '';
-    if (th.aiFullSummary || th.aiSummary) {
-      h += '<span class="ai-preview-badge">\u2728</span>';
-    }
-    h += encodeHtml(previewText.substring(0, 120));
+    if (th.aiFullSummary || th.aiSummary) h += '<span class="ai-preview-badge">\u2728</span>';
+    h += encodeHtml(previewText.substring(0, 110));
   }
-  if (th.people && th.people.length > 1) {
-    h += ' <span class="thread-meta-count">' + th.people.length + ' people</span>';
+  // Tags moved from line 1 → line 3 (subordinate visual weight)
+  if (th.aiCategory && th.aiCategory !== 'FYI') {
+    h += '<span class="ai-tag cat-' + th.aiCategory.toLowerCase() + '">' + encodeHtml(th.aiCategory) + '</span>';
   }
-  if (!isSlack && th.threadCount > 1) h += ' <span class="thread-meta-count">' + th.threadCount + ' msgs</span>';
-  if (th.attachmentCount) h += ' <span class="thread-meta-count">\uD83D\uDCCE ' + th.attachmentCount + '</span>';
-  // Action required indicator
-  if (th.aiActionRequired) h += ' <span class="thread-meta-count action-required">Action</span>';
+  if (th.aiProjectTags && th.aiProjectTags.length) {
+    var catL = (th.aiCategory || '').toLowerCase();
+    var seenTags = {};
+    th.aiProjectTags.slice(0, 2).forEach(function(tag) {
+      var tl = tag.toLowerCase();
+      if (tl === catL || tl === 'marketing' || seenTags[tl]) return;
+      seenTags[tl] = true;
+      h += '<span class="ai-tag project-tag">' + encodeHtml(tag) + '</span>';
+    });
+  }
+  if (th.aiIsMarketing && (th.aiCategory || '').toLowerCase() !== 'marketing') h += '<span class="ai-tag mkt-tag">MKT</span>';
+  if (th.people && th.people.length > 1) h += '<span class="thread-meta-count">' + th.people.length + ' people</span>';
+  if (!isSlack && th.threadCount > 1) h += '<span class="thread-meta-count">' + th.threadCount + ' msgs</span>';
+  if (th.attachmentCount) h += '<span class="thread-meta-count">\uD83D\uDCCE ' + th.attachmentCount + '</span>';
   h += '</div>';
 
   h += '</div>'; // end thread-content
