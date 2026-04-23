@@ -173,6 +173,7 @@ a { color: var(--ac); text-decoration: none; } a:hover { text-decoration: underl
 
 /* ===== RIGHT PANEL (slide-in overlay) ===== */
 .panel-overlay { position:fixed; top:var(--top-h); right:0; bottom:0; width:var(--panel-w); background:var(--s1); border-left:1px solid var(--bd); z-index:var(--z-panel); transform:translateX(100%); transition: transform var(--dur-s) var(--ease); box-shadow: var(--elev3); display:flex; flex-direction:column; }
+.panel-overlay.panel-jira { width:min(620px, 50vw); top:0; }
 .panel-overlay.open { transform:translateX(0); }
 .panel-header { display:flex; align-items:center; justify-content:space-between; padding:var(--sp3) var(--sp4); border-bottom:1px solid var(--bd); }
 .panel-header h3 { font-size:var(--f-lg); font-weight:var(--fw-sb); }
@@ -220,6 +221,60 @@ a { color: var(--ac); text-decoration: none; } a:hover { text-decoration: underl
 .modal-b input:focus, .modal-b textarea:focus, .modal-b select:focus { border-color:var(--ac); }
 .modal-b textarea { min-height:160px; resize:vertical; line-height:1.5; }
 .modal-b select option { background:var(--s2); color:var(--tx); }
+/* Source provenance badges (project origin) + archived treatments */
+.source-badge {
+  display:inline-flex; align-items:center; gap:3px; padding:1px 7px;
+  border-radius:8px; font-size:9px; font-weight:700; letter-spacing:0.4px;
+  text-transform:uppercase; flex-shrink:0;
+}
+.source-badge-manual { background:var(--s2); color:var(--tx3); border:1px solid var(--bd); }
+.source-badge-auto { background:rgba(66,148,255,0.15); color:var(--ac); border:1px solid var(--ac); }
+.source-badge-seed { background:var(--s2); color:var(--tx3); opacity:0.55; }
+.proj-card-archived { opacity:0.55; }
+.proj-card-archived:hover { opacity:0.85; }
+.archived-badge {
+  display:inline-flex; align-items:center; gap:3px; padding:1px 7px;
+  border-radius:8px; font-size:9px; font-weight:700; letter-spacing:0.4px;
+  text-transform:uppercase; background:var(--tx3); color:var(--s1);
+}
+.projects-view-toggle {
+  display:inline-flex; border:1px solid var(--bd); border-radius:8px;
+  background:var(--s1); padding:3px; gap:2px; margin-bottom:10px;
+}
+.projects-view-toggle button {
+  padding:5px 14px; background:transparent; border:none; color:var(--tx3);
+  cursor:pointer; font-size:12px; font-weight:600; border-radius:5px;
+  transition: background var(--dur-f), color var(--dur-f);
+}
+.projects-view-toggle button.active {
+  background:var(--ac); color:#fff;
+}
+.projects-view-toggle button:hover:not(.active) { color:var(--tx); background:var(--s2); }
+
+/* Modal form fields — shared by modal-helpers.js and projects-create.js */
+.modal-field { margin-bottom: var(--sp3); }
+.modal-field label { font-size:11px; color:var(--tx3); font-weight:600; text-transform:uppercase; letter-spacing:0.3px; display:block; margin-bottom:4px; margin-top:0; }
+.modal-field input, .modal-field textarea, .modal-field select {
+  width:100%; background:var(--s2); border:1px solid var(--bd); color:var(--tx);
+  font-family:inherit; font-size:var(--f-md); padding:var(--sp2) 10px;
+  border-radius:6px; outline:none; transition: border-color var(--dur-f);
+}
+.modal-field input:focus, .modal-field textarea:focus, .modal-field select:focus { border-color:var(--ac); }
+.modal-field textarea { min-height:60px; resize:vertical; line-height:1.5; }
+.modal-field select option { background:var(--s2); color:var(--tx); }
+.tag-chip-input {
+  display:flex; flex-wrap:wrap; gap:4px; padding:5px 6px; background:var(--s2);
+  border:1px solid var(--bd); border-radius:6px; min-height:36px; align-items:center;
+}
+.tag-chip-input input { flex:1; min-width:100px; border:none !important; background:transparent; padding:3px 4px; font-size:var(--f-md); }
+.tag-chip-input input:focus { outline:none; border:none !important; }
+.tag-chip {
+  display:inline-flex; align-items:center; gap:4px; padding:2px 8px;
+  background:var(--s3); color:var(--tx); border-radius:10px; font-size:11px; font-weight:500;
+}
+.tag-chip-remove { cursor:pointer; color:var(--tx3); font-size:14px; line-height:1; padding-left:2px; }
+.tag-chip-remove:hover { color:var(--rd); }
+
 .modal-tabs { display:flex; border-bottom:1px solid var(--bd); margin:-20px -20px 14px; padding:0 var(--sp4); }
 .modal-tab { padding:10px var(--sp4); font-size:var(--f-md); font-weight:var(--fw-sb); color:var(--tx3); cursor:pointer; border-bottom:2px solid transparent; transition: all var(--dur-f); }
 .modal-tab:hover { color:var(--tx); } .modal-tab.active { color:var(--ac); border-bottom-color:var(--ac); }

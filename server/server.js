@@ -25,6 +25,10 @@ const handleCalendar = require('./routes/calendar');
 const handleStatus = require('./routes/status');
 const { handleJira, handleConfluence } = require('./routes/jira');
 const handleProjectsEnriched = require('./routes/projects');
+const handleProjectsCrud = require('./routes/projects-crud');
+const handleProjectsDaily = require('./routes/projects-daily');
+const handleProjectsCandidates = require('./routes/projects-candidates');
+const handleIntegrationsHealth = require('./routes/integrations-health');
 const { handleSend, handleReact, handleUpload } = require('./routes/slack');
 const { buildAuthUrl, exchangeCodeForTokens } = require('./lib/outlook-api');
 const tokenStore = require('./lib/ms-token-store');
@@ -217,8 +221,12 @@ async function handleAPI(req, res) {
   if (parts[0] === 'people') return handlePeople(req, res, parts, url, ctx);
   if (parts[0] === 'powerbi') return handlePowerBI(req, res, parts, url, ctx);
   if (parts[0] === 'pbi') return handlePowerBILive(req, res, parts, url, ctx);
+  if (parts[0] === 'projects-daily') return handleProjectsDaily(req, res, parts, url, ctx);
+  if (parts[0] === 'projects-candidates') return handleProjectsCandidates(req, res, parts, url, ctx);
+  if (parts[0] === 'integrations' && parts[1] === 'health') return handleIntegrationsHealth(req, res, parts, url, ctx);
   if (parts[0] === 'projects' && parts[1] === 'intelligence') return handleProjectIntelligence(req, res, parts, url, ctx);
   if (parts[0] === 'projects' && parts[1] === 'enriched') return handleProjectsEnriched(req, res, parts, url, ctx);
+  if (parts[0] === 'projects') return handleProjectsCrud(req, res, parts, url, ctx);
   if (parts[0] === 'feedback') return handleFeedback(req, res, parts, url, ctx);
   if (parts[0] === 'genie') return handleGenie(req, res, parts.slice(1), url, ctx);
   if (parts[0] === 'databricks') return handleDatabricks(req, res, parts.slice(1), url, ctx);
@@ -482,6 +490,32 @@ server.listen(PORT, () => {
     const { getDb } = require('./lib/db');
     seedRoasters(getDb());
   } catch (e) { console.error('[CIBE] Roaster seed failed:', e.message); }
+
+  // ─── Seed Projects (first-boot from static snapshot) ────
+  try {
+    const { seedOnce } = require('./lib/project-seed');
+    const result = seedOnce();
+    if (result.seeded) console.log(`[Projects] Seeded ${result.count} projects from snapshot`);
+  } catch (e) { console.error('[Projects] Seed failed:', e.message); }
+
+  // ─── Start Jira Refresh Scheduler ───────────────────────
+  try {
+    const { startJiraRefreshScheduler } = require('./lib/jira-refresh');
+    startJiraRefreshScheduler(ctx, 30);
+    console.log('[Jira] Refresh scheduler started (30 min interval)');
+  } catch (e) { console.error('[Jira] Refresh scheduler start failed:', e.message); }
+
+  // ─── Start Project Source Ingestor ──────────────────────
+  try {
+    const { startScheduler } = require('./lib/project-source-ingestor');
+    startScheduler(ctx, { intervalMs: 15 * 60 * 1000 });
+  } catch (e) { console.error('[ProjectIngest] Start failed:', e.message); }
+
+  // ─── Start Project Daily Synthesis Scheduler ────────────
+  try {
+    const { startProjectScheduler } = require('./lib/project-scheduler');
+    startProjectScheduler(ctx, { synthesisHour: 7, synthesisMinute: 0 });
+  } catch (e) { console.error('[ProjectSynth] Start failed:', e.message); }
 
   // ─── Start CIBE Scrape Scheduler ───────────────────────
   try {

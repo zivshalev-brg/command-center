@@ -137,6 +137,11 @@
 <script src="js/cal-detail.js"></script>
 <script src="js/cal-create.js"></script>
 <script src="js/mod-projects.js"></script>
+<script src="js/projects-api.js"></script>
+<script src="js/projects-create.js"></script>
+<script src="js/projects-detail.js"></script>
+<script src="js/projects-grid.js"></script>
+<script src="js/projects-discover.js"></script>
 <script src="js/mod-people.js"></script>
 <script src="js/charts.js"></script>
 <script src="js/metrics-query.js"></script>
@@ -147,6 +152,7 @@
 <script src="js/notebook-picker.js"></script>
 <script src="js/notebook-capture-button.js"></script>
 <script src="js/modal.js"></script>
+<script src="js/modal-helpers.js"></script>
 <script src="js/actions.js"></script>
 <script src="js/palette.js"></script>
 <script src="js/shortcuts.js"></script>
@@ -178,7 +184,13 @@ function toggleTheme() {
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('dateLabel').textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
 })();
-loadPersistedStatuses().then(() => renderAll());
+loadPersistedStatuses().then(() => {
+  // Load DB-backed projects (falls back to static DATA.projects if offline)
+  if (typeof loadProjectsFromDb === 'function') {
+    loadProjectsFromDb().then(() => { if (typeof loadProjectsOverview === 'function') loadProjectsOverview(); renderAll(); });
+  }
+  renderAll();
+});
 </script>
 </body>
 </html>

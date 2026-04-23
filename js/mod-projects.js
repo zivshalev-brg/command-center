@@ -156,7 +156,11 @@ function _pSentimentDot(s) {
 function renderProjectsSidebar() {
   var sb = $('sidebar');
   var html = '<div class="sb-section">';
-  html += '<div class="sb-section-title">Workstreams</div>';
+  html += '<div class="sb-section-title" style="display:flex;align-items:center;justify-content:space-between;padding-right:4px">' +
+    '<span>Workstreams</span>' +
+    '<button onclick="openCreateProjectModal()" title="New project (Ctrl+Shift+P)" ' +
+    'style="padding:2px 8px;background:var(--ac);color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:10px;font-weight:700">+ New</button>' +
+  '</div>';
 
   // Sort by activity if intel available
   var projectIds = Object.keys(DATA.projects);
@@ -762,6 +766,12 @@ async function openJiraDetail(issueKey) {
   state._jiraDetailKey = issueKey;
   renderAll();
 
+  // Escape-to-close (one-shot, removed on close)
+  if (!state._jiraEscHandler) {
+    state._jiraEscHandler = function(e) { if (e.key === 'Escape') closeJiraDetail(); };
+    document.addEventListener('keydown', state._jiraEscHandler);
+  }
+
   if (_jiraDetailCache[issueKey]) return;
   _jiraDetailLoading[issueKey] = true;
   try {
@@ -778,6 +788,10 @@ async function openJiraDetail(issueKey) {
 
 function closeJiraDetail() {
   state._jiraDetailKey = null;
+  if (state._jiraEscHandler) {
+    document.removeEventListener('keydown', state._jiraEscHandler);
+    state._jiraEscHandler = null;
+  }
   renderAll();
 }
 
@@ -787,33 +801,42 @@ function _renderJiraDetailPanel() {
   var d = _jiraDetailCache[key];
   var loading = _jiraDetailLoading[key];
 
-  var html = '<div style="position:fixed;top:0;right:0;width:55%;height:100vh;background:var(--bg);border-left:2px solid var(--bd);z-index:999;overflow-y:auto;box-shadow:-4px 0 20px rgba(0,0,0,0.3);padding:20px">';
+  // Uplifted: uses .panel-overlay / .panel-header / .panel-body for slide-in aesthetic
+  var html = '<div class="panel-overlay open panel-jira">';
 
-  // Close button
-  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">';
-  html += '<span style="font-size:10px;color:var(--tx3)">' + _pEnc(key) + '</span>';
-  html += '<button class="btn btn-sm" onclick="closeJiraDetail()" style="padding:4px 10px">Close</button>';
+  // Panel header
+  html += '<div class="panel-header">';
+  html += '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">';
+  html += '<span style="font-size:10px;color:var(--tx3);font-weight:700;letter-spacing:0.5px">JIRA · ' + _pEnc(key) + '</span>';
+  if (d && d.url) html += '<a href="' + _pEnc(d.url) + '" target="_blank" style="font-size:10px;color:var(--ac);text-decoration:none">Open \u2197</a>';
+  html += '</div>';
+  html += '<button class="panel-close" onclick="closeJiraDetail()" title="Close (Esc)">\u00D7</button>';
   html += '</div>';
 
+  // Panel body wrapper
+  html += '<div class="panel-body">';
+
   if (loading && !d) {
-    html += '<div style="text-align:center;padding:40px"><div class="ca-spinner" style="width:24px;height:24px;margin:0 auto 12px"></div>Loading ticket...</div>';
-    html += '</div>';
+    html += '<div style="text-align:center;padding:60px"><div class="ca-spinner" style="width:24px;height:24px;margin:0 auto 12px"></div><div style="color:var(--tx3);font-size:12px">Loading ticket...</div></div>';
+    html += '</div></div>';
     return html;
   }
-  if (!d) { html += '</div>'; return html; }
+  if (!d) { html += '</div></div>'; return html; }
 
-  // ── Header ──
+  // ── Hero card (matches uplifted project detail aesthetic) ──
   var sc = d.statusCategory === 'done' ? 'gn' : d.statusCategory === 'indeterminate' ? 'bl' : 'tx3';
   var pc = d.priority === 'Highest' ? 'rd' : d.priority === 'High' ? 'or' : 'tx3';
-  html += '<h2 style="margin:0 0 8px;font-size:18px;line-height:1.3">' + _pEnc(d.summary) + '</h2>';
-  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">';
-  html += '<span class="tag" style="color:var(--' + sc + ')">' + _pEnc(d.status) + '</span>';
-  html += '<span class="tag" style="color:var(--' + pc + ')">' + _pEnc(d.priority) + '</span>';
-  html += '<span class="tag">' + _pEnc(d.type) + '</span>';
-  html += '<span class="tag">' + _pEnc(d.project) + '</span>';
-  if (d.flagged) html += '<span class="tag crit">Flagged</span>';
-  if (d.storyPoints) html += '<span class="tag" style="background:var(--pu)22;color:var(--pu)">' + d.storyPoints + ' SP</span>';
-  html += '<a href="' + _pEnc(d.url) + '" target="_blank" style="font-size:10px;color:var(--ac);margin-left:auto">Open in Jira</a>';
+  var heroBorder = d.statusCategory === 'done' ? 'var(--gn)' : pc === 'rd' ? 'var(--rd)' : pc === 'or' ? 'var(--or)' : 'var(--ac)';
+  html += '<div style="background:var(--s1);border-radius:10px;padding:16px 18px;margin-bottom:14px;border-left:4px solid ' + heroBorder + '">';
+  html += '<h2 style="margin:0 0 10px;font-size:18px;line-height:1.35">' + _pEnc(d.summary) + '</h2>';
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+  html += '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--s2);color:var(--' + sc + ')">' + _pEnc(d.status) + '</span>';
+  html += '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--s2);color:var(--' + pc + ')">' + _pEnc(d.priority) + '</span>';
+  html += '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--s2);color:var(--tx3)">' + _pEnc(d.type) + '</span>';
+  html += '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--s2);color:var(--tx3)">' + _pEnc(d.project) + '</span>';
+  if (d.flagged) html += '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--rd);color:#fff">Flagged</span>';
+  if (d.storyPoints) html += '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--pu);color:#fff">' + d.storyPoints + ' SP</span>';
+  html += '</div>';
   html += '</div>';
 
   // ── Meta grid ──
@@ -940,7 +963,8 @@ function _renderJiraDetailPanel() {
     html += '</div></div>';
   }
 
-  html += '</div>';
+  html += '</div>'; // close .panel-body
+  html += '</div>'; // close .panel-overlay
   return html;
 }
 

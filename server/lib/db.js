@@ -676,6 +676,155 @@ function initSchema() {
   try {
     _db.exec(`ALTER TABLE news_ai_cache ADD COLUMN sentiment_score REAL`);
   } catch { /* column already exists */ }
+
+  // ═══ Projects: first-class project management tables ═══════════
+  _db.exec(`
+    CREATE TABLE IF NOT EXISTS projects (
+      id              TEXT PRIMARY KEY,
+      title           TEXT NOT NULL,
+      status          TEXT NOT NULL DEFAULT 'active',
+      rag             TEXT DEFAULT 'green',
+      priority        INTEGER DEFAULT 50,
+      owner_id        TEXT,
+      team            TEXT,
+      colour          TEXT DEFAULT 'var(--ac)',
+      description     TEXT,
+      start_date      TEXT,
+      target_date     TEXT,
+      progress        INTEGER DEFAULT 0,
+      classifier_tags TEXT,
+      aliases         TEXT,
+      jira_jql        TEXT,
+      jira_epic_key   TEXT,
+      confluence_space TEXT,
+      kb_path         TEXT,
+      strategy_correlation_ids TEXT,
+      metric_keys     TEXT,
+      news_keywords   TEXT,
+      people_ids      TEXT,
+      source          TEXT DEFAULT 'manual',
+      auto_discovery_confidence REAL,
+      archived_at     TEXT,
+      created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
+    CREATE INDEX IF NOT EXISTS idx_projects_owner ON projects(owner_id);
+    CREATE INDEX IF NOT EXISTS idx_projects_updated ON projects(updated_at DESC);
+
+    CREATE TABLE IF NOT EXISTS project_milestones (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id  TEXT NOT NULL,
+      title       TEXT NOT NULL,
+      state       TEXT DEFAULT 'upcoming',
+      due_date    TEXT,
+      completed_at TEXT,
+      sort_order  INTEGER DEFAULT 0,
+      source_url  TEXT,
+      created_at  TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_milestones_project ON project_milestones(project_id);
+    CREATE INDEX IF NOT EXISTS idx_milestones_due ON project_milestones(due_date);
+
+    CREATE TABLE IF NOT EXISTS project_actions (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id  TEXT NOT NULL,
+      text        TEXT NOT NULL,
+      owner_id    TEXT,
+      due_date    TEXT,
+      status      TEXT DEFAULT 'open',
+      priority    TEXT DEFAULT 'normal',
+      origin      TEXT DEFAULT 'manual',
+      origin_ref  TEXT,
+      created_at  TEXT DEFAULT (datetime('now')),
+      completed_at TEXT,
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_actions_project_status ON project_actions(project_id, status);
+    CREATE INDEX IF NOT EXISTS idx_actions_due ON project_actions(due_date);
+
+    CREATE TABLE IF NOT EXISTS project_blockers (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id  TEXT NOT NULL,
+      text        TEXT NOT NULL,
+      owner_id    TEXT,
+      severity    TEXT DEFAULT 'medium',
+      opened_at   TEXT DEFAULT (datetime('now')),
+      resolved_at TEXT,
+      origin      TEXT DEFAULT 'manual',
+      origin_ref  TEXT,
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_blockers_project_open ON project_blockers(project_id, resolved_at);
+
+    CREATE TABLE IF NOT EXISTS project_updates (
+      id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id           TEXT NOT NULL,
+      date                 TEXT NOT NULL,
+      summary              TEXT,
+      what_moved           TEXT,
+      decisions            TEXT,
+      new_blockers         TEXT,
+      milestones_touched   TEXT,
+      recommended_actions  TEXT,
+      health_score         REAL,
+      rag_suggested        TEXT,
+      momentum_delta       REAL,
+      source_artifacts     TEXT,
+      sources_counts       TEXT,
+      model_used           TEXT,
+      token_cost           INTEGER,
+      generated_at         TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+      UNIQUE(project_id, date)
+    );
+    CREATE INDEX IF NOT EXISTS idx_updates_project_date ON project_updates(project_id, date DESC);
+
+    CREATE TABLE IF NOT EXISTS project_sources (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id      TEXT NOT NULL,
+      source_type     TEXT NOT NULL,
+      source_id       TEXT NOT NULL,
+      title           TEXT,
+      url             TEXT,
+      first_linked_at TEXT DEFAULT (datetime('now')),
+      last_seen_at    TEXT DEFAULT (datetime('now')),
+      relevance       REAL DEFAULT 0.5,
+      link_method     TEXT DEFAULT 'keyword',
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+      UNIQUE(project_id, source_type, source_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_sources_project ON project_sources(project_id);
+    CREATE INDEX IF NOT EXISTS idx_sources_last_seen ON project_sources(last_seen_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_sources_type ON project_sources(source_type);
+
+    CREATE TABLE IF NOT EXISTS project_candidates (
+      id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+      suggested_title       TEXT NOT NULL,
+      suggested_description TEXT,
+      suggested_tags        TEXT,
+      suggested_people      TEXT,
+      cluster_signals       TEXT,
+      confidence            REAL DEFAULT 0.5,
+      status                TEXT DEFAULT 'pending',
+      merged_into           TEXT,
+      created_at            TEXT DEFAULT (datetime('now')),
+      decided_at            TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_candidates_status ON project_candidates(status);
+    CREATE INDEX IF NOT EXISTS idx_candidates_created ON project_candidates(created_at DESC);
+  `);
+
+  // Backfill tracking columns on projects (idempotent ALTERs)
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN backfill_state TEXT DEFAULT 'idle'`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN backfill_started_at TEXT`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN backfill_completed_at TEXT`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN backfill_counts TEXT`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN backfill_errors TEXT`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN brief TEXT`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN context_profile TEXT`); } catch { /* exists */ }
+  try { _db.exec(`ALTER TABLE projects ADD COLUMN brief_generated_at TEXT`); } catch { /* exists */ }
 }
 
 /** One-time migration from old status-store.json → SQLite */

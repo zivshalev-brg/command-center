@@ -508,5 +508,6 @@ module.exports = {
   getRecentActivity, getBlockers, getIssueDetail,
   getBoards, getActiveSprints, getSprintIssues, getClosedSprints,
   getFullProjectDashboard,
+  _getAllActiveSprints, _getIssueCount,
   CF, RICH_FIELDS, formatIssueRich
 };
