@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash(*)",
       "Read(*)",
@@ -10,20 +11,14 @@
       "NotebookEdit(*)",
       "WebFetch(*)",
       "WebSearch(*)",
-      "mcp__plugin_playwright_playwright__*",
-      "mcp__cc80f5da-04e0-4792-a074-e9c4c6294a03__*",
-      "mcp__595d20b0-8e9e-474c-ab27-54c80be39c82__*",
-      "mcp__dc0696c5-75fd-48b3-bad8-1c5267fba6e9__*",
-      "mcp__cefa03ed-b98c-4c29-b818-8def7ff7a8de__*",
-      "mcp__plugin_firebase_firebase__*",
-      "mcp__e02a3b16-702e-42ab-91c3-87784bd96f88__*",
-      "mcp__7fb74810-d208-4f43-8937-853341a6306e__*",
-      "mcp__c55a2b61-6493-4133-8d41-c472c60da125__*",
-      "mcp__Claude_in_Chrome__*",
-      "mcp__mcp-registry__search_mcp_registry",
-      "mcp__Claude_Preview__preview_start",
-      "mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql",
-      "mcp__claude_ai_Atlassian__getVisibleJiraProjects"
+      "PowerShell(*)",
+      "Skill(*)",
+      "Agent(*)",
+      "Task(*)",
+      "TodoWrite(*)",
+      "ToolSearch(*)",
+      "ScheduleWakeup(*)",
+      "mcp__*"
     ]
   },
   "disabledMcpjsonServers": [

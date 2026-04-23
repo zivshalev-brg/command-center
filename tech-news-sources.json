@@ -199,6 +199,34 @@
     "latentspace": {
       "channelId": "UCvi5jNRoRVm436TVAXet1kQ",
       "name": "Latent Space"
+    },
+    "ainewsstrategydailynatebjones": {
+      "channelId": "UC0C-17n9iuUQPylguM1d-lQ",
+      "name": "AI News & Strategy Daily | Nate B Jones"
+    },
+    "allinpodcast": {
+      "channelId": "UCESLZhusAkFfsNsApnjF_Cg",
+      "name": "All-In Podcast"
+    },
+    "nopriorsaimachinelearningtechstartups": {
+      "channelId": "UCSI7h9hydQ40K5MJHnCrQvw",
+      "name": "No Priors: AI, Machine Learning, Tech, & Startups"
+    },
+    "thediaryofaceo": {
+      "channelId": "UCnjgxChqYYnyoqO4k_Q1d6Q",
+      "name": "The Diary Of A CEO"
+    },
+    "dwarkeshpatel": {
+      "channelId": "UCZa18YV7qayTh-MRIrBhDpA",
+      "name": "Dwarkesh Patel"
+    },
+    "theprofgpodscottgalloway": {
+      "channelId": "UCp4CBeq4nzeg9smAvdjPrig",
+      "name": "The Prof G Pod – Scott Galloway"
+    },
+    "lexfridman": {
+      "channelId": "UCJIfeSCssxSC_Dhc5s7woww",
+      "name": "Lex Fridman"
     }
   },
   "settings": {}
