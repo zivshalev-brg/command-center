@@ -227,20 +227,33 @@ async function handleAPI(req, res) {
 
   // Manual trigger for scheduled research emails (use when scheduler missed)
   // POST /api/schedule/run?job=tech_daily|coffee_daily|tech_weekly|coffee_weekly|all_daily
+  // &force=1  — run even if already fired today (rare, for debugging)
   if (parts[0] === 'schedule' && parts[1] === 'run' && req.method === 'POST') {
     const job = (url.searchParams && url.searchParams.get('job')) || 'all_daily';
+    const force = url.searchParams && url.searchParams.get('force') === '1';
     const _runner = global.__scheduledRunners;
     if (!_runner) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ error: 'scheduler runners not initialized' }));
     }
+    // Mark as run-today so the automatic scheduler doesn't re-fire the same jobs
+    const markRan = _runner.markRan;
+    const alreadyRan = _runner.alreadyRan;
+    const skipped = [];
+    const fired = [];
     try {
-      if (job === 'tech_daily' || job === 'all_daily') _runner.tech('daily');
-      if (job === 'coffee_daily' || job === 'all_daily') _runner.coffee('daily');
-      if (job === 'tech_weekly') _runner.tech('weekly');
-      if (job === 'coffee_weekly') _runner.coffee('weekly');
+      var dryFire = function(key, fn, period) {
+        if (!force && alreadyRan && alreadyRan(key)) { skipped.push(key); return; }
+        if (markRan) markRan(key);
+        fn(period);
+        fired.push(key);
+      };
+      if (job === 'tech_daily' || job === 'all_daily') dryFire('tech_daily', _runner.tech, 'daily');
+      if (job === 'coffee_daily' || job === 'all_daily') dryFire('coffee_daily', _runner.coffee, 'daily');
+      if (job === 'tech_weekly') dryFire('weekly_tech', _runner.tech, 'weekly');
+      if (job === 'coffee_weekly') dryFire('weekly_coffee', _runner.coffee, 'weekly');
       res.writeHead(202, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({ ok: true, job: job, state: 'running' }));
+      return res.end(JSON.stringify({ ok: true, job: job, fired: fired, skipped_already_ran: skipped, force: !!force }));
     } catch (e) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ error: e.message }));
@@ -633,8 +646,29 @@ server.listen(PORT, () => {
 
   // ── Clock-based scheduling (Australia/Sydney timezone) ──
   const { generateCoffeeResearch } = require('./routes/news');
-  var _lastScheduleRun = {};
   var SCHEDULE_TZ = 'Australia/Sydney';
+
+  // Persist last-run state so server restarts don't re-fire today's emails.
+  // File: kb-data/intelligence/schedule-state.json — { tech_daily: "2026-04-24", ... }
+  var _scheduleStateFile = path.join(ctx.intelDir, 'schedule-state.json');
+  var _lastScheduleRun = (function() {
+    try { return JSON.parse(require('fs').readFileSync(_scheduleStateFile, 'utf-8')) || {}; }
+    catch { return {}; }
+  })();
+  function _persistSchedule() {
+    try {
+      require('fs').writeFileSync(_scheduleStateFile, JSON.stringify(_lastScheduleRun, null, 2), 'utf-8');
+    } catch (e) { console.error('[Schedule] persist failed:', e.message); }
+  }
+  function _markRan(jobKey) {
+    var now = _nowInSydney();
+    _lastScheduleRun[jobKey] = now.dateKey;
+    _persistSchedule();
+  }
+  function _alreadyRan(jobKey) {
+    var now = _nowInSydney();
+    return _lastScheduleRun[jobKey] === now.dateKey;
+  }
 
   /**
    * Get the current time in the configured timezone (Sydney/AEST/AEDT).
@@ -680,6 +714,7 @@ server.listen(PORT, () => {
     // 7:30 AM AEST — Generate & email AI & Tech daily research
     if (_shouldFire('tech_daily', 7, 30, now)) {
       _lastScheduleRun['tech_daily'] = now.dateKey;
+      _persistSchedule();
       console.log('[Schedule] ' + now.dateKey + ' ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating AI & Tech daily research...');
       _generateAndEmail('daily');
     }
@@ -687,6 +722,7 @@ server.listen(PORT, () => {
     // 7:30 AM AEST — Generate & email Coffee daily research (runs alongside tech)
     if (_shouldFire('coffee_daily', 7, 30, now)) {
       _lastScheduleRun['coffee_daily'] = now.dateKey;
+      _persistSchedule();
       console.log('[Schedule] ' + now.dateKey + ' ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating Coffee daily research...');
       _generateCoffeeAndEmail('daily');
     }
@@ -694,16 +730,21 @@ server.listen(PORT, () => {
     // Monday 7:00 AM AEST — Generate weekly reports
     if (_shouldFire('weekly', 7, 0, now, 1)) {
       _lastScheduleRun['weekly'] = now.dateKey;
+      _persistSchedule();
       console.log('[Schedule] Monday ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating weekly reports...');
       _generateAndEmail('weekly');
       setTimeout(function() { _generateCoffeeAndEmail('weekly'); }, 10 * 60 * 1000);
     }
   }
 
-  // Expose runners for manual trigger via /api/schedule/run
+  // Expose runners for manual trigger via /api/schedule/run.
+  // markRan/alreadyRan let the manual endpoint record "fired today" so the
+  // automatic scheduler (running every 60s) doesn't duplicate the same job.
   global.__scheduledRunners = {
     tech: _generateAndEmail,
-    coffee: _generateCoffeeAndEmail
+    coffee: _generateCoffeeAndEmail,
+    markRan: _markRan,
+    alreadyRan: _alreadyRan
   };
 
   // Run once at startup (covers case where server starts after the scheduled time)
