@@ -30,6 +30,7 @@ server.log
 news-refresh.log
 autoresearch-results.tsv
 autoresearch-results/
+kb-data/intelligence/last-opus-failure.txt
 
 # Test artifacts
 playwright-report/
