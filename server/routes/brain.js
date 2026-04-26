@@ -102,5 +102,34 @@ module.exports = async function handleBrain(req, res, parts, url, ctx) {
     return jsonReply(res, 200, { ok: true, id, status: newStatus });
   }
 
+  // ── Daily summaries ────────────────────────────────────────
+  if (sub === 'daily-summaries') {
+    const daily = require('../lib/daily-summaries');
+    if (parts[2] === 'run' && req.method === 'POST') {
+      const body = await readBody(req).catch(() => ({}));
+      try {
+        const result = await daily.runDailySummaries({ ctx, dateKey: body.date, tabs: body.tabs, force: !!body.force });
+        return jsonReply(res, 200, result);
+      } catch (e) { return jsonReply(res, 500, { error: e.message }); }
+    }
+    if (parts[2] === 'weekly' && req.method === 'POST') {
+      const body = await readBody(req).catch(() => ({}));
+      try {
+        const result = await daily.runWeeklyRollup({ ctx, weekKey: body.week, dateKey: body.date });
+        return jsonReply(res, 200, result);
+      } catch (e) { return jsonReply(res, 500, { error: e.message }); }
+    }
+    if (req.method === 'GET') {
+      return jsonReply(res, 200, daily.getLastRun());
+    }
+    return jsonReply(res, 405, { error: 'method not allowed' });
+  }
+
+  // ── Brain update policy (Phase 5) ──────────────────────────
+  if (sub === 'policy' && req.method === 'GET') {
+    const policy = require('../lib/brain-policy');
+    return jsonReply(res, 200, policy.getPolicy(ctx));
+  }
+
   return jsonReply(res, 404, { error: 'unknown brain endpoint' });
 };

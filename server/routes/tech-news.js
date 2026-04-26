@@ -947,7 +947,7 @@ Return valid JSON matching this exact schema:
   "title": "string — catchy research brief title",
   "subtitle": "string — one-line hook",
   "generated_at": "ISO date",
-  "meta": { "videos_analyzed": number, "articles_analyzed": number, "reddit_threads": number, "total_transcript_minutes": number },
+  "meta": { "videos_analyzed": number, "podcasts_analyzed": number, "articles_analyzed": number, "reddit_threads": number, "total_transcript_minutes": number },
 
   "executive_summary": "string — 3-4 paragraphs, dense with insight, names specific tools/models/companies",
 
@@ -1012,14 +1012,28 @@ Return valid JSON matching this exact schema:
     ]
   },
 
+  "podcast_highlights": [
+    {
+      "episode_title": "string — episode title",
+      "show": "string — podcast show name",
+      "videoId": "string — YouTube videoId for linking with timestamps",
+      "url": "string — YouTube URL",
+      "host_summary": "string — 3-5 sentence summary of what the episode covered, framed as a podcast critic would",
+      "key_segments": [
+        { "topic": "string — what this segment is about", "quote": "string — direct quote from transcript", "speaker": "string — host or guest", "timestamp": number, "url": "string — YouTube URL with t param" }
+      ],
+      "takeaway": "string — 2 sentence why this matters, what to do with it"
+    }
+  ],
+
   "reading_list": [
-    { "title": "string — video or article title", "type": "video|article|reddit", "url": "string", "why": "string — 1-2 sentence reason to watch/read", "duration": "string or null — e.g. '15 min'" }
+    { "title": "string — video, podcast, or article title", "type": "video|podcast|article|reddit", "url": "string", "why": "string — 1-2 sentence reason to watch/read/listen", "duration": "string or null — e.g. '15 min'" }
   ],
 
   "bottom_line": "string — 3-4 sentence closing, the one big takeaway from this week in AI"
 }
 
-IMPORTANT: Include 6-8 trends, 2-3 deep dives, 8-10 tools, 2-3 debates, and 8-10 reading list items. Depth over breadth — rich analysis on the most important items beats thin coverage of many. Target 8-10 min read time. CRITICAL: the response MUST be complete valid JSON — if you sense you're approaching your token limit, trim scope and close the object cleanly rather than truncate mid-field.`;
+IMPORTANT: Include 6-8 trends, 2-3 deep dives, 4-6 podcast highlights (one per podcast episode that had a transcript), 8-10 tools, 2-3 debates, and 8-10 reading list items. Treat podcasts as primary long-form sources — pull at least one quote per episode and surface them in podcast_highlights. Depth over breadth — rich analysis on the most important items beats thin coverage of many. Target 8-10 min read time. CRITICAL: the response MUST be complete valid JSON — if you sense you're approaching your token limit, trim scope and close the object cleanly rather than truncate mid-field.`;
 
   var periodLabel = period === 'weekly' ? 'WEEKLY' : 'DAILY';
   var userMsg = 'Generate the comprehensive ' + periodLabel + ' AI & Productivity Research Brief based on the following data. Today is ' + new Date().toISOString().slice(0, 10) + '. Period: ' + period + '.\n\n' + fullContext;

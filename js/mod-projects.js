@@ -432,6 +432,16 @@ function _renderProjectDetail(id) {
   if (synthesis) {
     html += '<span style="margin-left:8px;font-size:var(--f-sm);font-weight:600;color:' + _pHealthColor(synthesis.healthScore) + '">' + Math.round(synthesis.healthScore) + '/100</span>';
   }
+  if (typeof saveToNotebookButton === 'function') {
+    html += '<span style="margin-left:auto">' + saveToNotebookButton({
+      sourceType: 'project_update',
+      ref: { projectKey: id },
+      title: p.title,
+      summary: p.desc,
+      size: 'sm',
+      label: 'Save'
+    }) + '</span>';
+  }
   html += '</div>';
   html += '<div class="card-b">' + _pEnc(p.desc);
   html += '<div class="prog-bar" style="margin-top:12px"><div class="prog-fill" style="width:' + p.progress + '%;background:' + p.colour + '"></div></div>';

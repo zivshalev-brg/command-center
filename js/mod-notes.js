@@ -503,6 +503,71 @@ function _notesEditorKeydown(ev) {
 function notesToggleSourcesPane() { state.notesSourcesCollapsed = !state.notesSourcesCollapsed; renderAll(); }
 function notesToggleStudioPane() { state.notesStudioCollapsed = !state.notesStudioCollapsed; renderAll(); }
 
+// ── Source Viewer (Phase 2) ─────────────────────────────────
+function notesOpenSourceViewer(sid) {
+  var nbId = state.selectedNotebookId; if (!nbId || !sid) return;
+  state.notesSourceViewer = { open: true, sourceId: sid, loading: true, source: null };
+  renderAll();
+  fetch('/api/notebooks/' + encodeURIComponent(nbId) + '/sources/' + encodeURIComponent(sid))
+    .then(r=>r.json()).then(d => {
+      state.notesSourceViewer = { open: true, sourceId: sid, loading: false, source: d.source || null };
+      renderAll();
+    }).catch(()=>{ state.notesSourceViewer = null; renderAll(); });
+}
+function notesCloseSourceViewer() { state.notesSourceViewer = null; renderAll(); }
+
+function notesDiscoverFromSource(sid, ev) {
+  if (ev) ev.stopPropagation();
+  var nbId = state.selectedNotebookId; if (!nbId || !sid) return;
+  if (typeof showToast === 'function') showToast('Finding related sources…');
+  state.notesResearchInFlight = true; renderAll();
+  fetch('/api/notebooks/' + encodeURIComponent(nbId) + '/sources/' + encodeURIComponent(sid) + '/discover', { method: 'POST' })
+    .then(r=>r.json()).then(d => {
+      state.notesResearchInFlight = false;
+      if (d.source) { if (typeof showToast === 'function') showToast('Related source added'); notesLoadNotebook(nbId); }
+      else { if (typeof showToast === 'function') showToast(d.error || 'Discovery failed', 'er'); renderAll(); }
+    })
+    .catch(function(e){ state.notesResearchInFlight = false; if (typeof showToast === 'function') showToast('Discovery failed: ' + e.message, 'er'); renderAll(); });
+}
+
+// ── Suggested questions (Phase 2) ───────────────────────────
+function notesLoadSuggestions() {
+  var nbId = state.selectedNotebookId; if (!nbId) return;
+  if (state.notesSuggestionsLoading || state.notesSuggestionsLoadedFor === nbId) return;
+  state.notesSuggestionsLoading = true; state.notesSuggestionsLoadedFor = nbId;
+  fetch('/api/notebooks/' + encodeURIComponent(nbId) + '/suggestions', { method: 'POST' })
+    .then(r=>r.json()).then(d => {
+      state.notesSuggestionsLoading = false;
+      state.notesSuggestions = Array.isArray(d.suggestions) ? d.suggestions : [];
+      renderAll();
+    }).catch(()=>{ state.notesSuggestionsLoading = false; renderAll(); });
+}
+
+// ── Persona / customize (Phase 2) ───────────────────────────
+function notesOpenPersonaMenu(ev) {
+  if (ev) ev.stopPropagation();
+  state.notesPersonaMenuOpen = !state.notesPersonaMenuOpen;
+  renderAll();
+  if (state.notesPersonaMenuOpen) {
+    document.addEventListener('click', function close(e) {
+      if (e.target.closest('.nblm-persona-menu') || e.target.closest('.nblm-chat-customize')) return;
+      state.notesPersonaMenuOpen = false; renderAll();
+      document.removeEventListener('click', close);
+    });
+  }
+}
+function notesSetPersona(preset) {
+  var nbId = state.selectedNotebookId; if (!nbId) return;
+  fetch('/api/notebooks/' + encodeURIComponent(nbId) + '/persona', {
+    method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ preset })
+  }).then(r=>r.json()).then(d => {
+    if (state.selectedNotebook) state.selectedNotebook.persona = d.persona;
+    state.notesPersonaMenuOpen = false;
+    if (typeof showToast === 'function') showToast('Chat mode: ' + (d.persona && d.persona.label || preset));
+    renderAll();
+  });
+}
+
 // ── Keyboard shortcut: `/` focuses chat input when in Notes tab
 // (ignored if user is typing in another input/textarea/modal)
 document.addEventListener('keydown', function(e) {
@@ -615,7 +680,8 @@ function renderNotesMain() {
         _nblmStudioPane(nb, studioCollapsed) +
       '</div>' +
     '</div>' +
-    (state.notesAddSourcesOpen ? _nbAddSourcesModal() : '');
+    (state.notesAddSourcesOpen ? _nbAddSourcesModal() : '') +
+    _nblmSourceViewerModal();
 
   // Auto-scroll chat
   var mwrap = document.getElementById('nb-chat-scroll');
@@ -648,13 +714,14 @@ function _nblmSourcesPane(nb, collapsed) {
     list = '<div class="nblm-sources-list">' + sources.map(function(s){
       var icon = _NOTES_SOURCE_ICONS[s.kind] || '📄';
       var sizeKb = s.size ? Math.max(1, Math.round(s.size/1024)) : 0;
-      return '<div class="nblm-source-card">' +
+      return '<div class="nblm-source-card" onclick="notesOpenSourceViewer(\'' + _nEnc(s.id) + '\')" title="Click to preview">' +
         '<div class="nblm-source-icon">' + icon + '</div>' +
         '<div class="nblm-source-body">' +
           '<div class="nblm-source-title">' + _nEnc(s.title) + '</div>' +
           '<div class="nblm-source-meta">' + s.kind.replace(/_/g,' ') + ' · ' + sizeKb + ' KB</div>' +
         '</div>' +
-        '<button class="nblm-source-del" onclick="notesDeleteSource(\'' + _nEnc(s.id) + '\')">✕</button>' +
+        '<button class="nblm-source-discover" title="Find related sources" onclick="notesDiscoverFromSource(\'' + _nEnc(s.id) + '\', event)">🔍</button>' +
+        '<button class="nblm-source-del" onclick="event.stopPropagation();notesDeleteSource(\'' + _nEnc(s.id) + '\')">✕</button>' +
       '</div>';
     }).join('') + '</div>';
   } else {
@@ -727,15 +794,31 @@ function _nblmChatPane(nb) {
   var sourceCount = (nb.sources || []).length;
   var body;
   if (!messages.length && !state.notesChatStreaming && !state.notesStreaming) {
+    // Phase 2: dynamic suggestions from Opus when sources exist
+    if (sourceCount > 0 && state.notesSuggestionsLoadedFor !== nb.id) {
+      try { notesLoadSuggestions(); } catch (_) {}
+    }
+    var sugg = (state.notesSuggestions && state.notesSuggestionsLoadedFor === nb.id) ? state.notesSuggestions : null;
+    var suggHtml;
+    if (state.notesSuggestionsLoading) {
+      suggHtml = '<div class="nblm-chat-suggestions"><div class="nblm-suggestion-loading">Generating suggested questions…</div></div>';
+    } else if (sugg && sugg.length) {
+      suggHtml = '<div class="nblm-chat-suggestions">' + sugg.map(function(q){
+        var esc = _nEnc(q).replace(/'/g,'&#39;');
+        return '<button class="chat-suggestion" onclick="notesSendChat(\'' + esc.replace(/"/g,'&quot;') + '\')">' + _nEnc(q) + '</button>';
+      }).join('') + '</div>';
+    } else {
+      suggHtml = '<div class="nblm-chat-suggestions">' +
+        '<button class="chat-suggestion" onclick="notesSendChat(\'Summarise these sources in 5 bullets\')">Summarise these sources in 5 bullets</button>' +
+        '<button class="chat-suggestion" onclick="notesSendChat(\'What are the most important open questions?\')">What are the most important open questions?</button>' +
+        '<button class="chat-suggestion" onclick="notesSendChat(\'Give me 3 next actions with owners and deadlines\')">Give me 3 next actions with owners and deadlines</button>' +
+      '</div>';
+    }
     body = '<div class="nblm-chat-hero">' +
       '<div class="nblm-nb-bigicon">' + _nEnc(nb.icon || '📒') + '</div>' +
       '<h2 class="nblm-chat-nbtitle">' + _nEnc(nb.title) + '</h2>' +
       '<div class="nblm-chat-nbmeta">' + sourceCount + ' source' + (sourceCount===1?'':'s') + ' · ' + _nbFormatDate(nb.created_at || new Date().toISOString()) + '</div>' +
-      (sourceCount ? '<div class="nblm-chat-suggestions">' +
-        '<button class="chat-suggestion" onclick="notesSendChat(\'Summarise these sources in 5 bullets\')">Summarise these sources in 5 bullets</button>' +
-        '<button class="chat-suggestion" onclick="notesSendChat(\'What are the most important open questions?\')">What are the most important open questions?</button>' +
-        '<button class="chat-suggestion" onclick="notesSendChat(\'Give me 3 next actions with owners and deadlines\')">Give me 3 next actions with owners and deadlines</button>' +
-      '</div>' : '<div class="nblm-chat-empty-hint">Add a source to start asking questions</div>') +
+      (sourceCount ? suggHtml : '<div class="nblm-chat-empty-hint">Add a source to start asking questions</div>') +
     '</div>';
   } else {
     var msgHtml = messages.map(function(m, i){
@@ -751,16 +834,74 @@ function _nblmChatPane(nb) {
     body = '<div class="nblm-chat-scroll" id="nb-chat-scroll">' + msgHtml + streamingBlock + '</div>';
   }
 
+  var personaLabel = (nb.persona && nb.persona.label) ? nb.persona.label : 'Default';
   return '<div class="nblm-pane nblm-pane-chat">' +
     '<div class="nblm-pane-head">' +
       '<span class="nblm-pane-title">Chat</span>' +
-      '<div class="nblm-pane-head-actions">' +
-        '<button class="nblm-chat-customize" title="Customize chat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Customize</button>' +
+      '<div class="nblm-pane-head-actions" style="position:relative">' +
+        '<button class="nblm-chat-customize" onclick="notesOpenPersonaMenu(event)" title="Customize chat persona"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ' + _nEnc(personaLabel) + '</button>' +
+        (state.notesPersonaMenuOpen ? _nblmPersonaMenu(nb) : '') +
         (messages.length ? '<button class="btn-icon" onclick="notesClearChat()" title="Clear chat">🗑</button>' : '') +
       '</div>' +
     '</div>' +
     '<div class="nblm-chat-body">' + body + '</div>' +
     _nblmChatInput(sourceCount) +
+  '</div>';
+}
+
+function _nblmPersonaMenu(nb) {
+  var current = (nb.persona && nb.persona.preset) || 'default';
+  var presets = [
+    { key: 'default', label: 'Default', desc: 'Balanced assistant, medium length.' },
+    { key: 'exec', label: 'Exec Brief', desc: 'Short, decision-ready.' },
+    { key: 'detailed', label: 'Detailed Analyst', desc: 'Thorough, structured.' },
+    { key: 'brainstorm', label: 'Brainstorm Partner', desc: 'Divergent, options-heavy.' },
+    { key: 'socratic', label: 'Socratic', desc: 'Question-based coaching.' }
+  ];
+  return '<div class="nblm-persona-menu" onclick="event.stopPropagation()">' +
+    '<div class="nblm-persona-menu-head">Chat mode</div>' +
+    presets.map(function(p){
+      return '<div class="nblm-persona-opt' + (p.key===current?' active':'') + '" onclick="notesSetPersona(\'' + p.key + '\')">' +
+        '<div class="nblm-persona-opt-label">' + _nEnc(p.label) + (p.key===current?' ✓':'') + '</div>' +
+        '<div class="nblm-persona-opt-desc">' + _nEnc(p.desc) + '</div>' +
+      '</div>';
+    }).join('') +
+  '</div>';
+}
+
+// ── Source Viewer modal (Phase 2) ───────────────────────────
+function _nblmSourceViewerModal() {
+  var sv = state.notesSourceViewer;
+  if (!sv || !sv.open) return '';
+  var body;
+  if (sv.loading) {
+    body = '<div class="nblm-sv-loading">Loading source…</div>';
+  } else if (!sv.source) {
+    body = '<div class="nblm-sv-error">Source unavailable.</div>';
+  } else {
+    var s = sv.source;
+    var icon = _NOTES_SOURCE_ICONS[s.kind] || '📄';
+    var sizeKb = s.content_text ? Math.max(1, Math.round(s.content_text.length/1024)) : 0;
+    var text = s.content_text || '';
+    // Simple word-count
+    var words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    body = '<div class="nblm-sv-head">' +
+        '<div class="nblm-sv-icon">' + icon + '</div>' +
+        '<div class="nblm-sv-title-wrap">' +
+          '<div class="nblm-sv-title">' + _nEnc(s.title) + '</div>' +
+          '<div class="nblm-sv-meta">' + s.kind.replace(/_/g,' ') + ' · ' + sizeKb + ' KB · ' + words + ' words' + (s.url ? ' · <a href="' + _nEnc(s.url) + '" target="_blank">' + _nEnc(s.url) + '</a>' : '') + '</div>' +
+        '</div>' +
+        '<button class="nblm-sv-discover btn btn-g btn-sm" onclick="notesDiscoverFromSource(\'' + _nEnc(s.id) + '\', event);notesCloseSourceViewer()">🔍 Find related</button>' +
+      '</div>' +
+      '<div class="nblm-sv-body">' +
+        '<pre class="nblm-sv-pre">' + _nEnc(text) + '</pre>' +
+      '</div>';
+  }
+  return '<div class="nblm-modal-bg" onclick="notesCloseSourceViewer()">' +
+    '<div class="nblm-modal nblm-sv-modal" onclick="event.stopPropagation()">' +
+      '<button class="nblm-modal-close" onclick="notesCloseSourceViewer()">✕</button>' +
+      body +
+    '</div>' +
   '</div>';
 }
 

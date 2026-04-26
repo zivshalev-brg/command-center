@@ -7,8 +7,19 @@ function _calRenderDetail(ev) {
   if (!ev) return '';
   var html = '<div class="cal-detail">';
 
-  // Title
+  // Title + Save button
+  var saveBtn = (typeof saveToNotebookButton === 'function') ? saveToNotebookButton({
+    sourceType: 'calendar_event',
+    ref: { event: ev },
+    title: ev.subject,
+    summary: (ev.bodyPreview || ev.location || '').slice(0, 200),
+    size: 'sm',
+    label: 'Save'
+  }) : '';
+  html += '<div style="display:flex;gap:8px;align-items:flex-start;justify-content:space-between">';
   html += '<h3 class="cal-det-title">' + _calEnc(ev.subject) + '</h3>';
+  html += saveBtn;
+  html += '</div>';
 
   // Date/time range with duration
   var dtRange = '';

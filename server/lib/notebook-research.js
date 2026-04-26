@@ -14,8 +14,9 @@
 
 const https = require('https');
 const { buildToolSchemas, runTool } = require('./chat-tools');
+const MODELS = require('./ai-models');
 
-const MODEL = 'claude-sonnet-4-5-20250929';
+const MODEL = MODELS.OPUS;
 const API_HOSTNAME = 'api.anthropic.com';
 const API_PATH = '/v1/messages';
 const API_VERSION = '2023-06-01';

@@ -38,6 +38,9 @@ function getNotebook(id) {
     SELECT id, role, content, citations_json, created_at
     FROM notebook_messages WHERE notebook_id = ? ORDER BY id ASC
   `).all(id);
+  try {
+    nb.persona = getNotebookPersona(id);
+  } catch { nb.persona = null; }
   return nb;
 }
 
@@ -192,10 +195,41 @@ function clearMessages(notebookId) {
   d.prepare('DELETE FROM notebook_messages WHERE notebook_id = ?').run(notebookId);
 }
 
+// ── Persona (chat mode / tone / length) ─────────────────────
+const PERSONA_PRESETS = {
+  default: { label: 'Default', system: '', description: 'Balanced assistant, medium length.' },
+  exec: { label: 'Exec Brief', system: 'Respond as if briefing a C-suite executive: lead with the bottom line, 3-5 sharp bullets, under 150 words, decision-ready. Avoid hedging.', description: 'Short, decision-ready.' },
+  detailed: { label: 'Detailed Analyst', system: 'Respond as a senior analyst: comprehensive coverage of the question, structured with headings, include counter-arguments and edge cases. 400-700 words.', description: 'Thorough, structured.' },
+  brainstorm: { label: 'Brainstorm Partner', system: 'Respond as a creative brainstorming partner: generate diverse options (5-10), range from safe to bold, mark tradeoffs per option, end with a recommended path. Ask one sharpening question at the end.', description: 'Divergent, options-heavy.' },
+  socratic: { label: 'Socratic', system: 'Respond by asking 3-5 probing questions that sharpen the user\'s thinking, followed by a short synthesis of implicit assumptions in their question. Do not give a direct answer unless explicitly asked.', description: 'Question-based coaching.' }
+};
+
+function getNotebookPersona(notebookId) {
+  const d = db.getDb();
+  const row = d.prepare('SELECT persona_json FROM notebooks WHERE id = ?').get(notebookId);
+  if (!row || !row.persona_json) return PERSONA_PRESETS.default;
+  try {
+    const parsed = JSON.parse(row.persona_json);
+    if (parsed && parsed.preset && PERSONA_PRESETS[parsed.preset]) {
+      return Object.assign({}, PERSONA_PRESETS[parsed.preset], { preset: parsed.preset, custom: parsed.custom || null, system: parsed.custom || PERSONA_PRESETS[parsed.preset].system });
+    }
+    return parsed;
+  } catch { return PERSONA_PRESETS.default; }
+}
+
+function setNotebookPersona(notebookId, { preset, custom }) {
+  const d = db.getDb();
+  const data = { preset: preset || 'default', custom: custom || null };
+  d.prepare('UPDATE notebooks SET persona_json = ?, updated_at = datetime(\'now\') WHERE id = ?')
+    .run(JSON.stringify(data), notebookId);
+  return getNotebookPersona(notebookId);
+}
+
 module.exports = {
   listNotebooks, getNotebook, createNotebook, updateNotebook, deleteNotebook,
   addSource, getSource, getSourcesForNotebook, deleteSource,
   upsertChunks, getAllChunksForNotebook,
   addNote, getNote, updateNote, deleteNote, replaceAiNote,
-  addMessage, getMessages, clearMessages
+  addMessage, getMessages, clearMessages,
+  getNotebookPersona, setNotebookPersona, PERSONA_PRESETS
 };

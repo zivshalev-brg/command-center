@@ -215,16 +215,27 @@ function renderMetricsMain() {
     return;
   }
 
+  // Floating Save-to-Notebook button (captures current view snapshot)
+  var saveBtn = (typeof saveToNotebookButton === 'function') ? saveToNotebookButton({
+    sourceType: 'metrics_snapshot',
+    ref: { view: state._metricsView || 'dashboard' },
+    title: 'Metrics · ' + (state._metricsView || 'dashboard'),
+    summary: 'Live Databricks snapshot',
+    size: 'sm',
+    label: 'Save snapshot'
+  }) : '';
+  var saveBar = '<div class="mt-savebar" style="position:absolute;top:12px;right:24px;z-index:10">' + saveBtn + '</div>';
+
   switch (state._metricsView) {
-    case 'digest':      el.innerHTML = _mDigest();      break;
-    case 'revenue':     el.innerHTML = _mRevenue();     break;
-    case 'subscribers': el.innerHTML = _mSubscribers(); break;
-    case 'ftbp':        el.innerHTML = _mFTBP();        break;
-    case 'markets':     el.innerHTML = _mMarkets();     break;
-    case 'roasters':    el.innerHTML = _mRoasters();    break;
-    case 'sla':         el.innerHTML = _mSLA();         break;
-    case 'explore':     el.innerHTML = _mExplore();     break;
-    default:            el.innerHTML = _mDashboard();   break;
+    case 'digest':      el.innerHTML = saveBar + _mDigest();      break;
+    case 'revenue':     el.innerHTML = saveBar + _mRevenue();     break;
+    case 'subscribers': el.innerHTML = saveBar + _mSubscribers(); break;
+    case 'ftbp':        el.innerHTML = saveBar + _mFTBP();        break;
+    case 'markets':     el.innerHTML = saveBar + _mMarkets();     break;
+    case 'roasters':    el.innerHTML = saveBar + _mRoasters();    break;
+    case 'sla':         el.innerHTML = saveBar + _mSLA();         break;
+    case 'explore':     el.innerHTML = saveBar + _mExplore();     break;
+    default:            el.innerHTML = saveBar + _mDashboard();   break;
   }
 }
 

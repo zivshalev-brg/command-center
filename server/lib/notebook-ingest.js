@@ -94,7 +94,14 @@ function fetchUrl(urlStr, { timeoutMs = 10000, maxBytes = 2 * 1024 * 1024, redir
         port: u.port || (u.protocol === 'http:' ? 80 : 443),
         path: u.pathname + (u.search || ''),
         method: 'GET',
-        headers: { 'User-Agent': 'Mozilla/5.0 (BeanzOS Notes)', 'Accept': 'text/html,text/plain;q=0.9,*/*;q=0.8' }
+        // Use a real-browser UA so paywalled / Cloudflare-fronted articles return content.
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9'
+        },
+        // Corporate networks intercept TLS — don't fail on unverified cert chain.
+        rejectUnauthorized: false
       }, (res) => {
         if ([301, 302, 303, 307, 308].includes(res.statusCode) && res.headers.location && redirects > 0) {
           const nextUrl = new URL(res.headers.location, urlStr).toString();

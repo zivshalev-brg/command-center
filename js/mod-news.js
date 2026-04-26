@@ -110,6 +110,7 @@ function renderNewsSidebar() {
     { id: 'industry', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>', label: 'Coffee Industry', count: articles.filter(function(a){return a.category==='industry';}).length },
     { id: 'reddit', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M14 10a2 2 0 100 4"/><path d="M10 10a2 2 0 000 4"/></svg>', label: 'Reddit', count: articles.filter(function(a){return a.category==='reddit';}).length },
     { id: 'youtube', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="4"/><polygon points="10 8 16 12 10 16"/></svg>', label: 'YouTube', count: articles.filter(function(a){return a.category==='youtube';}).length },
+    { id: 'podcast', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>', label: 'Podcasts', count: articles.filter(function(a){return a.category==='podcast';}).length },
     { id: 'trends', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>', label: 'Trends', count: '' },
     { id: 'chat', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>', label: 'Chat', count: '' }
   ];
@@ -234,17 +235,28 @@ function renderNewsMain() {
     _nStatChip((stats.byCategory || {}).industry || 0, 'Industry') +
     _nStatChip((stats.byCategory || {}).reddit || 0, 'Reddit') +
     _nStatChip((stats.byCategory || {}).youtube || 0, 'YouTube') +
+    _nStatChip((stats.byCategory || {}).podcast || 0, 'Podcasts') +
     '</div>';
 
   // Articles
-  html += '<div class="nw-section-label">Articles (' + totalCount + ')</div>';
+  var sectionLabel = state.newsCategory === 'podcast' ? 'Podcast episodes (' + totalCount + ')' : 'Articles (' + totalCount + ')';
+  html += '<div class="nw-section-label">' + sectionLabel + '</div>';
 
   if (!pageArticles.length) {
-    html += '<div class="c-empty" style="padding:var(--sp6)">'
-      + '<div class="c-empty-icon">\uD83D\uDD0D</div>'
-      + '<div class="c-empty-title">No articles match your filters</div>'
-      + '<div class="c-empty-body">Try clearing search or switching sort/date filters.</div>'
-      + '</div>';
+    if (state.newsCategory === 'podcast') {
+      html += '<div class="c-empty" style="padding:var(--sp6)">'
+        + '<div class="c-empty-icon">\uD83C\uDFA7</div>'
+        + '<div class="c-empty-title">No coffee podcasts configured yet</div>'
+        + '<div class="c-empty-body">Add YouTube channels of your favourite coffee podcasts (Cat &amp; Cloud, Filter Stories, A Matter of Concrete, Boss Barista, etc.). Click <b>Manage Sources</b> to paste a YouTube channel ID under <b>Podcasts</b>.</div>'
+        + '<button class="btn btn-p btn-sm" style="margin-top:var(--sp3)" onclick="state.newsCategory=\'settings\';renderAll()">\u2192 Manage Sources</button>'
+        + '</div>';
+    } else {
+      html += '<div class="c-empty" style="padding:var(--sp6)">'
+        + '<div class="c-empty-icon">\uD83D\uDD0D</div>'
+        + '<div class="c-empty-title">No articles match your filters</div>'
+        + '<div class="c-empty-body">Try clearing search or switching sort/date filters.</div>'
+        + '</div>';
+    }
   } else {
     html += '<div class="nw-list nw-' + (state.newsViewMode || 'cards') + '">';
     pageArticles.forEach(function(a) { html += _nRenderArticle(a); });
@@ -1675,8 +1687,12 @@ function renderCoffeeResearch() {
       '<button class="btn btn-sm" style="margin-left:var(--sp2);background:var(--ac);color:#fff;border:none" onclick="emailCoffeeResearch()">Email Report</button>' +
     '</div></div>';
   if (rpt.meta) {
-    html += '<div style="display:flex;gap:var(--sp4);font-size:var(--f-xs);color:var(--tx3)">' +
-      '<span>' + (rpt.meta.videos_analyzed||0) + ' videos</span><span>' + (rpt.meta.articles_analyzed||0) + ' articles</span><span>' + (rpt.meta.reddit_threads||0) + ' reddit</span></div>';
+    html += '<div style="display:flex;gap:var(--sp4);font-size:var(--f-xs);color:var(--tx3);flex-wrap:wrap">' +
+      '<span>' + (rpt.meta.videos_analyzed||0) + ' videos</span>' +
+      (rpt.meta.podcasts_analyzed ? '<span>' + rpt.meta.podcasts_analyzed + ' podcasts</span>' : '') +
+      '<span>' + (rpt.meta.articles_analyzed||0) + ' articles</span>' +
+      '<span>' + (rpt.meta.reddit_threads||0) + ' reddit</span>' +
+    '</div>';
   }
   html += '</div>';
 
@@ -1799,6 +1815,39 @@ function renderCoffeeResearch() {
       });
       if (dd.takeaway) html += '<div style="font-size:var(--f-sm);font-weight:var(--fw-sb);color:var(--or);margin-top:var(--sp3);padding:var(--sp3);background:var(--orbg);border-radius:8px">Takeaway: ' + _nEnc(dd.takeaway) + '</div>';
       html += '</div>';
+    });
+  }
+
+  // Podcast highlights
+  if (rpt.podcast_highlights && rpt.podcast_highlights.length) {
+    html += '<div class="ca-section-title" style="font-size:var(--f-xl);margin:var(--sp6) 0 var(--sp4)">🎧 Podcast Highlights</div>';
+    rpt.podcast_highlights.forEach(function(p) {
+      var thumb = p.videoId ? 'https://img.youtube.com/vi/' + p.videoId + '/mqdefault.jpg' : null;
+      var url = p.url || (p.videoId ? 'https://www.youtube.com/watch?v=' + p.videoId : '#');
+      html += '<div style="margin-bottom:var(--sp4);padding:var(--sp4);background:var(--s1);border:1px solid var(--bd);border-radius:12px;border-left:4px solid var(--gn);display:grid;grid-template-columns:' + (thumb ? '180px 1fr' : '1fr') + ';gap:var(--sp4)">';
+      if (thumb) {
+        html += '<a href="' + _nEnc(url) + '" target="_blank" rel="noopener" style="display:block;border-radius:8px;overflow:hidden;align-self:start;position:relative">' +
+          '<img src="' + thumb + '" alt="" style="width:100%;display:block" loading="lazy" onerror="this.parentElement.style.display=\'none\'"/>' +
+          '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:rgba(0,0,0,.7);border-radius:50%;display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:10px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px"></div></div>' +
+        '</a>';
+      }
+      html += '<div>';
+      if (p.show) html += '<div style="font-size:10px;color:var(--gn);text-transform:uppercase;letter-spacing:1px;font-weight:var(--fw-sb);margin-bottom:4px">' + _nEnc(p.show) + '</div>';
+      html += '<h3 style="font-size:var(--f-lg);margin:0 0 var(--sp2);color:var(--tx)"><a href="' + _nEnc(url) + '" target="_blank" rel="noopener" style="color:var(--tx);text-decoration:none">' + _nEnc(p.episode_title || 'Episode') + '</a></h3>';
+      if (p.host_summary) html += '<div style="font-size:var(--f-sm);line-height:1.65;color:var(--tx2);margin-bottom:var(--sp3)">' + _nEnc(p.host_summary) + '</div>';
+      if (p.key_segments && p.key_segments.length) {
+        p.key_segments.forEach(function(seg) {
+          var ts = seg.timestamp ? Math.floor(seg.timestamp/60) + ':' + ('0'+Math.floor(seg.timestamp%60)).slice(-2) : '';
+          var segUrl = seg.url || (p.videoId && seg.timestamp ? 'https://www.youtube.com/watch?v=' + p.videoId + '&t=' + Math.floor(seg.timestamp) + 's' : url);
+          html += '<div style="margin:var(--sp2) 0;padding:8px 12px;background:var(--s2);border-left:3px solid var(--gn);border-radius:0 6px 6px 0">' +
+            (seg.topic ? '<div style="font-size:11px;color:var(--gn);font-weight:var(--fw-sb);margin-bottom:2px">' + _nEnc(seg.topic) + (ts ? ' · [' + ts + ']' : '') + '</div>' : '') +
+            '<div style="font-style:italic;font-size:var(--f-sm);color:var(--tx)">"' + _nEnc(seg.quote||'') + '"</div>' +
+            (seg.speaker ? '<div style="font-size:10px;color:var(--tx3);margin-top:4px;display:flex;justify-content:space-between"><span>— ' + _nEnc(seg.speaker) + '</span><a href="' + _nEnc(segUrl) + '" target="_blank" rel="noopener" style="color:var(--gn)">▶ Listen</a></div>' : '') +
+          '</div>';
+        });
+      }
+      if (p.takeaway) html += '<div style="font-size:var(--f-sm);color:var(--gn);margin-top:var(--sp2)"><strong>Takeaway:</strong> ' + _nEnc(p.takeaway) + '</div>';
+      html += '</div></div>';
     });
   }
 

@@ -10,11 +10,12 @@
 const https = require('https');
 const rag = require('./notebook-rag');
 const store = require('./notebook-store');
+const MODELS = require('./ai-models');
 
 const API_HOSTNAME = 'api.anthropic.com';
 const API_PATH = '/v1/messages';
 const API_VERSION = '2023-06-01';
-const MODEL = 'claude-sonnet-4-5-20250929';
+const MODEL = MODELS.OPUS;
 const MAX_TOKENS = 4096;
 
 const PROMPTS = {
@@ -114,14 +115,18 @@ async function generateArtifact({ notebookId, kind, apiKey, res }) {
     return;
   }
 
-  const systemPrompt = spec.system +
-    '\n\n# Rules\n- You have ' + chunks.length + ' numbered source snippets below labelled [S1]..[S' + chunks.length + '].\n- Cite every factual claim with the matching [S#] marker(s). Multiple markers like [S2][S5] are allowed.\n- Never invent a citation number beyond [S' + chunks.length + '].\n- If sources are insufficient to answer part of the prompt, say so — do not hallucinate.\n\n# Sources\n\n' + contextText;
+  const instructionsText = spec.system +
+    '\n\n# Rules\n- You have ' + chunks.length + ' numbered source snippets below labelled [S1]..[S' + chunks.length + '].\n- Cite every factual claim with the matching [S#] marker(s). Multiple markers like [S2][S5] are allowed.\n- Never invent a citation number beyond [S' + chunks.length + '].\n- If sources are insufficient to answer part of the prompt, say so — do not hallucinate.';
+  const sourcesText = '# Sources\n\n' + contextText;
 
   const body = JSON.stringify({
     model: MODEL,
     max_tokens: MAX_TOKENS,
     stream: true,
-    system: systemPrompt,
+    system: [
+      { type: 'text', text: instructionsText },
+      { type: 'text', text: sourcesText, cache_control: { type: 'ephemeral' } }
+    ],
     messages: [{ role: 'user', content: spec.user }]
   });
 

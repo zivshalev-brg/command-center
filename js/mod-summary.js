@@ -36,7 +36,8 @@ function renderSummarySidebar() {
     {id:'jira',icon:'🎯',label:'Jira Sprint Status'},
     {id:'people',icon:'👥',label:'People in Focus'},
     {id:'metrics',icon:'📈',label:'Key Metrics'},
-    {id:'news',icon:'📰',label:'News Highlights'}
+    {id:'news',icon:'📰',label:'News Highlights'},
+    {id:'brain',icon:'🧠',label:'Obsidian Brain'}
   ];
   var html = '<div class="sb-section"><div class="sb-section-title">Daily Briefing</div><div class="summary-nav">';
   sections.forEach(function(s) {
@@ -319,5 +320,84 @@ function _renderSummaryMainInner(el) {
   }
   html += '</div>';
 
+  // ═══ 10. BRAIN HEALTH ═══
+  html += _sBrainHealthSection();
+
   el.innerHTML = html;
+
+  // Lazy-load brain policy
+  if (!state._brainPolicyLoadedOnce) {
+    state._brainPolicyLoadedOnce = true;
+    loadBrainPolicy();
+  }
+}
+
+function _sBrainHealthSection() {
+  var s = state._brainPolicy;
+  var hasData = s && s.policy && Array.isArray(s.policy);
+  var h = '<div class="summary-section" id="sum-brain"><div class="summary-section-h"><h2>🧠 Obsidian Brain</h2>';
+  if (hasData && s.totals) h += '<span class="tag info">' + (s.totals.pages || 0) + ' pages</span>';
+  h += '<span class="summary-goto" onclick="runBrainDailySummariesNow()">Run summaries now →</span></div>';
+  if (!hasData) {
+    if (s && s.error) {
+      h += '<div style="padding:8px 0;color:var(--rd);font-size:var(--f-sm)">Brain status error: ' + _sEnc(s.error) + '</div></div>';
+    } else {
+      h += '<div style="padding:8px 0;color:var(--tx3);font-size:var(--f-sm)">Loading brain health…</div></div>';
+    }
+    return h;
+  }
+  // Section table
+  h += '<div style="overflow:auto"><table class="data-table" style="font-size:var(--f-sm);width:100%">';
+  h += '<thead><tr><th>Section</th><th>Pages</th><th>Cadence</th><th>Rule</th><th>Last mod</th></tr></thead><tbody>';
+  s.policy.forEach(function(p) {
+    var lm = p.lastModified ? new Date(p.lastModified).toLocaleDateString() : '—';
+    h += '<tr><td><strong>' + _sEnc(p.section) + '</strong></td><td>' + p.pages + '</td><td style="font-size:11px">' + _sEnc(p.cadence) + '</td><td style="font-size:11px">' + _sEnc(p.rule) + '</td><td style="font-size:11px">' + lm + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+
+  // Today's daily summaries
+  if (s.todaySummaries && s.todaySummaries.runs && s.todaySummaries.runs.length) {
+    h += '<div style="margin-top:12px"><strong style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:1px">Today\'s daily summaries (' + s.todaySummaries.date + ')</strong>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">';
+    s.todaySummaries.runs.forEach(function(r) {
+      var cls = r.error ? 'crit' : r.skipped ? 'info' : 'tag-ok';
+      var icon = r.error ? '❌' : r.skipped ? '⏭' : '✅';
+      h += '<span class="tag ' + cls + '" title="' + _sEnc((r.rel_path || '') + (r.error ? ' · ' + r.error : r.skip_reason ? ' · ' + r.skip_reason : '')) + '">' + icon + ' ' + _sEnc(r.tab) + (r.model ? ' (' + r.model.split('-')[1] + ')' : '') + '</span>';
+    });
+    h += '</div></div>';
+  } else {
+    h += '<div style="margin-top:12px;font-size:var(--f-sm);color:var(--tx3)">No daily summaries run today yet — fires automatically at 07:00 AEST, or click "Run summaries now".</div>';
+  }
+
+  h += '</div>';
+  return h;
+}
+
+function loadBrainPolicy() {
+  fetch('/api/brain/policy').then(function(r) { return r.json(); }).then(function(d) {
+    state._brainPolicy = d;
+    // Re-render only the brain section to avoid clobbering user interactions
+    var el = document.getElementById('sum-brain');
+    if (el && el.parentElement) {
+      var wrap = document.createElement('div');
+      wrap.innerHTML = _sBrainHealthSection();
+      el.replaceWith(wrap.firstElementChild);
+    }
+  }).catch(function() {});
+}
+
+function runBrainDailySummariesNow() {
+  if (typeof showToast === 'function') showToast('Generating daily summaries… takes 1-2 min');
+  fetch('/api/brain/daily-summaries/run', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ force: true }) })
+    .then(function(r) { return r.json(); }).then(function(d) {
+      if (d.results) {
+        var ok = d.results.filter(function(r) { return !r.error && !r.skipped; }).length;
+        var er = d.results.filter(function(r) { return r.error; }).length;
+        if (typeof showToast === 'function') showToast('Daily summaries done: ' + ok + ' generated' + (er ? ', ' + er + ' errored' : ''));
+        loadBrainPolicy();
+      } else {
+        if (typeof showToast === 'function') showToast(d.error || 'Failed', 'er');
+      }
+    })
+    .catch(function(e) { if (typeof showToast === 'function') showToast('Failed: ' + e.message, 'er'); });
 }

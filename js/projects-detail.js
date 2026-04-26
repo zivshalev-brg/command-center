@@ -205,10 +205,31 @@ function renderProjectDetailUplifted(id) {
   html += '<div style="overflow-y:auto;padding-right:4px">';
 
   // Back button + title row
+  var saveBtn = (typeof saveToNotebookButton === 'function') ? saveToNotebookButton({
+    sourceType: 'project_update',
+    ref: {
+      projectKey: id,
+      project: {
+        title: p.title,
+        status: p.status || '',
+        lead: p.lead || '',
+        desc: p.desc || '',
+        workstreams: (full.milestones || p.milestones || []).map(function(m){ return m.t || m; }),
+        blockers: (full.blockers || p.blockers || []).map(function(b){ return b.text || b.t || b; }),
+        nextActions: p.nextActions || []
+      }
+    },
+    title: p.title,
+    summary: (p.desc || '').slice(0, 200),
+    size: 'md',
+    label: 'Save to notebook'
+  }) : '';
   html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
     '<button onclick="selectProject(null)" style="padding:6px 10px;background:transparent;border:1px solid var(--bd);border-radius:4px;color:var(--tx);cursor:pointer;font-size:12px">← Portfolio</button>' +
     '<h1 style="margin:0;font-size:22px;color:var(--tx)">' + _pdEnc(p.title) + '</h1>' +
-    '<button onclick="openEditProjectModal(\'' + id + '\')" style="margin-left:auto;padding:6px 10px;background:transparent;border:1px solid var(--bd);border-radius:4px;color:var(--tx);cursor:pointer;font-size:12px">Edit</button>' +
+    '<span style="margin-left:auto;display:flex;gap:8px">' + saveBtn +
+      '<button onclick="openEditProjectModal(\'' + id + '\')" style="padding:6px 10px;background:transparent;border:1px solid var(--bd);border-radius:4px;color:var(--tx);cursor:pointer;font-size:12px">Edit</button>' +
+    '</span>' +
   '</div>';
 
   // Tab bar

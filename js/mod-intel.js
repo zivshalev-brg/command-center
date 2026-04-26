@@ -161,10 +161,19 @@ async function openIntelBriefing(id) {
     const content = data.content_md || data.content_html || 'No content';
     // Render markdown-like content with basic formatting
     const rendered = renderBriefingContent(content);
+    const saveBtn = (typeof saveToNotebookButton === 'function') ? saveToNotebookButton({
+      sourceType: 'intel_briefing',
+      ref: { title: data.title || ('Briefing · ' + (data.week || id)), content, date: data.created_at, category: data.type },
+      title: data.title || ('Briefing · ' + (data.week || id)),
+      summary: String(content).slice(0, 200),
+      size: 'sm',
+      label: 'Save to notebook'
+    }) : '';
     openPanel('Briefing: ' + (data.title || data.week), `
-      <div class="panel-meta">
+      <div class="panel-meta" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span class="tag ${data.type === 'weekly' ? 'tag-ok' : data.type === 'roaster_dossier' ? 'tag-warn' : ''}">${data.type}</span>
         &middot; ${data.model_used || ''} &middot; ${formatDate(data.created_at)}
+        <span style="margin-left:auto">${saveBtn}</span>
       </div>
       <div class="panel-body" style="font-size:13px;line-height:1.6;margin-top:12px">${rendered}</div>
     `);
@@ -534,9 +543,18 @@ async function openIntelRoaster(id) {
     const data = await fetch(`/api/cibe/dossier/${id}`).then(r => r.json());
     const r = data.roaster;
     const social = data.social || {};
+    const saveBtn = (typeof saveToNotebookButton === 'function') ? saveToNotebookButton({
+      sourceType: 'cibe_roaster',
+      ref: { id: r.id },
+      title: r.name,
+      summary: r.country + ' · ' + r.type,
+      size: 'sm',
+      label: 'Save'
+    }) : '';
     openPanel(r.name, `
-      <div class="panel-meta">${r.country} &middot; ${r.type} &middot; ${r.website ? '<a href="' + esc(r.website) + '" target="_blank">website</a>' : 'no website'}
+      <div class="panel-meta" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${r.country} &middot; ${r.type} &middot; ${r.website ? '<a href="' + esc(r.website) + '" target="_blank">website</a>' : 'no website'}
         ${r.instagram ? ' &middot; <a href="https://www.instagram.com/' + esc(r.instagram) + '/" target="_blank">@' + esc(r.instagram) + '</a>' : ''}
+        <span style="margin-left:auto">${saveBtn}</span>
       </div>
       <div style="margin-top:8px">
         <button class="btn-sm" onclick="generateRoasterDossier('${r.id}')" style="background:var(--c-blue);color:#fff">Generate AI Dossier</button>

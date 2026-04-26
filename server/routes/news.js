@@ -1089,8 +1089,9 @@ async function _generateCoffeeResearch(ctx, period) {
     '"tools_and_products":[{"name":"product","category":"machine|grinder|roaster|subscription|accessory","mentions":0,"sentiment":"positive|negative|mixed","what_people_say":"","best_quote":{"quote":"","source":"","url":""}}],' +
     '"predictions_and_debates":[{"topic":"question","positions":[{"position":"","advocate":"","quote":"","videoId":"","timestamp":0}]}],' +
     '"reddit_intelligence":{"hot_debates":[{"title":"","subreddit":"","url":"","upvotes":0,"key_insight":""}],"community_sentiment":"3-4 sentences","emerging_tools":[{"name":"","context":"","url":""}]},' +
-    '"reading_list":[{"title":"","type":"video|article|reddit","url":"","why":"","duration":""}],' +
-    '"bottom_line":"3-4 sentences"}\n\nThe brand_sentiment section is CRITICAL. Search through ALL Reddit posts, comments, YouTube transcripts, and articles for ANY mention of Breville, Sage, Lelit, Baratza, or Beanz. Include the actual number of mentions found. Even if sentiment_score is 0 for a brand with no mentions, include it. Include 6-8 trends, 2-3 deep dives, 8-10 products, 8-10 reading list items. Depth over breadth. CRITICAL: response MUST be complete valid JSON — if approaching token limit, trim scope and close the object cleanly rather than truncate mid-field.';
+    '"podcast_highlights":[{"episode_title":"","show":"","videoId":"","url":"","host_summary":"3-5 sentences on what the episode covered","key_segments":[{"topic":"","quote":"","speaker":"","timestamp":0,"url":""}],"takeaway":"2 sentences why it matters for Beanz/BRG"}],' +
+    '"reading_list":[{"title":"","type":"video|podcast|article|reddit","url":"","why":"","duration":""}],' +
+    '"bottom_line":"3-4 sentences"}\n\nThe brand_sentiment section is CRITICAL. Search through ALL Reddit posts, comments, YouTube transcripts, podcast transcripts, and articles for ANY mention of Breville, Sage, Lelit, Baratza, or Beanz. Include the actual number of mentions found. Even if sentiment_score is 0 for a brand with no mentions, include it. Include 6-8 trends, 2-3 deep dives, 4-6 podcast_highlights (one per podcast episode with a transcript — pull at least one quote each), 8-10 products, 8-10 reading list items. Depth over breadth. CRITICAL: response MUST be complete valid JSON — if approaching token limit, trim scope and close the object cleanly rather than truncate mid-field.';
 
   var periodLabel = period === 'weekly' ? 'WEEKLY' : 'DAILY';
   var userMsg = 'Generate the ' + periodLabel + ' Coffee Industry Research Brief. Today: ' + new Date().toISOString().slice(0, 10) + '.\n\n' + fullContext;
@@ -1127,7 +1128,7 @@ async function _generateCoffeeResearch(ctx, period) {
     throw new Error('Failed to parse JSON from Opus response: ' + extract.error);
   }
   var report = extract.value;
-  try { db.upsertNewsDigest('coffee_research_' + period + '-' + new Date().toISOString().slice(0,10), 'coffee_research_' + period, JSON.stringify(report), ytArticles.length + rssArticles.length + redditPosts.length, MODELS.OPUS); } catch (e) { console.error('[CoffeeResearch] Cache failed:', e.message); }
+  try { db.upsertNewsDigest('coffee_research_' + period + '-' + new Date().toISOString().slice(0,10), 'coffee_research_' + period, JSON.stringify(report), ytArticles.length + podcastArticles.length + rssArticles.length + redditPosts.length, MODELS.OPUS); } catch (e) { console.error('[CoffeeResearch] Cache failed:', e.message); }
   console.log('[CoffeeResearch] Report complete: ' + (report.trends||[]).length + ' trends');
   return report;
 }

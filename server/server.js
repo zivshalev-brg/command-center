@@ -361,6 +361,11 @@ async function handleAPI(req, res) {
     return jsonReply(res, 404, { error: 'Unknown obsidian endpoint' });
   }
 
+  // Brain (policy, daily summaries, feedback, snapshots, proposals)
+  if (parts[0] === 'brain') {
+    return require('./routes/brain')(req, res, parts, url, ctx);
+  }
+
   // Auth status
   if (parts[0] === 'auth' && parts[1] === 'status') {
     return jsonReply(res, 200, {
@@ -734,6 +739,35 @@ server.listen(PORT, () => {
       console.log('[Schedule] Monday ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Generating weekly reports...');
       _generateAndEmail('weekly');
       setTimeout(function() { _generateCoffeeAndEmail('weekly'); }, 10 * 60 * 1000);
+    }
+
+    // 7:00 AM AEST — Daily tab summaries to Obsidian brain
+    if (_shouldFire('daily_summaries', 7, 0, now)) {
+      _lastScheduleRun['daily_summaries'] = now.dateKey;
+      _persistSchedule();
+      console.log('[Schedule] ' + now.dateKey + ' ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Running daily tab summaries...');
+      try {
+        const daily = require('./lib/daily-summaries');
+        daily.runDailySummaries({ ctx }).then(function(result) {
+          const ok = result.results.filter(function(r) { return !r.error && !r.skipped; }).length;
+          const sk = result.results.filter(function(r) { return r.skipped; }).length;
+          const er = result.results.filter(function(r) { return r.error; }).length;
+          console.log('[Schedule] Daily summaries complete: ' + ok + ' generated, ' + sk + ' skipped, ' + er + ' errored');
+        }).catch(function(e) { console.error('[Schedule] Daily summaries failed:', e.message); });
+      } catch (e) { console.error('[Schedule] Daily summaries module error:', e.message); }
+    }
+
+    // Sunday 8:00 AM AEST — Weekly rollup
+    if (_shouldFire('weekly_rollup', 8, 0, now, 0)) {
+      _lastScheduleRun['weekly_rollup'] = now.dateKey;
+      _persistSchedule();
+      console.log('[Schedule] Sunday ' + now.hh + ':' + String(now.mm).padStart(2, '0') + ' AEST — Weekly rollup...');
+      try {
+        const daily = require('./lib/daily-summaries');
+        daily.runWeeklyRollup({ ctx }).then(function(result) {
+          console.log('[Schedule] Weekly rollup complete:', result.relPath || 'skipped');
+        }).catch(function(e) { console.error('[Schedule] Weekly rollup failed:', e.message); });
+      } catch (e) { console.error('[Schedule] Weekly rollup module error:', e.message); }
     }
   }
 

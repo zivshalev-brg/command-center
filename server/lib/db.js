@@ -630,6 +630,31 @@ function initSchema() {
     _db.exec(`ALTER TABLE cibe_homepage_snapshots ADD COLUMN page_text_hash TEXT`);
   } catch { /* column already exists */ }
 
+  // NotebookLM persona — chat mode/tone/length controls per notebook
+  try {
+    _db.exec(`ALTER TABLE notebooks ADD COLUMN persona_json TEXT`);
+  } catch { /* column already exists */ }
+
+  // NotebookLM daily-summary tracking
+  try {
+    _db.exec(`
+      CREATE TABLE IF NOT EXISTS daily_summary_runs (
+        id           INTEGER PRIMARY KEY AUTOINCREMENT,
+        date         TEXT NOT NULL,
+        tab          TEXT NOT NULL,
+        rel_path     TEXT NOT NULL,
+        model        TEXT,
+        content_chars INTEGER DEFAULT 0,
+        skipped      INTEGER DEFAULT 0,
+        skip_reason  TEXT,
+        error        TEXT,
+        created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+      CREATE INDEX IF NOT EXISTS idx_daily_summary_date ON daily_summary_runs(date);
+      CREATE INDEX IF NOT EXISTS idx_daily_summary_tab ON daily_summary_runs(tab);
+    `);
+  } catch (e) { console.error('[DB] daily_summary_runs migration failed:', e.message); }
+
   // Phase 14 migrations — extended classification fields for project tags & marketing
   try {
     _db.exec(`ALTER TABLE ai_classifications ADD COLUMN project_tags TEXT`);

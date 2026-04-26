@@ -46,7 +46,15 @@ function renderPeopleMain() {
     const p = DATA.people[pid];
     const tierColors = {executive:'var(--yl)',leadership:'var(--or)',core:'var(--ac)',finance:'var(--gn)',tech:'var(--cy)',regional:'var(--pu)',support:'var(--tx3)'};
     const tierCol = tierColors[p.tier] || 'var(--tx3)';
-    let html = `<div class="card"><div class="card-h"><h2>${p.n}</h2><div style="display:flex;gap:6px">${p.tier?`<span class="tag" style="background:${tierCol}22;color:${tierCol}">${(p.tier||'').toUpperCase()}</span>`:''}<span class="tag info">${p.region}</span></div></div><div class="card-b">`;
+    const saveBtn = (typeof saveToNotebookButton === 'function') ? saveToNotebookButton({
+      sourceType: 'person',
+      ref: { name: p.n },
+      title: p.n,
+      summary: p.role + ' · ' + p.team,
+      size: 'sm',
+      label: 'Save'
+    }) : '';
+    let html = `<div class="card"><div class="card-h"><h2>${p.n}</h2><div style="display:flex;gap:6px;align-items:center">${p.tier?`<span class="tag" style="background:${tierCol}22;color:${tierCol}">${(p.tier||'').toUpperCase()}</span>`:''}<span class="tag info">${p.region}</span>${saveBtn}</div></div><div class="card-b">`;
     html += `<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><div class="avatar" style="background:${p.colour}33;color:${p.colour}">${p.initials}</div>`;
     html += `<div><strong>${p.role}</strong><br><span style="color:var(--tx3)">${p.team} · ${p.region}</span>`;
     if (p.scope) html += `<br><span style="color:var(--tx2);font-size:var(--f-sm)">${p.scope}</span>`;

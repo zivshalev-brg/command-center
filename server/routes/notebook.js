@@ -31,8 +31,9 @@ const ingest = require('../lib/notebook-ingest');
 const rag = require('../lib/notebook-rag');
 const artifacts = require('../lib/notebook-artifacts');
 const capture = require('../lib/notebook-capture');
+const MODELS = require('../lib/ai-models');
 
-const MODEL = 'claude-sonnet-4-5-20250929';
+const MODEL = MODELS.OPUS;
 const API_HOSTNAME = 'api.anthropic.com';
 const API_PATH = '/v1/messages';
 const API_VERSION = '2023-06-01';
@@ -97,6 +98,57 @@ module.exports = async function handleNotebook(req, res, parts, url, ctx) {
       return jsonReply(res, 200, { source });
     }
     if (sid && req.method === 'DELETE') { store.deleteSource(sid); return jsonReply(res, 200, { ok: true }); }
+    // GET /api/notebooks/:id/sources/:sid — full source with content_text
+    if (sid && req.method === 'GET' && !parts[4]) {
+      const s = store.getSource(sid);
+      if (!s || s.notebook_id !== notebookId) return jsonReply(res, 404, { error: 'Source not found' });
+      return jsonReply(res, 200, { source: s });
+    }
+    // POST /api/notebooks/:id/sources/:sid/discover — find related web content
+    if (sid && parts[4] === 'discover' && req.method === 'POST') {
+      if (!ctx.anthropicApiKey) return jsonReply(res, 400, { error: 'ANTHROPIC_API_KEY not configured' });
+      const s = store.getSource(sid);
+      if (!s || s.notebook_id !== notebookId) return jsonReply(res, 404, { error: 'Source not found' });
+      try {
+        const { runResearch } = require('../lib/notebook-research');
+        const seed = (s.title + '\n\n' + (s.content_text || '').slice(0, 3000)).trim();
+        const query = 'Find additional sources, data, or context related to: ' + s.title + '\n\nSeed context:\n' + seed;
+        const text = await runResearch({ query, mode: 'fast', apiKey: ctx.anthropicApiKey, ctx });
+        const newSource = store.addSource(notebookId, {
+          kind: 'web_research',
+          title: 'Related · ' + (s.title || '').slice(0, 80),
+          contentText: text,
+          metadata: { discovered_from: sid, seed_title: s.title }
+        });
+        if (newSource && newSource.content_text) {
+          const chunks = ingest.chunkText(newSource.content_text);
+          store.upsertChunks(newSource.id, notebookId, chunks);
+        }
+        return jsonReply(res, 200, { source: newSource });
+      } catch (e) { return jsonReply(res, 500, { error: e.message }); }
+    }
+    return jsonReply(res, 405, { error: 'Method not allowed' });
+  }
+
+  // ── Suggested questions ────────────────────────────────────
+  if (sub === 'suggestions' && req.method === 'POST') {
+    if (!ctx.anthropicApiKey) return jsonReply(res, 400, { error: 'ANTHROPIC_API_KEY not configured' });
+    try {
+      const suggestions = await generateSuggestions({ notebookId, apiKey: ctx.anthropicApiKey });
+      return jsonReply(res, 200, { suggestions });
+    } catch (e) { return jsonReply(res, 500, { error: e.message }); }
+  }
+
+  // ── Persona (chat customize) ───────────────────────────────
+  if (sub === 'persona') {
+    if (req.method === 'GET') {
+      return jsonReply(res, 200, { persona: store.getNotebookPersona(notebookId), presets: store.PERSONA_PRESETS });
+    }
+    if (req.method === 'POST') {
+      const body = await readJson(req);
+      const persona = store.setNotebookPersona(notebookId, body || {});
+      return jsonReply(res, 200, { persona });
+    }
     return jsonReply(res, 405, { error: 'Method not allowed' });
   }
 
@@ -104,7 +156,7 @@ module.exports = async function handleNotebook(req, res, parts, url, ctx) {
   if (sub === 'capture' && req.method === 'POST') {
     try {
       const body = await readJson(req);
-      const result = capture.captureToNotebook(notebookId, body || {}, ctx);
+      const result = await capture.captureToNotebook(notebookId, body || {}, ctx);
       return jsonReply(res, 200, { ok: true, source: result.source, kind: result.kind, contentBytes: result.contentBytes });
     } catch (e) {
       return jsonReply(res, 400, { ok: false, error: e.message });
@@ -333,6 +385,52 @@ function buildMarkdownExport(nb, sourcesWithText) {
 // needed since the sources are ingested directly into the system prompt).
 // ═══════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════
+// Suggested questions — one-shot call using full notebook context
+// ═══════════════════════════════════════════════════════════════
+function generateSuggestions({ notebookId, apiKey }) {
+  return new Promise((resolve, reject) => {
+    const { chunks, text: contextText } = rag.buildFullContext(notebookId, 'summary', 40000);
+    if (!chunks.length) return resolve(['Add a source to start asking questions']);
+
+    const instructions = 'You generate 4 highly-specific, source-grounded questions a user would ask this notebook. Each question must be answerable ONLY from the provided sources. Return JSON only: {"suggestions":["q1","q2","q3","q4"]}. No prose, no markdown, no extra fields.';
+    const sources = '# Sources\n\n' + contextText;
+    const body = JSON.stringify({
+      model: MODEL,
+      max_tokens: 500,
+      system: [
+        { type: 'text', text: instructions },
+        { type: 'text', text: sources, cache_control: { type: 'ephemeral' } }
+      ],
+      messages: [{ role: 'user', content: 'Generate 4 source-grounded questions.' }]
+    });
+
+    const apiReq = https.request({
+      hostname: API_HOSTNAME, path: API_PATH, method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': API_VERSION }
+    }, (apiRes) => {
+      let buf = '';
+      apiRes.on('data', (c) => buf += c.toString());
+      apiRes.on('end', () => {
+        try {
+          const json = JSON.parse(buf);
+          if (json.error) return reject(new Error(json.error.message || 'API error'));
+          const text = (json.content || []).map(b => b.type === 'text' ? b.text : '').join('').trim();
+          const match = text.match(/\{[\s\S]*\}/);
+          if (!match) return resolve([]);
+          const parsed = JSON.parse(match[0]);
+          resolve(Array.isArray(parsed.suggestions) ? parsed.suggestions.slice(0, 4) : []);
+        } catch (e) { reject(e); }
+      });
+      apiRes.on('error', reject);
+    });
+    apiReq.on('error', reject);
+    apiReq.setTimeout(60000, () => { apiReq.destroy(); reject(new Error('Timed out')); });
+    apiReq.write(body);
+    apiReq.end();
+  });
+}
+
 function streamGroundedChat({ notebookId, userMessage, apiKey, res }) {
   return new Promise((resolve) => {
     store.addMessage(notebookId, 'user', userMessage, null);
@@ -343,10 +441,14 @@ function streamGroundedChat({ notebookId, userMessage, apiKey, res }) {
       return resolve();
     }
 
-    const systemPrompt =
+    const persona = store.getNotebookPersona ? store.getNotebookPersona(notebookId) : null;
+    const personaBlock = persona && persona.system ? ('\n\n# Persona\n' + persona.system) : '';
+
+    const instructionsText =
       'You are a notebook assistant answering questions grounded strictly in the provided sources. Every factual claim MUST end with citation markers like [S1] or [S1][S3]. Never invent facts beyond the sources. If the sources are insufficient, say so explicitly.\n\n' +
-      '# Rules\n- Cite using [S1]..[S' + chunks.length + '] only.\n- Be concise and structured — headings and bullets when helpful.\n- If asked for something not in the sources, say "The sources don\'t cover that" and suggest what would answer it.\n\n' +
-      '# Sources\n\n' + contextText;
+      '# Rules\n- Cite using [S1]..[S' + chunks.length + '] only.\n- Be concise and structured — headings and bullets when helpful.\n- If asked for something not in the sources, say "The sources don\'t cover that" and suggest what would answer it.' +
+      personaBlock;
+    const sourcesText = '# Sources\n\n' + contextText;
 
     const citationInfo = chunks.map((c, i) => ({ n: i + 1, source_id: c.source_id, source_title: c.source_title, chunk_index: c.chunk_index, snippet: c.content.slice(0, 500) }));
     res.write('event: citations\ndata: ' + JSON.stringify({ citations: citationInfo }) + '\n\n');
@@ -356,7 +458,17 @@ function streamGroundedChat({ notebookId, userMessage, apiKey, res }) {
     const recent = priorHistory.slice(-11, -1);
     const messages = recent.map(m => ({ role: m.role, content: m.content })).concat([{ role: 'user', content: userMessage }]);
 
-    const body = JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, stream: true, system: systemPrompt, messages });
+    // Prompt caching: cache the sources block (expensive, reused across turns)
+    const body = JSON.stringify({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      stream: true,
+      system: [
+        { type: 'text', text: instructionsText },
+        { type: 'text', text: sourcesText, cache_control: { type: 'ephemeral' } }
+      ],
+      messages
+    });
 
     let fullText = '';
     let errored = false;

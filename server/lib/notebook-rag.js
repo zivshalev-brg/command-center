@@ -6,6 +6,27 @@
 'use strict';
 
 const store = require('./notebook-store');
+const ingest = require('./notebook-ingest');
+
+/** Auto-heal: for any source in this notebook with content_text but no chunks, chunk it now. */
+function rechunkMissingSources(notebookId) {
+  const sources = store.getSourcesForNotebook(notebookId, { withText: true });
+  if (!sources || !sources.length) return { rechunked: 0 };
+  let rechunked = 0;
+  for (const s of sources) {
+    if (!s.content_text || s.content_text.length < 20) continue;
+    // Check if this source has chunks
+    const db = require('./db').getDb();
+    const row = db.prepare('SELECT COUNT(*) AS n FROM notebook_source_chunks WHERE source_id = ?').get(s.id);
+    if (row && row.n > 0) continue;
+    try {
+      const chunks = ingest.chunkText(s.content_text);
+      store.upsertChunks(s.id, notebookId, chunks);
+      rechunked++;
+    } catch (e) { /* swallow — best-effort */ }
+  }
+  return { rechunked };
+}
 
 const STOPWORDS = new Set(['the','a','an','of','to','and','or','in','on','for','with','is','are','was','were','be','been','being','has','have','had','do','does','did','this','that','these','those','i','you','he','she','it','we','they','me','him','her','us','them','my','your','his','its','our','their','at','by','from','as','but','if','then','so','not','no','yes','can','could','should','would','may','might','will','shall','what','which','who','whom','whose','how','when','where','why']);
 
@@ -54,9 +75,14 @@ function buildCitationBlock(chunks) {
 }
 
 /** Convert the notebook's full sources into a grounded context string,
- *  capped at maxChars. Uses every chunk if under cap; otherwise RAG-selects. */
+ *  capped at maxChars. Uses every chunk if under cap; otherwise RAG-selects.
+ *  Self-heals: if no chunks exist but sources have content, re-chunks first. */
 function buildFullContext(notebookId, query, maxChars = 60000) {
-  const all = store.getAllChunksForNotebook(notebookId);
+  let all = store.getAllChunksForNotebook(notebookId);
+  if (!all.length) {
+    const r = rechunkMissingSources(notebookId);
+    if (r.rechunked > 0) all = store.getAllChunksForNotebook(notebookId);
+  }
   if (!all.length) return { chunks: [], text: '' };
   const totalChars = all.reduce((s, c) => s + c.content.length, 0);
   if (totalChars <= maxChars) {
@@ -66,4 +92,4 @@ function buildFullContext(notebookId, query, maxChars = 60000) {
   return { chunks: hits, text: buildCitationBlock(hits) };
 }
 
-module.exports = { search, buildCitationBlock, buildFullContext };
+module.exports = { search, buildCitationBlock, buildFullContext, rechunkMissingSources };

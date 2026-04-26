@@ -451,6 +451,32 @@ function convertResearchReportToMarkdown(report) {
     }
   }
 
+  if (report.podcast_highlights && report.podcast_highlights.length > 0) {
+    sections.push(heading(2, 'Podcast Highlights'));
+    for (const p of report.podcast_highlights) {
+      const url = p.url || (p.videoId ? `https://www.youtube.com/watch?v=${p.videoId}` : '');
+      const title = url ? `[${p.episode_title || 'Episode'}](${url})` : (p.episode_title || 'Episode');
+      sections.push(heading(3, `${p.show ? p.show + ' — ' : ''}${title}`));
+      if (p.host_summary) {
+        sections.push(p.host_summary);
+        sections.push('');
+      }
+      if (p.key_segments && p.key_segments.length > 0) {
+        for (const seg of p.key_segments) {
+          const segUrl = seg.url || (p.videoId && seg.timestamp ? `${url}&t=${Math.floor(seg.timestamp)}s` : url);
+          const speaker = segUrl ? `[${seg.speaker || 'Speaker'}](${segUrl})` : (seg.speaker || 'Speaker');
+          const ts = seg.timestamp ? ` _[${Math.floor(seg.timestamp/60)}:${('0'+Math.floor(seg.timestamp%60)).slice(-2)}]_` : '';
+          sections.push(callout('quote', `${speaker}${ts}${seg.topic ? ' — ' + seg.topic : ''}`, seg.quote));
+          sections.push('');
+        }
+      }
+      if (p.takeaway) {
+        sections.push(callout('tip', 'Takeaway', p.takeaway));
+        sections.push('');
+      }
+    }
+  }
+
   if (report.tools_and_products && report.tools_and_products.length > 0) {
     sections.push(heading(2, 'Tools & Products'));
     sections.push('');
@@ -1409,6 +1435,13 @@ async function syncVault(ctx) {
 
   try { generateTemplates(vaultDir); }
   catch (err) { _syncState.errors.push(`Templates: ${err.message}`); }
+
+  // Brain update policy page (Phase 5) — regenerated every sync with live stats
+  try {
+    const { writePolicyPage } = require('./brain-policy');
+    writePolicyPage(ctx);
+    _syncState.pagesGenerated++;
+  } catch (err) { _syncState.errors.push('Brain Policy: ' + err.message); }
 
   // Generate rich index (must be last — scans all generated files)
   try {
