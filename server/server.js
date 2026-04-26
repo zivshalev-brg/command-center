@@ -366,6 +366,20 @@ async function handleAPI(req, res) {
     return require('./routes/brain')(req, res, parts, url, ctx);
   }
 
+  // Email retry queue
+  if (parts[0] === 'email-queue') {
+    const emailQueue = require('./lib/email-queue');
+    if (req.method === 'GET') {
+      return jsonReply(res, 200, { items: emailQueue.getQueue(), count: emailQueue.size() });
+    }
+    if (parts[1] === 'flush' && req.method === 'POST') {
+      return emailQueue.flushQueue(ctx)
+        .then(r => jsonReply(res, 200, r))
+        .catch(e => jsonReply(res, 500, { error: e.message }));
+    }
+    return jsonReply(res, 405, { error: 'Method not allowed' });
+  }
+
   // Auth status
   if (parts[0] === 'auth' && parts[1] === 'status') {
     return jsonReply(res, 200, {
@@ -442,6 +456,16 @@ const server = http.createServer((req, res) => {
     exchangeCodeForTokens(ctx.msGraph, code, REDIRECT_URI)
       .then(function() {
         console.log('[Auth] Outlook connected successfully via OAuth2');
+        // Auto-flush any newsletters that failed while we were disconnected.
+        try {
+          const emailQueue = require('./lib/email-queue');
+          if (emailQueue.size() > 0) {
+            console.log('[Auth] Flushing email queue (' + emailQueue.size() + ' pending)...');
+            emailQueue.flushQueue(ctx).then(function(r) {
+              console.log('[Auth] Queue flush:', JSON.stringify(r));
+            }).catch(function(e) { console.error('[Auth] Queue flush failed:', e.message); });
+          }
+        } catch (e) { console.error('[Auth] Queue flush error:', e.message); }
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(
           '<html><body style="font-family:system-ui;padding:40px;background:#0c0e14;color:#e8eaf2;text-align:center">' +
@@ -640,9 +664,14 @@ server.listen(PORT, () => {
       try { require('./lib/wiki-ingest').ingestResearchReport(report, 'tech'); } catch (e) { console.error('[WikiIngest] Tech ingest failed:', e.message); }
       var recipients = getRecipientList();
       if (recipients.length > 0 && report) {
+        var reportKey = 'tech_research_' + period + '-' + new Date().toISOString().slice(0, 10);
         sendResearchEmail(ctx, report, 'tech', recipients)
           .then(function() { console.log('[Research] Daily email sent to ' + recipients.length + ' recipients'); })
-          .catch(function(e) { console.error('[Research] Email send failed:', e.message); });
+          .catch(function(e) {
+            console.error('[Research] Email send failed:', e.message);
+            try { require('./lib/email-queue').enqueue({ feed: 'tech', period, reportKey, recipients, error: e.message }); }
+            catch (qe) { console.error('[Research] Failed to queue email:', qe.message); }
+          });
       } else if (recipients.length === 0) {
         console.log('[Research] No email recipients configured (set RESEARCH_EMAIL_RECIPIENTS in .env)');
       }
@@ -769,6 +798,16 @@ server.listen(PORT, () => {
         }).catch(function(e) { console.error('[Schedule] Weekly rollup failed:', e.message); });
       } catch (e) { console.error('[Schedule] Weekly rollup module error:', e.message); }
     }
+
+    // Email queue retry — fires every tick if items pending and Outlook is up
+    try {
+      const emailQueue = require('./lib/email-queue');
+      if (emailQueue.size() > 0 && tokenStore.isAuthenticated()) {
+        emailQueue.flushQueue(ctx).then(function(r) {
+          if (r.attempted > 0) console.log('[EmailQueue] tick flush:', JSON.stringify(r));
+        }).catch(function(e) { console.error('[EmailQueue] tick flush failed:', e.message); });
+      }
+    } catch (e) { /* email-queue not available — skip */ }
   }
 
   // Expose runners for manual trigger via /api/schedule/run.
@@ -797,9 +836,14 @@ server.listen(PORT, () => {
       try { require('./lib/wiki-ingest').ingestResearchReport(report, 'coffee'); } catch (e) { console.error('[WikiIngest] Coffee ingest failed:', e.message); }
       var coffeeRecipients = (process.env.COFFEE_RESEARCH_EMAIL_RECIPIENTS || '').split(',').map(e => e.trim()).filter(Boolean);
       if (coffeeRecipients.length > 0 && report) {
+        var reportKey = 'coffee_research_' + period + '-' + new Date().toISOString().slice(0, 10);
         sendResearchEmail(ctx, report, 'coffee', coffeeRecipients)
           .then(function() { console.log('[CoffeeResearch] Email sent to ' + coffeeRecipients.length + ' recipients'); })
-          .catch(function(e) { console.error('[CoffeeResearch] Email failed:', e.message); });
+          .catch(function(e) {
+            console.error('[CoffeeResearch] Email failed:', e.message);
+            try { require('./lib/email-queue').enqueue({ feed: 'coffee', period, reportKey, recipients: coffeeRecipients, error: e.message }); }
+            catch (qe) { console.error('[CoffeeResearch] Failed to queue email:', qe.message); }
+          });
       }
     }).catch(function(e) { console.error('[CoffeeResearch] ' + period + ' failed:', e.message); });
   }
